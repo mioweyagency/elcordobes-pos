@@ -1,0 +1,587 @@
+/* =========================================================
+   DASHBOARD MAIN
+========================================================= */
+
+.dashboard-main{
+  flex:1;
+  padding:32px;
+  background:#0f0f0f;
+  min-height:100vh;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.dashboard-hero{
+  background:
+    linear-gradient(
+      135deg,
+      #1f1f1f,
+      #111111
+    );
+
+  border-radius:34px;
+
+  padding:42px;
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+
+  margin-bottom:30px;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.dashboard-hero::before{
+  content:"";
+
+  position:absolute;
+
+  width:420px;
+  height:420px;
+
+  background:
+    radial-gradient(
+      rgba(154,205,50,0.14),
+      transparent 70%
+    );
+
+  top:-120px;
+  right:-120px;
+}
+
+.hero-label{
+  color:#9acd32;
+
+  font-size:12px;
+  font-weight:700;
+
+  letter-spacing:2px;
+
+  margin-bottom:14px;
+
+  position:relative;
+  z-index:2;
+}
+
+.hero-brand{
+  display:flex;
+  align-items:center;
+  gap:24px;
+
+  position:relative;
+  z-index:2;
+}
+
+.hero-logo{
+  width:90px;
+  height:90px;
+
+  object-fit:cover;
+
+  border-radius:24px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+}
+
+.hero-brand h1{
+  color:white;
+
+  font-size:52px;
+  font-weight:800;
+
+  margin-bottom:10px;
+}
+
+.hero-brand p{
+  color:#9d9d9d;
+
+  font-size:16px;
+
+  line-height:1.7;
+
+  max-width:620px;
+}
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+.dashboard-filters{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+
+  margin-bottom:32px;
+
+  flex-wrap:wrap;
+}
+
+.dashboard-filter{
+  border:none;
+
+  background:#1a1a1a;
+
+  color:#8f8f8f;
+
+  padding:14px 22px;
+
+  border-radius:18px;
+
+  cursor:pointer;
+
+  font-size:14px;
+  font-weight:800;
+
+  transition:0.25s;
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+}
+
+.dashboard-filter:hover{
+  transform:translateY(-2px);
+
+  background:#232323;
+
+  color:white;
+}
+
+.dashboard-filter.active{
+  background:
+    linear-gradient(
+      135deg,
+      #9acd32,
+      #6b8e23
+    );
+
+  color:#111111;
+}
+
+/* =========================================================
+   ACTIVE EMPLOYEE
+========================================================= */
+
+.active-employee-section{
+  margin-bottom:30px;
+}
+
+.active-employee-card{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(154,205,50,0.10),
+      rgba(255,255,255,0.03)
+    );
+
+  border:
+    1px solid rgba(154,205,50,0.14);
+
+  border-radius:34px;
+
+  padding:28px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:24px;
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.18);
+}
+
+.active-employee-left{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
+.active-employee-img{
+  width:90px;
+  height:90px;
+
+  border-radius:999px;
+
+  object-fit:cover;
+
+  border:
+    3px solid rgba(255,255,255,0.08);
+
+  flex-shrink:0;
+}
+
+.working-label{
+  color:#9acd32;
+
+  font-size:12px;
+  font-weight:800;
+
+  letter-spacing:2px;
+
+  margin-bottom:8px;
+}
+
+.active-employee-card h2{
+  color:white;
+
+  font-size:30px;
+  font-weight:900;
+
+  margin-bottom:4px;
+}
+
+.active-employee-card span{
+  display:block;
+
+  color:#d4d4d4;
+
+  font-size:15px;
+
+  margin-bottom:4px;
+}
+
+.active-employee-card small{
+  display:block;
+
+  color:#9acd32;
+
+  font-size:13px;
+  font-weight:700;
+
+  margin-bottom:12px;
+}
+
+.checkin-time{
+  color:#8f8f8f;
+
+  font-size:14px;
+}
+
+.checkout-btn{
+  background:
+    linear-gradient(
+      135deg,
+      #9acd32,
+      #556b2f
+    );
+
+  border:none;
+
+  color:#111111;
+
+  border-radius:22px;
+
+  padding:18px 24px;
+
+  font-size:15px;
+  font-weight:800;
+
+  cursor:pointer;
+
+  transition:0.25s;
+
+  flex-shrink:0;
+}
+
+.checkout-btn:hover{
+  transform:translateY(-2px);
+}
+
+/* =========================================================
+   STATS GRID
+========================================================= */
+
+.stats-grid{
+  display:grid;
+
+  grid-template-columns:
+    2fr 1fr 1fr;
+
+  gap:20px;
+
+  margin-bottom:32px;
+}
+
+.stat-card{
+  background:#161616;
+
+  border-radius:30px;
+
+  padding:28px;
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+
+  transition:0.25s;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.stat-card::before{
+  content:"";
+
+  position:absolute;
+
+  width:220px;
+  height:220px;
+
+  background:
+    radial-gradient(
+      rgba(154,205,50,0.08),
+      transparent 70%
+    );
+
+  top:-80px;
+  right:-80px;
+}
+
+.stat-card:hover{
+  transform:translateY(-4px);
+
+  border-color:
+    rgba(154,205,50,0.22);
+}
+
+.stat-card.large{
+  min-height:220px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.stat-card span{
+  color:#9d9d9d;
+
+  font-size:13px;
+
+  position:relative;
+  z-index:2;
+}
+
+.stat-card h2{
+  color:white;
+
+  font-size:42px;
+  font-weight:800;
+
+  margin-top:14px;
+
+  position:relative;
+  z-index:2;
+}
+
+.stat-card p{
+  color:#777;
+
+  font-size:13px;
+
+  margin-top:8px;
+
+  position:relative;
+  z-index:2;
+}
+
+/* =========================================================
+   SALES + TEAM
+========================================================= */
+
+.recent-sales{
+  background:#161616;
+
+  border-radius:32px;
+
+  padding:26px;
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+
+  margin-bottom:30px;
+}
+
+.section-title{
+  margin-bottom:22px;
+}
+
+.section-title h2{
+  color:white;
+
+  font-size:26px;
+}
+
+.sales-list{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.empty-sales{
+  color:#777777;
+}
+
+.sale-card{
+  background:#1d1d1d;
+
+  border-radius:22px;
+
+  padding:18px 20px;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+
+  transition:0.25s;
+}
+
+.sale-card:hover{
+  transform:translateY(-2px);
+
+  border-color:
+    rgba(154,205,50,0.2);
+}
+
+.sale-card h3{
+  color:white;
+
+  font-size:16px;
+
+  margin-bottom:6px;
+}
+
+.sale-card p{
+  color:#9d9d9d;
+
+  font-size:13px;
+}
+
+.sale-right{
+  text-align:right;
+}
+
+.sale-right span{
+  color:#9acd32;
+
+  font-size:20px;
+  font-weight:700;
+
+  display:block;
+
+  margin-bottom:6px;
+}
+
+.payment-badge{
+  background:
+    rgba(154,205,50,0.12);
+
+  color:#9acd32;
+
+  padding:6px 10px;
+
+  border-radius:999px;
+
+  font-size:11px;
+  font-weight:700;
+}
+
+/* =========================================================
+   TEAM AVATAR
+========================================================= */
+
+.team-avatar{
+  width:58px;
+  height:58px;
+
+  border-radius:999px;
+
+  object-fit:cover;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width:1100px){
+
+  .stats-grid{
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+}
+
+@media (max-width:980px){
+
+  .active-employee-card{
+    flex-direction:column;
+
+    align-items:flex-start;
+  }
+
+  .checkout-btn{
+    width:100%;
+  }
+
+  .active-employee-left{
+    align-items:flex-start;
+  }
+
+  .active-employee-card h2{
+    font-size:24px;
+  }
+
+}
+
+@media (max-width:780px){
+
+  .dashboard-main{
+    padding:18px;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero-brand{
+    flex-direction:column;
+
+    align-items:flex-start;
+  }
+
+  .hero-brand h1{
+    font-size:40px;
+  }
+
+  .sale-card{
+    flex-direction:column;
+
+    align-items:flex-start;
+  }
+
+  .sale-right{
+    width:100%;
+
+    text-align:left;
+  }
+
+  .dashboard-filters{
+    justify-content:flex-start;
+  }
+
+}

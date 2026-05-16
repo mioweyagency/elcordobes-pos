@@ -1,0 +1,96 @@
+/* =========================================================
+   LANGUAGE SWITCHER
+========================================================= */
+
+.language-switcher{
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  width:100%;
+}
+
+/* =========================================================
+   LANGUAGE BUTTON
+========================================================= */
+
+.language-btn{
+  flex:1;
+
+  height:52px;
+
+  border:
+    1px solid rgba(154,205,50,0.10);
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(32,32,32,0.96),
+      rgba(18,18,18,0.98)
+    );
+
+  color:#cfcfcf;
+
+  font-size:14px;
+  font-weight:800;
+
+  letter-spacing:0.5px;
+
+  cursor:pointer;
+
+  transition:0.25s;
+
+  backdrop-filter:blur(12px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.language-btn:hover{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(154,205,50,0.14),
+      rgba(85,107,47,0.08)
+    );
+
+  border-color:
+    rgba(154,205,50,0.22);
+
+  color:#9acd32;
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(154,205,50,0.10);
+}
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+.language-btn.active{
+  background:
+    linear-gradient(
+      135deg,
+      #9acd32,
+      #556b2f
+    );
+
+  border:
+    1px solid rgba(154,205,50,0.28);
+
+  color:#111111;
+
+  box-shadow:
+    0 14px 34px rgba(154,205,50,0.18);
+}

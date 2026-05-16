@@ -1,0 +1,547 @@
+/* =========================================================
+   INVENTORY PAGE
+========================================================= */
+
+.inventory-page{
+  padding:34px;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.inventory-header{
+  display:flex;
+
+  align-items:flex-start;
+  justify-content:space-between;
+
+  gap:24px;
+
+  margin-bottom:36px;
+}
+
+.inventory-header p{
+  color:#9acd32;
+
+  font-size:11px;
+  font-weight:900;
+
+  letter-spacing:4px;
+
+  margin-bottom:14px;
+
+  text-transform:uppercase;
+}
+
+.inventory-header h1{
+  color:white;
+
+  font-size:62px;
+  font-weight:900;
+
+  line-height:0.95;
+
+  margin-bottom:16px;
+}
+
+.inventory-header span{
+  color:#8a8a8a;
+
+  font-size:16px;
+
+  line-height:1.7;
+
+  max-width:560px;
+
+  display:block;
+}
+
+/* =========================================================
+   ADD BUTTON
+========================================================= */
+
+.inventory-add-btn{
+  height:60px;
+
+  padding:0 32px;
+
+  border:none;
+
+  border-radius:22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #9acd32,
+      #556b2f
+    );
+
+  color:#111111;
+
+  font-size:15px;
+  font-weight:900;
+
+  letter-spacing:0.5px;
+
+  cursor:pointer;
+
+  transition:0.28s;
+
+  box-shadow:
+    0 18px 40px rgba(154,205,50,0.18);
+}
+
+.inventory-add-btn:hover{
+  transform:
+    translateY(-3px)
+    scale(1.01);
+
+  box-shadow:
+    0 24px 50px rgba(154,205,50,0.24);
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.inventory-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(260px,1fr)
+    );
+
+  gap:20px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.inventory-card{
+  position:relative;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(28,28,28,0.98),
+      rgba(14,14,14,1)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+
+  border-radius:30px;
+
+  padding:22px;
+
+  overflow:hidden;
+
+  backdrop-filter:blur(20px);
+
+  transition:0.28s;
+
+  min-height:370px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+.inventory-card::before{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:0;
+  right:0;
+
+  height:1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(154,205,50,0.18),
+      transparent
+    );
+}
+
+.inventory-card:hover{
+  transform:
+    translateY(-5px);
+
+  border-color:
+    rgba(154,205,50,0.18);
+
+  box-shadow:
+    0 24px 50px rgba(0,0,0,0.34);
+}
+
+/* =========================================================
+   LOW STOCK CARD
+========================================================= */
+
+.low-stock-card{
+  border:
+    1px solid rgba(255,80,80,0.24);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(40,18,18,0.98),
+      rgba(22,10,10,1)
+    );
+
+  box-shadow:
+    0 20px 44px rgba(255,0,0,0.10);
+}
+
+.low-stock-card::before{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  border-radius:30px;
+
+  border:
+    1px solid rgba(255,80,80,0.18);
+
+  animation:
+    inventoryPulse 2s infinite;
+}
+
+.low-stock-card:hover{
+  border-color:
+    rgba(255,80,80,0.36);
+
+  box-shadow:
+    0 28px 60px rgba(255,0,0,0.16);
+}
+
+/* =========================================================
+   PULSE
+========================================================= */
+
+@keyframes inventoryPulse{
+
+  0%{
+    opacity:0.4;
+  }
+
+  50%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:0.4;
+  }
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.inventory-status{
+  position:absolute;
+
+  top:18px;
+  right:18px;
+
+  padding:9px 13px;
+
+  border-radius:14px;
+
+  font-size:10px;
+  font-weight:900;
+
+  letter-spacing:1px;
+
+  text-transform:uppercase;
+}
+
+.inventory-status.healthy{
+  background:
+    rgba(154,205,50,0.12);
+
+  color:#9acd32;
+}
+
+.inventory-status.low{
+  background:
+    rgba(255,80,80,0.14);
+
+  color:#ff7a7a;
+}
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.inventory-card h2{
+  color:white;
+
+  font-size:24px;
+  font-weight:900;
+
+  line-height:1.15;
+
+  margin-bottom:24px;
+
+  max-width:180px;
+}
+
+/* =========================================================
+   STOCK
+========================================================= */
+
+.inventory-stock{
+  margin-bottom:24px;
+}
+
+.inventory-stock span{
+  color:#6e6e6e;
+
+  font-size:11px;
+  font-weight:700;
+
+  letter-spacing:1px;
+
+  text-transform:uppercase;
+
+  display:block;
+
+  margin-bottom:10px;
+}
+
+.inventory-stock h1{
+  color:white;
+
+  font-size:42px;
+  font-weight:900;
+
+  line-height:1;
+}
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.inventory-info{
+  display:flex;
+
+  justify-content:space-between;
+
+  gap:14px;
+
+  margin-bottom:20px;
+}
+
+.inventory-info p{
+  color:#777;
+
+  font-size:11px;
+
+  margin-bottom:8px;
+
+  text-transform:uppercase;
+
+  letter-spacing:1px;
+}
+
+.inventory-info h3{
+  color:white;
+
+  font-size:18px;
+  font-weight:800;
+}
+
+/* =========================================================
+   SUPPLIER
+========================================================= */
+
+.inventory-supplier{
+  background:
+    rgba(255,255,255,0.03);
+
+  border:
+    1px solid rgba(255,255,255,0.04);
+
+  border-radius:18px;
+
+  padding:16px;
+
+  margin-bottom:18px;
+}
+
+.inventory-supplier span{
+  color:#777;
+
+  font-size:11px;
+
+  text-transform:uppercase;
+
+  letter-spacing:1px;
+
+  display:block;
+
+  margin-bottom:8px;
+}
+
+.inventory-supplier h4{
+  color:white;
+
+  font-size:15px;
+  font-weight:700;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.inventory-actions{
+  display:flex;
+
+  gap:10px;
+}
+
+/* =========================================================
+   EDIT BUTTON
+========================================================= */
+
+.inventory-edit-btn{
+  flex:1;
+
+  height:46px;
+
+  border:none;
+
+  border-radius:16px;
+
+  background:
+    rgba(154,205,50,0.12);
+
+  color:#9acd32;
+
+  font-size:13px;
+  font-weight:900;
+
+  cursor:pointer;
+
+  transition:0.25s;
+}
+
+.inventory-edit-btn:hover{
+  background:
+    rgba(154,205,50,0.18);
+
+  transform:translateY(-2px);
+}
+
+/* =========================================================
+   DELETE BUTTON
+========================================================= */
+
+.inventory-delete-btn{
+  flex:1;
+
+  height:46px;
+
+  border:none;
+
+  border-radius:16px;
+
+  background:
+    rgba(255,80,80,0.12);
+
+  color:#ff7070;
+
+  font-size:13px;
+  font-weight:900;
+
+  cursor:pointer;
+
+  transition:0.25s;
+}
+
+.inventory-delete-btn:hover{
+  background:
+    rgba(255,80,80,0.18);
+
+  transform:translateY(-2px);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width:900px){
+
+  .inventory-page{
+    padding:20px;
+  }
+
+  .inventory-header{
+    flex-direction:column;
+  }
+
+  .inventory-header h1{
+    font-size:42px;
+  }
+
+  .inventory-add-btn{
+    width:100%;
+  }
+
+  .inventory-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* =========================================================
+   ORDER BUTTON
+========================================================= */
+
+.inventory-order-btn{
+  width:100%;
+
+  height:48px;
+
+  border:none;
+
+  border-radius:16px;
+
+  margin-bottom:10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #25D366,
+      #128C7E
+    );
+
+  color:white;
+
+  font-size:13px;
+  font-weight:900;
+
+  cursor:pointer;
+
+  transition:0.25s;
+
+  box-shadow:
+    0 12px 30px rgba(37,211,102,0.18);
+}
+
+.inventory-order-btn:hover{
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 18px 36px rgba(37,211,102,0.24);
+}

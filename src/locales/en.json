@@ -1,0 +1,22 @@
+{
+  "dashboard": "Dashboard",
+  "employees": "Employees",
+  "products": "Products",
+  "sales": "Sales",
+  "inventory": "Inventory",
+  "profile": "Profile",
+  "today": "Today",
+  "week": "Week",
+  "month": "Month",
+  "year": "Year",
+  "checkOut": "Check Out",
+  "recentOrders": "Recent Orders",
+  "teamToday": "Team Today",
+  
+
+  "homeDashboard": "Home Dashboard",
+  "posRegister": "POS Register",
+  "posSystem": "POS System",
+  "poweredBy": "Powered by El Cordobés"
+  
+}

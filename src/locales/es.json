@@ -1,0 +1,20 @@
+{
+  "dashboard": "Panel",
+  "employees": "Empleados",
+  "products": "Productos",
+  "sales": "Ventas",
+  "inventory": "Inventario",
+  "profile": "Perfil",
+  "today": "Hoy",
+  "week": "Semana",
+  "month": "Mes",
+  "year": "Año",
+  "checkOut": "Cerrar Turno",
+  "recentOrders": "Órdenes Recientes",
+  "teamToday": "Equipo Hoy",
+
+  "homeDashboard": "Panel Principal",
+  "posRegister": "Caja POS",
+  "posSystem": "Sistema POS",
+  "poweredBy": "Desarrollado por El Cordobés"
+}
