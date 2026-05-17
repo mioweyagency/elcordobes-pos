@@ -5,6 +5,7 @@ import {
 
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import Receipt from "../components/Receipt";
 
 import "../styles/pos.css";
 
@@ -285,17 +286,11 @@ export default function POS({ goTo }) {
 
     setShowSuccess(true);
 
+    setTimeout(() => {
+      window.print();
+    }, 500);
+
     /* RESET */
-
-    setCart([]);
-
-    setCustomerName("");
-
-    setTableNumber("");
-
-    setPaymentMethod(
-      "Card"
-    );
 
     setShowCheckout(false);
 
@@ -602,8 +597,6 @@ export default function POS({ goTo }) {
 
               </select>
 
-              {/* CHECKOUT ITEMS */}
-
               <div className="checkout-summary">
 
                 {cart.map((item) => (
@@ -627,8 +620,6 @@ export default function POS({ goTo }) {
                 ))}
 
               </div>
-
-              {/* IVA */}
 
               <div className="receipt-totals">
 
@@ -658,8 +649,6 @@ export default function POS({ goTo }) {
 
               </div>
 
-              {/* TOTAL */}
-
               <div className="checkout-total">
 
                 <span>
@@ -671,8 +660,6 @@ export default function POS({ goTo }) {
                 </h3>
 
               </div>
-
-              {/* BUTTONS */}
 
               <div className="checkout-buttons">
 
@@ -716,65 +703,17 @@ export default function POS({ goTo }) {
 
             <div className="success-modal">
 
-              <div className="success-icon">
-
-                ✓
-
-              </div>
-
-              <p className="success-label">
-
-                EL CORDOBÉS POS
-
-              </p>
-
-              <h2>
-                Order Completed
-              </h2>
-
-              <div className="success-info">
-
-                <div className="success-row">
-
-                  <span>
-                    Order
-                  </span>
-
-                  <strong>
-                    #{successOrderNumber}
-                  </strong>
-
-                </div>
-
-                <div className="success-row">
-
-                  <span>
-                    Customer
-                  </span>
-
-                  <strong>
-                    {successCustomer}
-                  </strong>
-
-                </div>
-
-                <div className="success-row">
-
-                  <span>
-                    Payment
-                  </span>
-
-                  <strong>
-                    {successPayment}
-                  </strong>
-
-                </div>
-
-              </div>
-
-              <h1>
-                ${successTotal.toFixed(2)} MXN
-              </h1>
+              <Receipt
+                orderNumber={successOrderNumber}
+                customerName={successCustomer}
+                paymentMethod={successPayment}
+                tableNumber={tableNumber}
+                currentDate={currentDate}
+                cart={cart}
+                subtotal={subtotal}
+                iva={iva}
+                total={successTotal}
+              />
 
               <button
                 className="success-btn"
