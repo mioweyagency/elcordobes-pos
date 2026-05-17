@@ -1,3 +1,4 @@
+import "../styles/receipt.css";
 export default function Receipt({
 
   orderNumber,

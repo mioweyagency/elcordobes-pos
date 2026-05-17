@@ -206,3 +206,242 @@
   }
 
 }
+
+/* =========================================================
+   THERMAL PRINT MODE
+========================================================= */
+
+@media print {
+
+  body * {
+
+    visibility: hidden;
+
+  }
+
+  .success-modal,
+  .success-modal * {
+
+    visibility: visible;
+
+  }
+
+  .success-modal {
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+
+    background: white;
+
+    padding: 0;
+
+    margin: 0;
+
+    box-shadow: none;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+  }
+
+  /* =========================================================
+     RECEIPT THERMAL
+  ========================================================= */
+
+  .receipt-print {
+
+    width: 280px;
+
+    min-width: 280px;
+
+    max-width: 280px;
+
+    background: white;
+
+    color: black;
+
+    padding: 12px;
+
+    border-radius: 0;
+
+    font-size: 12px;
+
+    font-family: monospace;
+
+    box-shadow: none;
+
+  }
+
+  /* =========================================================
+     HEADER
+  ========================================================= */
+
+  .receipt-header {
+
+    text-align: center;
+
+    margin-bottom: 14px;
+
+  }
+
+  .receipt-header h1 {
+
+    font-size: 18px;
+
+    margin: 0;
+
+    font-weight: 700;
+
+  }
+
+  .receipt-header p {
+
+    margin-top: 4px;
+
+    font-size: 11px;
+
+    opacity: 0.7;
+
+  }
+
+  /* =========================================================
+     INFO
+  ========================================================= */
+
+  .receipt-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+  }
+
+  .receipt-line {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 11px;
+
+  }
+
+  /* =========================================================
+     DIVIDER
+  ========================================================= */
+
+  .receipt-divider {
+
+    border-top: 1px dashed #000;
+
+    margin: 12px 0;
+
+  }
+
+  /* =========================================================
+     ITEMS
+  ========================================================= */
+
+  .receipt-items {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+  }
+
+  .receipt-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    font-size: 11px;
+
+  }
+
+  /* =========================================================
+     TOTALS
+  ========================================================= */
+
+  .receipt-totals-print {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+  }
+
+  .total-line {
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    margin-top: 4px;
+
+  }
+
+  /* =========================================================
+     FOOTER
+  ========================================================= */
+
+  .receipt-footer {
+
+    margin-top: 18px;
+
+    text-align: center;
+
+  }
+
+  .receipt-footer p {
+
+    margin-bottom: 4px;
+
+    font-size: 11px;
+
+  }
+
+  .receipt-footer h3 {
+
+    margin: 0;
+
+    font-size: 13px;
+
+  }
+
+  /* =========================================================
+     BUTTONS HIDDEN
+  ========================================================= */
+
+  .success-btn,
+  .checkout-buttons,
+  .cancel-checkout-btn,
+  .complete-order-btn {
+
+    display: none !important;
+
+  }
+
+}
