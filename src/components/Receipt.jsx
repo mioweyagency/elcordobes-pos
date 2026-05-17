@@ -98,6 +98,16 @@ export default function Receipt({
 
       <div className="receipt-items">
 
+        {cart.length === 0 && (
+
+          <div className="receipt-empty">
+
+            No items
+
+          </div>
+
+        )}
+
         {cart.map((item) => (
 
           <div
@@ -105,7 +115,7 @@ export default function Receipt({
             className="receipt-item"
           >
 
-            <div>
+            <div className="receipt-item-left">
 
               {item.name}
 
@@ -113,13 +123,15 @@ export default function Receipt({
 
             </div>
 
-            <div>
+            <div className="receipt-item-right">
 
-              ${parseFloat(
-                item.price.replace(
-                  /[^0-9.]/g,
-                  ""
-                )
+              ${(
+                parseFloat(
+                  item.price.replace(
+                    /[^0-9.]/g,
+                    ""
+                  )
+                ) * item.quantity
               ).toFixed(2)}
 
             </div>
@@ -191,8 +203,12 @@ export default function Receipt({
         </p>
 
         <h3>
-          EL CORDOBÉS COFFEE
+          
         </h3>
+
+        <span>
+          
+        </span>
 
       </div>
 

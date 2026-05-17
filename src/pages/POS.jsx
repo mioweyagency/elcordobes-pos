@@ -17,12 +17,16 @@ import {
 
 export default function POS({ goTo }) {
 
-  /* PRODUCTS */
+  /* =========================================================
+     PRODUCTS
+  ========================================================= */
 
   const [products, setProducts] =
     useState([]);
 
-  /* LOAD PRODUCTS */
+  /* =========================================================
+     LOAD PRODUCTS
+  ========================================================= */
 
   useEffect(() => {
 
@@ -39,18 +43,24 @@ export default function POS({ goTo }) {
 
   }, []);
 
-  /* CART */
+  /* =========================================================
+     CART
+  ========================================================= */
 
   const [cart, setCart] =
     useState([]);
 
-  /* CHECKOUT */
+  /* =========================================================
+     CHECKOUT
+  ========================================================= */
 
   const [showCheckout,
     setShowCheckout] =
     useState(false);
 
-  /* SUCCESS */
+  /* =========================================================
+     SUCCESS
+  ========================================================= */
 
   const [showSuccess,
     setShowSuccess] =
@@ -72,10 +82,16 @@ export default function POS({ goTo }) {
     setSuccessCustomer] =
     useState("");
 
-  /* CUSTOMER */
+  /* =========================================================
+     CUSTOMER
+  ========================================================= */
 
   const [customerName,
     setCustomerName] =
+    useState("");
+
+  const [customerPhone,
+    setCustomerPhone] =
     useState("");
 
   const [tableNumber,
@@ -86,7 +102,9 @@ export default function POS({ goTo }) {
     setPaymentMethod] =
     useState("Card");
 
-  /* ADD TO CART */
+  /* =========================================================
+     ADD TO CART
+  ========================================================= */
 
   const addToCart =
     (product) => {
@@ -137,7 +155,9 @@ export default function POS({ goTo }) {
 
   };
 
-  /* REMOVE */
+  /* =========================================================
+     REMOVE
+  ========================================================= */
 
   const removeFromCart =
     (productId) => {
@@ -152,7 +172,9 @@ export default function POS({ goTo }) {
 
   };
 
-  /* TOTAL */
+  /* =========================================================
+     TOTAL
+  ========================================================= */
 
   const total = cart.reduce(
     (acc, item) => {
@@ -172,7 +194,9 @@ export default function POS({ goTo }) {
 
   }, 0);
 
-  /* IVA */
+  /* =========================================================
+     IVA
+  ========================================================= */
 
   const subtotal =
     total / 1.16;
@@ -180,7 +204,9 @@ export default function POS({ goTo }) {
   const iva =
     total - subtotal;
 
-  /* ORDER NUMBER */
+  /* =========================================================
+     ORDER NUMBER
+  ========================================================= */
 
   const orderNumber =
     Math.floor(
@@ -188,7 +214,9 @@ export default function POS({ goTo }) {
       Math.random() * 9000
     );
 
-  /* DATE */
+  /* =========================================================
+     DATE
+  ========================================================= */
 
   const currentDate =
     new Date().toLocaleString(
@@ -202,7 +230,9 @@ export default function POS({ goTo }) {
       }
     );
 
-  /* COMPLETE ORDER */
+  /* =========================================================
+     COMPLETE ORDER
+  ========================================================= */
 
   const completeOrder =
     () => {
@@ -232,6 +262,9 @@ export default function POS({ goTo }) {
       customerName:
         customerName ||
         "Guest",
+
+      customerPhone:
+        customerPhone || "",
 
       tableNumber:
         tableNumber || "-",
@@ -267,7 +300,41 @@ export default function POS({ goTo }) {
 
     );
 
-    /* SUCCESS */
+    /* =========================================================
+       WHATSAPP RECEIPT
+    ========================================================= */
+
+    const receiptMessage =
+
+`☕ EL CORDOBÉS POS
+
+Order #${orderNumber}
+
+Customer:
+${customerName || "Guest"}
+
+Table:
+${tableNumber || "-"}
+
+Payment:
+${paymentMethod}
+
+Total:
+$${total.toFixed(2)} MXN
+
+Gracias por visitar EL CORDOBÉS COFFEE ☕`;
+
+    if (customerPhone) {
+
+      window.location.href =
+
+      `https://wa.me/52${customerPhone}?text=${encodeURIComponent(receiptMessage)}`;
+
+    }
+
+    /* =========================================================
+       SUCCESS
+    ========================================================= */
 
     setSuccessTotal(total);
 
@@ -284,15 +351,9 @@ export default function POS({ goTo }) {
       "Guest"
     );
 
-    setShowSuccess(true);
-
-    setTimeout(() => {
-      window.print();
-    }, 500);
-
-    /* RESET */
-
     setShowCheckout(false);
+
+    setShowSuccess(true);
 
   };
 
@@ -314,7 +375,9 @@ export default function POS({ goTo }) {
 
         <div className="pos-layout">
 
-          {/* PRODUCTS */}
+          {/* =========================================================
+             PRODUCTS
+          ========================================================= */}
 
           <section className="pos-products">
 
@@ -404,7 +467,9 @@ export default function POS({ goTo }) {
 
           </section>
 
-          {/* CART */}
+          {/* =========================================================
+             CART
+          ========================================================= */}
 
           <section className="cart-panel">
 
@@ -517,7 +582,9 @@ export default function POS({ goTo }) {
 
         </div>
 
-        {/* CHECKOUT */}
+        {/* =========================================================
+           CHECKOUT
+        ========================================================= */}
 
         {showCheckout && (
 
@@ -550,6 +617,20 @@ export default function POS({ goTo }) {
 
                 onChange={(e) =>
                   setCustomerName(
+                    e.target.value
+                  )
+                }
+              />
+
+              <input
+                type="text"
+
+                placeholder="WhatsApp Number"
+
+                value={customerPhone}
+
+                onChange={(e) =>
+                  setCustomerPhone(
                     e.target.value
                   )
                 }
@@ -695,7 +776,9 @@ export default function POS({ goTo }) {
 
         )}
 
-        {/* SUCCESS */}
+        {/* =========================================================
+           SUCCESS
+        ========================================================= */}
 
         {showSuccess && (
 
@@ -740,4 +823,5 @@ export default function POS({ goTo }) {
     </div>
 
   );
+
 }
