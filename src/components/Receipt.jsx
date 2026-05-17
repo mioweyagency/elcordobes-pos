@@ -1,4 +1,5 @@
 import "../styles/receipt.css";
+
 export default function Receipt({
 
   orderNumber,
@@ -17,7 +18,9 @@ export default function Receipt({
 
     <div className="receipt-print">
 
-      {/* HEADER */}
+      {/* =========================================================
+         HEADER
+      ========================================================= */}
 
       <div className="receipt-header">
 
@@ -29,35 +32,21 @@ export default function Receipt({
           Premium Coffee System
         </p>
 
+        <h2>
+          ORDER #{orderNumber}
+        </h2>
+
+        <span>
+          {currentDate}
+        </span>
+
       </div>
 
-      {/* INFO */}
+      {/* =========================================================
+         INFO
+      ========================================================= */}
 
       <div className="receipt-info">
-
-        <div className="receipt-line">
-
-          <span>
-            Order
-          </span>
-
-          <strong>
-            #{orderNumber}
-          </strong>
-
-        </div>
-
-        <div className="receipt-line">
-
-          <span>
-            Date
-          </span>
-
-          <strong>
-            {currentDate}
-          </strong>
-
-        </div>
 
         <div className="receipt-line">
 
@@ -66,7 +55,7 @@ export default function Receipt({
           </span>
 
           <strong>
-            {customerName}
+            {customerName || "Guest"}
           </strong>
 
         </div>
@@ -78,7 +67,7 @@ export default function Receipt({
           </span>
 
           <strong>
-            {tableNumber}
+            {tableNumber || "-"}
           </strong>
 
         </div>
@@ -97,11 +86,15 @@ export default function Receipt({
 
       </div>
 
-      {/* DIVIDER */}
+      {/* =========================================================
+         DIVIDER
+      ========================================================= */}
 
       <div className="receipt-divider"></div>
 
-      {/* ITEMS */}
+      {/* =========================================================
+         ITEMS
+      ========================================================= */}
 
       <div className="receipt-items">
 
@@ -122,7 +115,12 @@ export default function Receipt({
 
             <div>
 
-              {item.price}
+              ${parseFloat(
+                item.price.replace(
+                  /[^0-9.]/g,
+                  ""
+                )
+              ).toFixed(2)}
 
             </div>
 
@@ -132,11 +130,15 @@ export default function Receipt({
 
       </div>
 
-      {/* DIVIDER */}
+      {/* =========================================================
+         DIVIDER
+      ========================================================= */}
 
       <div className="receipt-divider"></div>
 
-      {/* TOTALS */}
+      {/* =========================================================
+         TOTALS
+      ========================================================= */}
 
       <div className="receipt-totals-print">
 
@@ -167,7 +169,7 @@ export default function Receipt({
         <div className="receipt-line total-line">
 
           <span>
-            Total
+            TOTAL
           </span>
 
           <strong>
@@ -178,7 +180,9 @@ export default function Receipt({
 
       </div>
 
-      {/* FOOTER */}
+      {/* =========================================================
+         FOOTER
+      ========================================================= */}
 
       <div className="receipt-footer">
 
