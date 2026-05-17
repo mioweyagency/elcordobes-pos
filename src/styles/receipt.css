@@ -4,14 +4,21 @@
 
 .receipt-print {
 
+  width: 320px;
+
   background: white;
+
   color: black;
 
-  width: 100%;
+  padding: 20px;
 
-  padding: 30px;
+  border-radius: 0;
 
-  border-radius: 24px;
+  margin: 0 auto;
+
+  font-family: monospace;
+
+  box-shadow: none;
 
 }
 
@@ -23,7 +30,7 @@
 
   text-align: center;
 
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 
 }
 
@@ -31,7 +38,7 @@
 
   margin: 0;
 
-  font-size: 28px;
+  font-size: 22px;
 
   font-weight: 700;
 
@@ -39,11 +46,33 @@
 
 .receipt-header p {
 
-  margin-top: 8px;
+  margin-top: 6px;
+
+  margin-bottom: 10px;
 
   opacity: 0.7;
 
-  font-size: 14px;
+  font-size: 12px;
+
+}
+
+.receipt-header h2 {
+
+  margin: 0;
+
+  font-size: 18px;
+
+}
+
+.receipt-header span {
+
+  display: block;
+
+  margin-top: 8px;
+
+  font-size: 11px;
+
+  opacity: 0.7;
 
 }
 
@@ -57,12 +86,12 @@
 
   flex-direction: column;
 
-  gap: 12px;
+  gap: 10px;
 
 }
 
 /* =========================================================
-   LINE
+   LINES
 ========================================================= */
 
 .receipt-line {
@@ -75,6 +104,8 @@
 
   gap: 20px;
 
+  font-size: 12px;
+
 }
 
 /* =========================================================
@@ -83,9 +114,9 @@
 
 .receipt-divider {
 
-  border-top: 1px dashed #999;
+  border-top: 1px dashed #000;
 
-  margin: 24px 0;
+  margin: 18px 0;
 
 }
 
@@ -99,7 +130,7 @@
 
   flex-direction: column;
 
-  gap: 14px;
+  gap: 12px;
 
 }
 
@@ -109,9 +140,11 @@
 
   justify-content: space-between;
 
-  align-items: center;
+  align-items: flex-start;
 
   gap: 20px;
+
+  font-size: 12px;
 
 }
 
@@ -125,13 +158,13 @@
 
   flex-direction: column;
 
-  gap: 14px;
+  gap: 10px;
 
 }
 
 .total-line {
 
-  font-size: 22px;
+  font-size: 18px;
 
   font-weight: 700;
 
@@ -143,7 +176,7 @@
 
 .receipt-footer {
 
-  margin-top: 36px;
+  margin-top: 26px;
 
   text-align: center;
 
@@ -151,13 +184,51 @@
 
 .receipt-footer p {
 
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+
+  font-size: 11px;
 
 }
 
 .receipt-footer h3 {
 
   margin: 0;
+
+  font-size: 13px;
+
+}
+
+/* =========================================================
+   SUCCESS MODAL
+========================================================= */
+
+.success-overlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0,0,0,0.75);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  z-index: 9999;
+
+}
+
+.success-modal {
+
+  background: white;
+
+  border-radius: 0;
+
+  padding: 0;
+
+  box-shadow: none;
 
 }
 
@@ -185,260 +256,20 @@
     position: absolute;
 
     left: 0;
+
     top: 0;
 
     width: 100%;
 
-    background: white;
+    margin: 0;
 
     padding: 0;
 
-    margin: 0;
-
-    box-shadow: none;
+    background: white;
 
   }
 
   .success-btn {
-
-    display: none;
-
-  }
-
-}
-
-/* =========================================================
-   THERMAL PRINT MODE
-========================================================= */
-
-@media print {
-
-  body * {
-
-    visibility: hidden;
-
-  }
-
-  .success-modal,
-  .success-modal * {
-
-    visibility: visible;
-
-  }
-
-  .success-modal {
-
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    width: 100%;
-
-    background: white;
-
-    padding: 0;
-
-    margin: 0;
-
-    box-shadow: none;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: flex-start;
-
-  }
-
-  /* =========================================================
-     RECEIPT THERMAL
-  ========================================================= */
-
-  .receipt-print {
-
-    width: 280px;
-
-    min-width: 280px;
-
-    max-width: 280px;
-
-    background: white;
-
-    color: black;
-
-    padding: 12px;
-
-    border-radius: 0;
-
-    font-size: 12px;
-
-    font-family: monospace;
-
-    box-shadow: none;
-
-  }
-
-  /* =========================================================
-     HEADER
-  ========================================================= */
-
-  .receipt-header {
-
-    text-align: center;
-
-    margin-bottom: 14px;
-
-  }
-
-  .receipt-header h1 {
-
-    font-size: 18px;
-
-    margin: 0;
-
-    font-weight: 700;
-
-  }
-
-  .receipt-header p {
-
-    margin-top: 4px;
-
-    font-size: 11px;
-
-    opacity: 0.7;
-
-  }
-
-  /* =========================================================
-     INFO
-  ========================================================= */
-
-  .receipt-info {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 6px;
-
-  }
-
-  .receipt-line {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 12px;
-
-    font-size: 11px;
-
-  }
-
-  /* =========================================================
-     DIVIDER
-  ========================================================= */
-
-  .receipt-divider {
-
-    border-top: 1px dashed #000;
-
-    margin: 12px 0;
-
-  }
-
-  /* =========================================================
-     ITEMS
-  ========================================================= */
-
-  .receipt-items {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 8px;
-
-  }
-
-  .receipt-item {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: flex-start;
-
-    gap: 10px;
-
-    font-size: 11px;
-
-  }
-
-  /* =========================================================
-     TOTALS
-  ========================================================= */
-
-  .receipt-totals-print {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 8px;
-
-  }
-
-  .total-line {
-
-    font-size: 16px;
-
-    font-weight: 700;
-
-    margin-top: 4px;
-
-  }
-
-  /* =========================================================
-     FOOTER
-  ========================================================= */
-
-  .receipt-footer {
-
-    margin-top: 18px;
-
-    text-align: center;
-
-  }
-
-  .receipt-footer p {
-
-    margin-bottom: 4px;
-
-    font-size: 11px;
-
-  }
-
-  .receipt-footer h3 {
-
-    margin: 0;
-
-    font-size: 13px;
-
-  }
-
-  /* =========================================================
-     BUTTONS HIDDEN
-  ========================================================= */
-
-  .success-btn,
-  .checkout-buttons,
-  .cancel-checkout-btn,
-  .complete-order-btn {
 
     display: none !important;
 
