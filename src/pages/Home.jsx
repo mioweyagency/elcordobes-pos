@@ -16,6 +16,8 @@ import "../styles/home.css";
 
 export default function Home({ goTo }) {
 
+  console.log("preview deployment test");
+
   /* =========================================================
      TRANSLATION
   ========================================================= */
@@ -678,8 +680,6 @@ export default function Home({ goTo }) {
                 className="sale-card"
               >
 
-                {/* LEFT */}
-
                 <div
                   style={{
                     display:"flex",
@@ -713,8 +713,6 @@ export default function Home({ goTo }) {
                   </div>
 
                 </div>
-
-                {/* RIGHT */}
 
                 <div className="sale-right">
 
@@ -780,8 +778,6 @@ export default function Home({ goTo }) {
                 className="sale-card"
               >
 
-                {/* LEFT */}
-
                 <div>
 
                   <h3>
@@ -800,8 +796,6 @@ export default function Home({ goTo }) {
                   </p>
 
                 </div>
-
-                {/* RIGHT */}
 
                 <div className="sale-right">
 
