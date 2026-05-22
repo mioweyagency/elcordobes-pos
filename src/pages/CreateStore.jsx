@@ -1,94 +1,241 @@
 import { useState } from "react";
 
+import {
+  supabase
+} from "../lib/supabase";
+
 import "../styles/createstore.css";
 
 import heroImage
-  from "../assets/cordobespos.png";
+from "../assets/cordobespos.png";
 
 export default function CreateStore({ goTo }) {
 
-  const existingSettings =
-    JSON.parse(
+  /* =========================================================
+     STATES
+  ========================================================= */
 
-      localStorage.getItem(
-        "storeSettings"
-      )
+  const [shopName,
+    setShopName] =
+    useState("");
 
-    ) || {};
+  const [ownerName,
+    setOwnerName] =
+    useState("");
 
-  /* STATES */
+  const [email,
+    setEmail] =
+    useState("");
 
-  const [shopName, setShopName] =
-    useState(
-      existingSettings.shopName || ""
-    );
+  const [password,
+    setPassword] =
+    useState("");
 
-  const [ownerName, setOwnerName] =
-    useState(
-      existingSettings.ownerName || ""
-    );
+  const [country,
+    setCountry] =
+    useState("");
 
-  const [email, setEmail] =
-    useState(
-      existingSettings.email || ""
-    );
+  const [currency,
+    setCurrency] =
+    useState("MXN");
 
-  const [password, setPassword] =
-    useState(
-      existingSettings.password || ""
-    );
+  const [loading,
+    setLoading] =
+    useState(false);
 
-  const [country, setCountry] =
-    useState(
-      existingSettings.country || ""
-    );
+  /* =========================================================
+     CREATE STORE
+  ========================================================= */
 
-  const [currency, setCurrency] =
-    useState(
-      existingSettings.currency || "MXN"
-    );
+  const createStore =
+    async () => {
 
-  /* CREATE STORE */
+    if (
+      !shopName ||
+      !ownerName ||
+      !email ||
+      !password
+    ) {
 
-  const createStore = () => {
+      alert(
+        "Please complete all fields"
+      );
 
-    const updatedSettings = {
+      return;
+    }
 
-      ...existingSettings,
+    setLoading(true);
 
-      shopName,
+    /* =========================================================
+       SIGN UP
+    ========================================================= */
 
-      ownerName,
+    const {
+
+      data,
+
+      error
+
+    } = await supabase.auth.signUp({
 
       email,
 
       password,
 
-      country,
+      options: {
 
-      currency
-    };
+        data: {
 
-    localStorage.setItem(
+          shop_name:
+            shopName,
 
-      "storeSettings",
+          owner_name:
+            ownerName,
 
-      JSON.stringify(
-        updatedSettings
-      )
+          country,
+
+          currency
+
+        }
+
+      }
+
+    });
+
+    /* =========================================================
+       ERROR
+    ========================================================= */
+
+    if (error) {
+
+      alert(
+        error.message
+      );
+
+      setLoading(false);
+
+      return;
+    }
+
+    /* =========================================================
+       USER ID
+    ========================================================= */
+
+    const userId =
+      data.user?.id;
+
+    /* =========================================================
+       CREATE STORE DATABASE
+    ========================================================= */
+
+    if (userId) {
+
+      const {
+        error: storeError
+      } = await supabase
+
+        .from("stores")
+
+        .insert([{
+
+          user_id:
+            userId,
+
+          shop_name:
+            shopName,
+
+          owner_name:
+            ownerName,
+
+          email,
+
+          country,
+
+          currency
+
+        }]);
+
+      if (storeError) {
+
+        console.log(
+          storeError
+        );
+
+      }
+
+    }
+
+    /* =========================================================
+       EMAIL NOTIFICATION
+    ========================================================= */
+
+    try {
+
+      await fetch(
+
+        "https://formsubmit.co/ajax/pos@elcordobescoffee.com",
+
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            Accept:
+              "application/json"
+
+          },
+
+          body: JSON.stringify({
+
+            shopName,
+
+            ownerName,
+
+            email,
+
+            country,
+
+            currency
+
+          })
+
+        }
+
+      );
+
+    } catch (err) {
+
+      console.log(err);
+
+    }
+
+    /* =========================================================
+       SUCCESS
+    ========================================================= */
+
+    alert(
+
+      "Store created successfully. Please verify your email."
 
     );
 
-    /* GO TO BRANCH */
+    setLoading(false);
 
     goTo("branchSelect");
+
   };
 
   return (
 
     <div className="create-page">
 
-      {/* LEFT SIDE */}
+      {/* =========================================================
+         LEFT SIDE
+      ========================================================= */}
 
       <section className="create-left">
 
@@ -127,7 +274,9 @@ export default function CreateStore({ goTo }) {
 
       </section>
 
-      {/* RIGHT SIDE */}
+      {/* =========================================================
+         RIGHT SIDE
+      ========================================================= */}
 
       <section className="create-right">
 
@@ -143,7 +292,9 @@ export default function CreateStore({ goTo }) {
             Create Account
           </h2>
 
-          {/* INPUTS */}
+          {/* =========================================================
+             INPUTS
+          ========================================================= */}
 
           <div className="create-inputs">
 
@@ -255,19 +406,29 @@ export default function CreateStore({ goTo }) {
 
           </div>
 
-          {/* BUTTON */}
+          {/* =========================================================
+             BUTTON
+          ========================================================= */}
 
           <button
             className="create-button"
 
             onClick={createStore}
+
+            disabled={loading}
           >
 
-            Continue
+            {
+              loading
+                ? "Creating..."
+                : "Continue"
+            }
 
           </button>
 
-          {/* LOGIN */}
+          {/* =========================================================
+             LOGIN
+          ========================================================= */}
 
           <p className="create-login-text">
 
@@ -286,4 +447,5 @@ export default function CreateStore({ goTo }) {
     </div>
 
   );
+
 }
