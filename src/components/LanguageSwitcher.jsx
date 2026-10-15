@@ -1,95 +1,52 @@
-import {
-  useTranslation
-} from "react-i18next";
-
+import { useTranslation } from "react-i18next";
 import "../styles/languageswitcher.css";
 
 export default function LanguageSwitcher() {
+  const { i18n } = useTranslation();
 
-  /* =========================================================
-     TRANSLATION
-  ========================================================= */
+  const currentLanguage = (
+    i18n.resolvedLanguage ||
+    i18n.language ||
+    "es"
+  ).split("-")[0];
 
-  const { i18n } =
-    useTranslation();
+  const changeLanguage = async (language) => {
+    await i18n.changeLanguage(language);
 
-  /* =========================================================
-     ACTIVE LANGUAGE
-  ========================================================= */
-
-  const currentLanguage =
-    i18n.language;
-
-  /* =========================================================
-     CHANGE LANGUAGE
-  ========================================================= */
-
-  const changeLanguage =
-    (language) => {
-
-    i18n.changeLanguage(
-      language
-    );
-
-    localStorage.setItem(
-      "language",
-      language
-    );
+    try {
+      localStorage.setItem("language", language);
+    } catch {
+      /* El cambio de idioma sigue activo aunque no pueda persistirse. */
+    }
   };
 
   return (
-
-    <div className="language-switcher">
-
-      {/* =========================================================
-         ENGLISH
-      ========================================================= */}
-
+    <div className="language-switcher" aria-label="Idioma / Language">
       <button
-
+        type="button"
         className={
-
-          currentLanguage === "en"
-
-            ? "language-btn active"
-
-            : "language-btn"
-        }
-
-        onClick={() =>
-          changeLanguage("en")
-        }
-      >
-
-        English
-
-      </button>
-
-      {/* =========================================================
-         SPANISH
-      ========================================================= */}
-
-      <button
-
-        className={
-
           currentLanguage === "es"
-
             ? "language-btn active"
-
             : "language-btn"
         }
-
-        onClick={() =>
-          changeLanguage("es")
-        }
+        aria-pressed={currentLanguage === "es"}
+        onClick={() => changeLanguage("es")}
       >
-
         Español
-
       </button>
 
+      <button
+        type="button"
+        className={
+          currentLanguage === "en"
+            ? "language-btn active"
+            : "language-btn"
+        }
+        aria-pressed={currentLanguage === "en"}
+        onClick={() => changeLanguage("en")}
+      >
+        English
+      </button>
     </div>
-
   );
 }

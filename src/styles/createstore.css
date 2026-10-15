@@ -1,252 +1,521 @@
+/* ==========================================
+   CORI POS — CREATE STORE
+   COFFEE TECH STUDIO
+========================================== */
+
 .create-page {
+  --create-bg: #111713;
+  --create-surface: #1b251e;
+  --create-olive: #c5dda1;
+  --create-text: #f4f6ee;
+  --create-muted: #9cab97;
+  --create-border: rgba(197, 221, 161, 0.16);
+
   min-height: 100vh;
+  min-height: 100dvh;
 
   display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
 
-  grid-template-columns: 1.1fr 0.9fr;
+  background: var(--create-bg);
+  color: var(--create-text);
 
-  background: #0b0b0b;
+  font-family: Inter, Arial, sans-serif;
 }
 
-/* LEFT */
+.create-page * {
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   LEFT
+========================================== */
 
 .create-left {
   position: relative;
 
+  min-height: 100vh;
+  min-height: 100dvh;
+
   overflow: hidden;
+
+  background: #182019;
 }
 
 .create-bg {
+  position: absolute;
+  inset: 0;
+
   width: 100%;
   height: 100%;
 
   object-fit: cover;
+  object-position: center;
 }
-
-/* OVERLAY */
 
 .create-overlay {
   position: absolute;
-
   inset: 0;
 
   background:
     linear-gradient(
-      to top,
-      rgba(0,0,0,0.74),
-      rgba(0,0,0,0.24)
+      180deg,
+      rgba(9, 15, 10, 0.28) 0%,
+      rgba(9, 15, 10, 0.45) 42%,
+      rgba(9, 15, 10, 0.95) 100%
     );
 }
 
-/* CONTENT */
+/* ==========================================
+   LEFT CONTENT
+========================================== */
 
 .create-left-content {
   position: absolute;
 
-  bottom: 60px;
-  left: 60px;
+  inset: 0;
 
   z-index: 2;
 
-  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  padding: 65px;
+
+  max-width: 850px;
 }
 
-.create-left-content p {
-  color: #9acd32;
+.create-brand {
+  position: absolute;
 
-  font-size: 13px;
+  top: 38px;
+  left: 65px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.create-brand-icon {
+  width: 45px;
+  height: 45px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(197, 221, 161, 0.3);
+  border-radius: 13px;
+
+  background: rgba(197, 221, 161, 0.1);
+  color: var(--create-olive);
+
+  font-size: 26px;
+}
+
+.create-brand > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.create-brand strong {
+  font-size: 18px;
+}
+
+.create-brand small {
+  color: #b6c4af;
+  font-size: 10px;
+}
+
+.create-eyebrow {
+  margin: 0 0 20px;
+
+  color: var(--create-olive);
+
+  font-size: 11px;
   font-weight: 800;
-
-  letter-spacing: 2px;
-
-  margin-bottom: 18px;
+  letter-spacing: 2.5px;
 }
 
 .create-left-content h1 {
-  color: white;
+  margin: 0 0 25px;
 
-  font-size: 72px;
-  line-height: 0.95;
+  color: #fff;
 
-  margin-bottom: 22px;
-
-  font-weight: 900;
+  font-size: clamp(44px, 5vw, 76px);
+  font-weight: 850;
+  line-height: 1.04;
+  letter-spacing: -0.065em;
 }
 
-.create-left-content span {
-  color:
-    rgba(255,255,255,0.72);
-
-  font-size: 18px;
-
-  line-height: 1.6;
+.create-left-content h1 span {
+  color: var(--create-olive);
 }
 
-/* RIGHT */
+.create-description {
+  max-width: 440px;
+
+  margin: 0;
+
+  color: rgba(244, 246, 238, 0.78);
+
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.create-left-footer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-top: 45px;
+
+  color: rgba(244, 246, 238, 0.55);
+
+  font-size: 11px;
+}
+
+.create-left-footer span {
+  color: var(--create-olive);
+}
+
+/* ==========================================
+   RIGHT
+========================================== */
 
 .create-right {
   display: flex;
-
   align-items: center;
   justify-content: center;
 
-  padding: 40px;
+  min-width: 0;
+
+  padding: 50px 35px;
+
+  background:
+    radial-gradient(
+      ellipse at 70% 20%,
+      rgba(197, 221, 161, 0.055),
+      transparent 55%
+    ),
+    #111713;
 }
 
-/* CARD */
+/* ==========================================
+   CARD
+========================================== */
 
 .create-card {
   width: 100%;
-  max-width: 480px;
+  max-width: 490px;
+
+  padding: 38px;
+
+  border: 1px solid var(--create-border);
+  border-radius: 25px;
 
   background:
-    rgba(22,22,22,0.84);
-
-  border:
-    1px solid rgba(255,255,255,0.06);
-
-  backdrop-filter: blur(20px);
-
-  border-radius: 38px;
-
-  padding: 42px;
+    linear-gradient(
+      150deg,
+      rgba(37, 49, 39, 0.96),
+      rgba(24, 33, 27, 0.97)
+    );
 
   box-shadow:
-    0 30px 80px rgba(0,0,0,0.35);
+    0 25px 80px rgba(0, 0, 0, 0.25);
 }
 
-/* LABEL */
+/* ==========================================
+   HEADER
+========================================== */
 
-.create-label {
-  color: #9acd32;
-
-  font-size: 12px;
-  font-weight: 800;
-
-  letter-spacing: 2px;
-
-  margin-bottom: 14px;
-}
-
-/* TITLE */
-
-.create-card h2 {
-  color: white;
-
-  font-size: 44px;
-
-  line-height: 1;
-
-  margin-bottom: 34px;
-}
-
-/* INPUTS */
-
-.create-inputs {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 16px;
-
+.create-card-header {
   margin-bottom: 28px;
 }
 
-/* INPUT */
+.create-card-symbol {
+  width: 43px;
+  height: 43px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 23px;
+
+  border: 1px solid rgba(197, 221, 161, 0.2);
+  border-radius: 12px;
+
+  background: rgba(197, 221, 161, 0.08);
+  color: var(--create-olive);
+
+  font-size: 24px;
+}
+
+.create-label {
+  margin: 0 0 10px;
+
+  color: var(--create-olive);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.9px;
+}
+
+.create-card h2 {
+  margin: 0 0 10px;
+
+  color: var(--create-text);
+
+  font-size: clamp(29px, 3vw, 40px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.05em;
+}
+
+.create-subtitle {
+  margin: 0;
+
+  color: var(--create-muted);
+
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   FORM
+========================================== */
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-inputs {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.create-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  min-width: 0;
+}
+
+.create-field > span {
+  color: #b7c6af;
+
+  font-size: 11px;
+  font-weight: 700;
+}
 
 .create-inputs input,
 .create-inputs select {
   width: 100%;
+  min-height: 49px;
 
-  background: #1c1c1c;
+  padding: 12px 14px;
 
-  border:
-    1px solid rgba(255,255,255,0.05);
-
-  border-radius: 20px;
-
-  padding: 18px;
-
-  color: white;
-
-  font-size: 15px;
+  border: 1px solid rgba(197, 221, 161, 0.16);
+  border-radius: 11px;
 
   outline: none;
+
+  background: #111713;
+  color: #f4f6ee;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
-/* LOGO BUTTON */
+.create-inputs input::placeholder {
+  color: #788875;
+}
 
-.upload-logo {
-  width: fit-content;
+.create-inputs input:focus,
+.create-inputs select:focus {
+  border-color: var(--create-olive);
+  background: #151e17;
+}
 
-  background:
-    rgba(154,205,50,0.12);
-
-  border:
-    1px solid rgba(154,205,50,0.18);
-
-  color: #9acd32;
-
-  padding: 14px 18px;
-
-  border-radius: 18px;
-
-  font-size: 14px;
-  font-weight: 700;
-
+.create-inputs select {
   cursor: pointer;
 }
 
-/* LOGO */
-
-.logo-preview {
-  width: 120px;
-  height: 120px;
-
-  object-fit: cover;
-
-  border-radius: 28px;
-
-  border:
-    1px solid rgba(255,255,255,0.05);
+.create-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-/* BUTTON */
+/* ==========================================
+   MESSAGES
+========================================== */
+
+.create-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-bottom: 18px;
+  padding: 13px 14px;
+
+  border-radius: 11px;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.create-error {
+  border: 1px solid rgba(239, 112, 103, 0.35);
+
+  background: rgba(239, 112, 103, 0.08);
+  color: #ffaaa2;
+}
+
+.create-success {
+  border: 1px solid rgba(197, 221, 161, 0.3);
+
+  background: rgba(197, 221, 161, 0.08);
+  color: #d5edb8;
+}
+
+/* ==========================================
+   CREATE BUTTON
+========================================== */
 
 .create-button {
   width: 100%;
+  min-height: 53px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #9acd32,
-      #556b2f
-    );
-
-  color: #111111;
+  padding: 14px 18px;
 
   border: none;
+  border-radius: 12px;
 
-  border-radius: 22px;
+  background: #c5dda1;
+  color: #172016;
 
-  padding: 18px;
-
-  font-size: 16px;
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 800;
 
   cursor: pointer;
 
-  transition: 0.25s;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
 
-.create-button:hover {
+.create-button:hover:not(:disabled) {
+  background: #d8efb8;
   transform: translateY(-2px);
 }
 
-/* RESPONSIVE */
+.create-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
 
-@media (max-width: 980px) {
+/* ==========================================
+   LOGIN
+========================================== */
 
+.create-login-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  margin: 24px 0 0;
+
+  color: var(--create-muted);
+
+  font-size: 12px;
+}
+
+.create-login-text button {
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+  color: var(--create-olive);
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+/* ==========================================
+   SECURITY
+========================================== */
+
+.create-security {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 26px;
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(197, 221, 161, 0.1);
+
+  color: #7f927b;
+
+  font-size: 10px;
+  text-align: center;
+}
+
+.create-security span {
+  color: var(--create-olive);
+}
+
+/* ==========================================
+   IPAD
+========================================== */
+
+@media (max-width: 1100px) {
+  .create-page {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+
+  .create-left-content {
+    padding: 40px;
+  }
+
+  .create-brand {
+    left: 40px;
+  }
+
+  .create-right {
+    padding: 25px;
+  }
+
+  .create-card {
+    padding: 29px;
+  }
+}
+
+/* ==========================================
+   TABLET PORTRAIT
+========================================== */
+
+@media (max-width: 850px) {
   .create-page {
     grid-template-columns: 1fr;
   }
@@ -256,14 +525,53 @@
   }
 
   .create-right {
-    padding: 20px;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    padding: 25px;
   }
 
   .create-card {
-    padding: 32px;
+    max-width: 520px;
+  }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+  .create-right {
+    padding: 18px 12px;
+  }
+
+  .create-card {
+    padding: 25px 20px;
+    border-radius: 18px;
   }
 
   .create-card h2 {
-    font-size: 36px;
+    font-size: 31px;
+  }
+
+  .create-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .create-inputs {
+    gap: 14px;
+  }
+}
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .create-page *,
+  .create-page *::before,
+  .create-page *::after {
+    transition: none !important;
+    animation: none !important;
   }
 }

@@ -1,48 +1,48 @@
-export default function Topbar({
-  title,
-  subtitle
-}) {
 
-  /* STORE SETTINGS */
+function readSettings() {
+  try {
+    const settings = JSON.parse(
+      localStorage.getItem("storeSettings")
+    );
 
-  const storeSettings =
-    JSON.parse(
+    return settings &&
+      typeof settings === "object" &&
+      !Array.isArray(settings)
+      ? settings
+      : {};
+  } catch {
+    return {};
+  }
+}
 
-      localStorage.getItem(
-        "storeSettings"
-      )
-
-    ) || {};
+export default function Topbar({ title, subtitle }) {
+  const storeSettings = readSettings();
 
   return (
-
     <header className="topbar">
+      <div className="topbar-heading">
+        {subtitle && (
+          <p className="eyebrow">{subtitle}</p>
+        )}
 
-      {/* LEFT */}
-
-      <div>
-
-        <p className="eyebrow">
-          {subtitle}
-        </p>
-
-        <h1>
-          {title}
-        </h1>
-
+        <h1>{title}</h1>
       </div>
-
-      {/* RIGHT */}
 
       <div className="store-pill">
+        {storeSettings.logo && (
+          <img
+            src={storeSettings.logo}
+            alt=""
+            className="store-pill-logo"
+            width="38"
+            height="38"
+          />
+        )}
 
-        {storeSettings.shopName ||
-
-          "Coffee Shop"}
-
+        <span>
+          {storeSettings.shopName || "El Cordobés"}
+        </span>
       </div>
-
     </header>
-
   );
 }

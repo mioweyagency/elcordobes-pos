@@ -1,481 +1,546 @@
+
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Sidebar from "../components/Sidebar";
-import Topbar from "../components/Topbar";
-
-import "../styles/productDetail.css";
-
 import defaultImage from "../assets/hero.png";
 
-import {
-  saveProductDB
-} from "../utils/db";
+import "../styles/home.css";
+import "../styles/productDetail.css";
+
+import { saveProductDB } from "../utils/db";
+
+const CATEGORIES = [
+  "Coffee",
+  "Cold Drinks",
+  "Tea & Matcha",
+  "Bakery",
+  "Desserts",
+  "Food",
+  "Retail Beans",
+];
+
+const CATEGORY_ES = {
+  Coffee: "Café",
+  "Cold Drinks": "Bebidas frías",
+  "Tea & Matcha": "Té y matcha",
+  Bakery: "Panadería",
+  Desserts: "Postres",
+  Food: "Alimentos",
+  "Retail Beans": "Café en grano",
+};
+
+function readSelectedProduct() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("selectedProduct") || "null"
+    );
+  } catch {
+    return null;
+  }
+}
+
+function parsePrice(value) {
+  const clean = String(value ?? "")
+    .replace(/[^0-9.-]/g, "");
+
+  return clean === "" ? NaN : Number(clean);
+}
 
 export default function ProductDetail({ goTo }) {
+  const { i18n } = useTranslation();
 
-  /* MODE */
+  const es = (
+    i18n.resolvedLanguage ||
+    i18n.language ||
+    "es"
+  ).startsWith("es");
 
-  const mode =
-    localStorage.getItem(
-      "productMode"
-    );
+  const t = (spanish, english) =>
+    es ? spanish : english;
 
-  /* SELECTED PRODUCT */
+  const [initial] = useState(() => {
+    const selected = readSelectedProduct();
+    const requestedMode = localStorage.getItem("productMode");
 
-  const selectedProduct =
-    JSON.parse(
-      localStorage.getItem(
-        "selectedProduct"
-      )
-    );
+    return {
+      mode:
+        requestedMode === "edit" && selected
+          ? "edit"
+          : "new",
+      product: selected,
+    };
+  });
 
-  /* STATES */
+  const { mode, product: selectedProduct } = initial;
 
-  const [image, setImage] =
-    useState(
+  const [image, setImage] = useState(
+    mode === "edit"
+      ? selectedProduct.image || defaultImage
+      : defaultImage
+  );
 
-      mode === "edit" &&
-      selectedProduct
+  const [productName, setProductName] = useState(
+    mode === "edit" ? selectedProduct.name || "" : ""
+  );
 
-        ? selectedProduct.image
+  const [category, setCategory] = useState(
+    mode === "edit" ? selectedProduct.category || "" : ""
+  );
 
-        : defaultImage
+  const [price, setPrice] = useState(
+    mode === "edit" ? selectedProduct.price ?? "" : ""
+  );
 
-    );
+  const [inventory, setInventory] = useState(
+    mode === "edit" ? selectedProduct.inventory ?? "" : ""
+  );
 
-  const [productName,
-    setProductName] =
-    useState(
+  const [description, setDescription] = useState(
+    mode === "edit"
+      ? selectedProduct.description || ""
+      : ""
+  );
 
-      mode === "edit" &&
-      selectedProduct
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
 
-        ? selectedProduct.name
+  async function handleImageUpload(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-        : ""
+    if (!file.type.startsWith("image/")) {
+      setError(
+        t(
+          "Selecciona una imagen válida.",
+          "Select a valid image."
+        )
+      );
+      return;
+    }
 
-    );
+    setUploading(true);
+    setError("");
 
-  const [category,
-    setCategory] =
-    useState(
+    try {
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
 
-      mode === "edit" &&
-      selectedProduct
+      const img = await new Promise((resolve, reject) => {
+        const picture = new Image();
+        picture.onload = () => resolve(picture);
+        picture.onerror = reject;
+        picture.src = dataUrl;
+      });
 
-        ? selectedProduct.category
+      const MAX_SIZE = 1000;
+      const scale = Math.min(
+        1,
+        MAX_SIZE / Math.max(img.width, img.height)
+      );
 
-        : ""
+      const canvas = document.createElement("canvas");
 
-    );
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
 
-  const [price,
-    setPrice] =
-    useState(
+      const context = canvas.getContext("2d");
 
-      mode === "edit" &&
-      selectedProduct
+      if (!context) {
+        throw new Error("Canvas unavailable");
+      }
 
-        ? selectedProduct.price
+      context.fillStyle = "#ffffff";
+      context.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
 
-        : ""
+      context.drawImage(
+        img,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
 
-    );
+      setImage(canvas.toDataURL("image/jpeg", 0.78));
+    } catch (err) {
+      console.error("Image upload error:", err);
+      setError(
+        t(
+          "No se pudo procesar la imagen.",
+          "Could not process the image."
+        )
+      );
+    } finally {
+      setUploading(false);
+      event.target.value = "";
+    }
+  }
 
-  const [inventory,
-    setInventory] =
-    useState(
+  async function saveProduct(event) {
+    event.preventDefault();
 
-      mode === "edit" &&
-      selectedProduct
+    if (saving || uploading) return;
 
-        ? selectedProduct.inventory
+    const name = productName.trim();
+    const amount = parsePrice(price);
+    const stock = Number(inventory);
 
-        : ""
+    if (!name) {
+      setError(
+        t(
+          "Escribe el nombre del producto.",
+          "Enter the product name."
+        )
+      );
+      return;
+    }
 
-    );
+    if (!category) {
+      setError(
+        t(
+          "Selecciona una categoría.",
+          "Select a category."
+        )
+      );
+      return;
+    }
 
-  const [description,
-    setDescription] =
-    useState(
+    if (!Number.isFinite(amount) || amount < 0) {
+      setError(
+        t(
+          "Introduce un precio válido.",
+          "Enter a valid price."
+        )
+      );
+      return;
+    }
 
-      mode === "edit" &&
-      selectedProduct
+    if (
+      inventory !== "" &&
+      (!Number.isInteger(stock) || stock < 0)
+    ) {
+      setError(
+        t(
+          "El inventario debe ser un número entero positivo o cero.",
+          "Inventory must be a nonnegative whole number."
+        )
+      );
+      return;
+    }
 
-        ? selectedProduct.description
-
-        : ""
-
-    );
-
-  /* SAVE PRODUCT */
-
-  const saveProduct = async () => {
+    setSaving(true);
+    setError("");
 
     const newProduct = {
-
+      ...(mode === "edit" ? selectedProduct : {}),
       id:
-
-        mode === "edit" &&
-        selectedProduct
-
+        mode === "edit"
           ? selectedProduct.id
-
           : Date.now(),
-
       image,
-
-      name: productName,
-
+      name,
       category,
-
-      price,
-
-      inventory,
-
-      description
+      price: amount,
+      inventory: inventory === "" ? "" : stock,
+      description: description.trim(),
     };
 
-    await saveProductDB(
-      newProduct
-    );
+    try {
+      await saveProductDB(newProduct);
 
-    alert(
+      localStorage.removeItem("selectedProduct");
+      localStorage.removeItem("productMode");
 
-      mode === "new"
-
-        ? "Product Created"
-
-        : "Product Updated"
-
-    );
-
-    goTo("products");
-  };
+      goTo("products");
+    } catch (err) {
+      console.error("Error saving product:", err);
+      setError(
+        t(
+          "No se pudo guardar el producto.",
+          "Could not save the product."
+        )
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
+    <div className="cori-home cori-detail-page">
+      <Sidebar goTo={goTo} active="products" />
 
-    <div className="dashboard-layout">
+      <main className="ch-main product-detail-main">
+        {/* HEADER */}
 
-      <Sidebar
-        goTo={goTo}
-        active="products"
-      />
+        <header className="product-detail-heading">
+          <div>
+            <p className="detail-eyebrow">
+              CORI POS / COFFEE TECH STUDIO
+            </p>
 
-      <main className="dashboard-main">
+            <h1>
+              {mode === "new"
+                ? t("Nuevo producto", "New product")
+                : t("Editar producto", "Edit product")}
+            </h1>
 
-        <Topbar
-          title="Product Detail"
+            <p>
+              {t(
+                "Personaliza cada detalle de tu menú.",
+                "Customize every detail of your menu."
+              )}
+            </p>
+          </div>
 
-          subtitle={
-            mode === "new"
+          <button
+            type="button"
+            className="detail-header-back"
+            onClick={() => goTo("products")}
+          >
+            ← {t("Volver al catálogo", "Back to catalog")}
+          </button>
+        </header>
 
-              ? "ADD PRODUCT"
+        {/* FORM */}
 
-              : "EDIT PRODUCT"
-          }
-        />
+        <form
+          className="product-detail-container"
+          onSubmit={saveProduct}
+        >
+          {/* IMAGE PANEL */}
 
-        <section className="product-detail-container">
+          <section className="product-detail-left">
+            <div className="detail-panel-title">
+              <span className="detail-eyebrow">
+                {t("PRESENTACIÓN", "PRESENTATION")}
+              </span>
+              <h2>
+                {t("Imagen del producto", "Product image")}
+              </h2>
+              <p>
+                {t(
+                  "Una buena fotografía ayuda a identificar cada producto.",
+                  "A great photo makes every product easy to recognize."
+                )}
+              </p>
+            </div>
 
-          {/* LEFT SIDE */}
-
-          <div className="product-detail-left">
-
-            <img
-              src={image}
-              alt="Product"
-              className="detail-image"
-            />
-
-            {/* UPLOAD IMAGE */}
+            <div className="detail-image-frame">
+              <img
+                src={image || defaultImage}
+                alt={
+                  productName ||
+                  t("Producto", "Product")
+                }
+                className="detail-image"
+                onError={(e) => {
+                  e.currentTarget.src = defaultImage;
+                }}
+              />
+            </div>
 
             <label className="upload-image-btn">
+              <svg
+                viewBox="0 0 24 24"
+                width="19"
+                height="19"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                aria-hidden="true"
+              >
+                <path d="M12 16V3m0 0L7 8m5-5 5 5" />
+                <path d="M4 16v4h16v-4" />
+              </svg>
 
-              Upload Image
+              {uploading
+                ? t("Procesando...", "Processing...")
+                : t("Subir fotografía", "Upload photo")}
 
               <input
                 type="file"
-
                 accept="image/*"
-
-                hidden
-
-                onChange={(e) => {
-
-                  const file =
-                    e.target.files[0];
-
-                  if (!file) return;
-
-                  const reader =
-                    new FileReader();
-
-                  reader.onload =
-                    (event) => {
-
-                    const img =
-                      new Image();
-
-                    img.onload =
-                      () => {
-
-                      const canvas =
-                        document.createElement(
-                          "canvas"
-                        );
-
-                      const MAX_WIDTH =
-                        500;
-
-                      const scaleSize =
-                        MAX_WIDTH /
-                        img.width;
-
-                      canvas.width =
-                        MAX_WIDTH;
-
-                      canvas.height =
-                        img.height *
-                        scaleSize;
-
-                      const ctx =
-                        canvas.getContext(
-                          "2d"
-                        );
-
-                      ctx.drawImage(
-
-                        img,
-
-                        0,
-                        0,
-
-                        canvas.width,
-                        canvas.height
-                      );
-
-                      const compressed =
-                        canvas.toDataURL(
-
-                          "image/jpeg",
-
-                          0.6
-                        );
-
-                      setImage(
-                        compressed
-                      );
-
-                    };
-
-                    img.src =
-                      event.target.result;
-
-                  };
-
-                  reader.readAsDataURL(
-                    file
-                  );
-
-                }}
+                disabled={uploading || saving}
+                onChange={handleImageUpload}
               />
-
             </label>
 
-          </div>
+            <p className="detail-image-note">
+              JPG, PNG o WebP · {t(
+                "Se optimiza antes de guardar.",
+                "Optimized before saving."
+              )}
+            </p>
+          </section>
 
-          {/* RIGHT SIDE */}
+          {/* DETAILS PANEL */}
 
-          <div className="product-detail-right">
-
-            {/* PRODUCT NAME */}
+          <section className="product-detail-right">
+            <div className="detail-panel-title">
+              <span className="detail-eyebrow">
+                {t("INFORMACIÓN", "INFORMATION")}
+              </span>
+              <h2>
+                {t("Detalles del producto", "Product details")}
+              </h2>
+              <p>
+                {t(
+                  "Esta información aparecerá en tu catálogo y en Nueva Venta.",
+                  "This information appears in your catalog and New Sale."
+                )}
+              </p>
+            </div>
 
             <div className="detail-group">
-
-              <label>
-                Product Name
+              <label htmlFor="detail-name">
+                {t("Nombre del producto", "Product name")}
               </label>
 
               <input
+                id="detail-name"
                 type="text"
-
                 value={productName}
-
                 onChange={(e) =>
-                  setProductName(
-                    e.target.value
-                  )
+                  setProductName(e.target.value)
                 }
-
-                placeholder="Latte"
+                placeholder="Cappuccino"
+                required
               />
-
             </div>
 
-            {/* CATEGORY */}
-
             <div className="detail-group">
-
-              <label>
-                Category
+              <label htmlFor="detail-category">
+                {t("Categoría", "Category")}
               </label>
 
               <select
+                id="detail-category"
                 value={category}
-
                 onChange={(e) =>
-                  setCategory(
-                    e.target.value
-                  )
+                  setCategory(e.target.value)
                 }
+                required
               >
-
                 <option value="">
-                  Select Category
+                  {t(
+                    "Seleccionar categoría",
+                    "Select category"
+                  )}
                 </option>
 
-                <option>
-                  Coffee
-                </option>
-
-                <option>
-                  Cold Drinks
-                </option>
-
-                <option>
-                  Tea & Matcha
-                </option>
-
-                <option>
-                  Bakery
-                </option>
-
-                <option>
-                  Desserts
-                </option>
-
-                <option>
-                  Food
-                </option>
-
-                <option>
-                  Retail Beans
-                </option>
-
+                {CATEGORIES.map((item) => (
+                  <option key={item} value={item}>
+                    {es ? CATEGORY_ES[item] : item}
+                  </option>
+                ))}
               </select>
-
             </div>
 
-            {/* PRICE */}
+            <div className="detail-form-row">
+              <div className="detail-group">
+                <label htmlFor="detail-price">
+                  {t("Precio de venta", "Sale price")} · MXN
+                </label>
 
-            <div className="detail-group">
+                <div className="detail-input-prefix">
+                  <span>$</span>
 
-              <label>
-                Price
-              </label>
+                  <input
+                    id="detail-price"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    inputMode="decimal"
+                    value={price}
+                    onChange={(e) =>
+                      setPrice(e.target.value)
+                    }
+                    placeholder="55.00"
+                    required
+                  />
+                </div>
+              </div>
 
-              <input
-                type="text"
+              <div className="detail-group">
+                <label htmlFor="detail-inventory">
+                  {t("Inventario", "Inventory")}
+                </label>
 
-                value={price}
-
-                onChange={(e) =>
-                  setPrice(
-                    e.target.value
-                  )
-                }
-
-                placeholder="$120"
-              />
-
+                <input
+                  id="detail-inventory"
+                  type="number"
+                  min="0"
+                  step="1"
+                  inputMode="numeric"
+                  value={inventory}
+                  onChange={(e) =>
+                    setInventory(e.target.value)
+                  }
+                  placeholder="40"
+                />
+              </div>
             </div>
 
-            {/* INVENTORY */}
-
             <div className="detail-group">
-
-              <label>
-                Inventory
-              </label>
-
-              <input
-                type="text"
-
-                value={inventory}
-
-                onChange={(e) =>
-                  setInventory(
-                    e.target.value
-                  )
-                }
-
-                placeholder="40"
-              />
-
-            </div>
-
-            {/* DESCRIPTION */}
-
-            <div className="detail-group">
-
-              <label>
-                Description
+              <label htmlFor="detail-description">
+                {t("Descripción", "Description")}
               </label>
 
               <textarea
+                id="detail-description"
                 value={description}
-
                 onChange={(e) =>
-                  setDescription(
-                    e.target.value
-                  )
+                  setDescription(e.target.value)
                 }
-
-                placeholder="Smooth espresso with milk."
+                placeholder={t(
+                  "Ej. Espresso doble con leche vaporizada...",
+                  "E.g. Double espresso with steamed milk..."
+                )}
+                rows={5}
               />
-
             </div>
 
-            {/* BUTTONS */}
+            {error && (
+              <p className="detail-error" role="alert">
+                {error}
+              </p>
+            )}
 
             <div className="detail-buttons">
-
               <button
+                type="button"
                 className="back-btn"
-
-                onClick={() =>
-                  goTo("products")
-                }
+                onClick={() => goTo("products")}
+                disabled={saving}
               >
-
-                Back
-
+                {t("Cancelar", "Cancel")}
               </button>
 
               <button
+                type="submit"
                 className="save-btn"
-
-                onClick={saveProduct}
+                disabled={saving || uploading}
               >
-
-                {mode === "new"
-
-                  ? "Create Product"
-
-                  : "Save Changes"}
-
+                {saving
+                  ? t("Guardando...", "Saving...")
+                  : mode === "new"
+                  ? t("Crear producto →", "Create product →")
+                  : t("Guardar cambios →", "Save changes →")}
               </button>
-
             </div>
-
-          </div>
-
-        </section>
-
+          </section>
+        </form>
       </main>
-
     </div>
-
   );
 }

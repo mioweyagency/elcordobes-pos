@@ -1,690 +1,686 @@
-import { useState } from "react";
+
+import { useRef, useState } from "react";
+
+import CoriBrand from "../components/CoriBrand";
+import EditEmployeeModal from "../components/EditEmployeeModal";
+
+import heroImage from "../assets/cordobespos.png";
 
 import "../styles/employeeselect.css";
 
-import heroImage
-  from "../assets/cordobespos.png";
+/* ============================================
+   INITIALS FALLBACK
+============================================ */
 
-import EditEmployeeModal
-  from "../components/EditEmployeeModal";
+function Initials({ name = "" }) {
+  const initials = name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+
+  return (
+    <span className="employee-initials">
+      {initials || "✦"}
+    </span>
+  );
+}
+
+/* ============================================
+   EMPLOYEE SELECT
+============================================ */
 
 export default function EmployeeSelect({ goTo }) {
-
   /* EMPLOYEES */
 
-  const [employees, setEmployees] =
-    useState(
+  const [employees, setEmployees] = useState(() => {
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem("employees") || "[]"
+      );
 
-      JSON.parse(
-        localStorage.getItem(
-          "employees"
-        )
-      ) || []
+      return Array.isArray(saved) ? saved : [];
+    } catch {
+      return [];
+    }
+  });
 
-    );
+  /* SELECTION AND MODALS */
 
-  /* FORM */
+  const [selectedId, setSelectedId] = useState(null);
+  const [showAdd, setShowAdd] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
-  const [employeeName,
-    setEmployeeName] =
-    useState("");
+  /* NEW EMPLOYEE FORM */
 
-  const [employeeRole,
-    setEmployeeRole] =
-    useState("");
+  const [employeeName, setEmployeeName] = useState("");
+  const [employeeRole, setEmployeeRole] = useState("");
+  const [employeeShift, setEmployeeShift] = useState("");
+  const [employeePhoto, setEmployeePhoto] = useState("");
 
-  const [employeeShift,
-    setEmployeeShift] =
-    useState("");
+  /* CAMERA AND PHOTO LIBRARY */
 
-  const [employeePhoto,
-    setEmployeePhoto] =
-    useState("");
+  const cameraInputRef = useRef(null);
+  const libraryInputRef = useRef(null);
 
-  /* ACTIVE EMPLOYEE */
+  /* ACTIVE BRANCH */
 
-  const [selectedEmployee,
-    setSelectedEmployee] =
-    useState(null);
+  const activeBranch =
+    localStorage.getItem("activeBranch") || "Mi cafetería";
 
-  /* MODAL */
+  /* SELECTED EMPLOYEE */
 
-  const [showEditModal,
-    setShowEditModal] =
-    useState(false);
+  const selectedEmployee =
+    employees.find(
+      (employee) => employee.id === selectedId
+    ) || null;
 
-  /* DEFAULT AVATARS */
+  /* ============================================
+     SAVE EMPLOYEES
+  ============================================ */
 
-  const defaultAvatars = [
+  const saveEmployees = (updated) => {
+    setEmployees(updated);
 
-    "/avatars/avatar1.png",
-
-    "/avatars/avatar2.png",
-
-    "/avatars/avatar3.png",
-
-    "/avatars/avatar4.png"
-
-  ];
-
-  /* SELECT AVATAR */
-
-  const selectAvatar =
-    (avatar) => {
-
-    setEmployeePhoto(
-      avatar
+    localStorage.setItem(
+      "employees",
+      JSON.stringify(updated)
     );
   };
 
-  /* ADD EMPLOYEE */
+  /* ============================================
+     RESET FORM
+  ============================================ */
 
-  const addEmployee = () => {
-
-    if (
-      !employeeName ||
-      !employeeRole
-    ) return;
-
-    const updatedEmployees = [
-
-      ...employees,
-
-      {
-        id: Date.now(),
-
-        name: employeeName,
-
-        role: employeeRole,
-
-        shift: employeeShift,
-
-        photo:
-          employeePhoto ||
-
-          "/avatars/avatar1.png"
-      }
-
-    ];
-
-    /* SAVE */
-
-    setEmployees(
-      updatedEmployees
-    );
-
-    localStorage.setItem(
-
-      "employees",
-
-      JSON.stringify(
-        updatedEmployees
-      )
-
-    );
-
-    /* RESET */
-
+  const resetForm = () => {
     setEmployeeName("");
-
     setEmployeeRole("");
-
     setEmployeeShift("");
-
     setEmployeePhoto("");
   };
 
-  /* DELETE EMPLOYEE */
+  const closeAdd = () => {
+    setShowAdd(false);
+    resetForm();
+  };
 
-  const deleteEmployee =
-    (employeeId) => {
+  /* ============================================
+     ADD EMPLOYEE
+  ============================================ */
 
-    const updatedEmployees =
-      employees.filter(
+  const addEmployee = (event) => {
+    event.preventDefault();
 
-        (employee) =>
+    if (!employeeName.trim() || !employeeRole.trim()) {
+      return;
+    }
 
-          employee.id !==
-          employeeId
+    const newEmployee = {
+      id: Date.now(),
+      name: employeeName.trim(),
+      role: employeeRole.trim(),
+      shift: employeeShift.trim(),
+      photo: employeePhoto,
+    };
 
-      );
+    saveEmployees([...employees, newEmployee]);
 
-    setEmployees(
-      updatedEmployees
+    setSelectedId(newEmployee.id);
+
+    closeAdd();
+  };
+
+  /* ============================================
+     DELETE EMPLOYEE
+  ============================================ */
+
+  const deleteEmployee = (employee) => {
+    const confirmed = window.confirm(
+      `¿Eliminar a ${employee.name}?`
     );
 
-    localStorage.setItem(
+    if (!confirmed) return;
 
-      "employees",
-
-      JSON.stringify(
-        updatedEmployees
-      )
-
+    const updated = employees.filter(
+      (item) => item.id !== employee.id
     );
 
-    /* RESET */
+    saveEmployees(updated);
 
-    if (
-      selectedEmployee?.id ===
-      employeeId
-    ) {
-
-      setSelectedEmployee(
-        null
-      );
+    if (selectedId === employee.id) {
+      setSelectedId(null);
     }
   };
 
-  /* CHECK IN */
+  /* ============================================
+     PHOTO UPLOAD / IPAD CAMERA
+  ============================================ */
 
-  const checkInEmployee =
-    () => {
+  const handlePhoto = (event) => {
+    const file = event.target.files?.[0];
 
-    if (!selectedEmployee)
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Selecciona una imagen válida.");
+      event.target.value = "";
       return;
+    }
 
-    const activeEmployee = {
+    const reader = new FileReader();
 
-      ...selectedEmployee,
+    reader.onload = () => {
+      const image = new Image();
 
-      checkIn:
-        new Date()
-          .toLocaleTimeString(),
+      image.onload = () => {
+        const canvas = document.createElement("canvas");
 
-      checkInDate:
-        new Date()
-          .toLocaleDateString(),
+        /* CENTER SQUARE CROP */
 
-      active:true
+        const side = Math.min(
+          image.width,
+          image.height
+        );
+
+        const sx = (image.width - side) / 2;
+        const sy = (image.height - side) / 2;
+
+        canvas.width = 256;
+        canvas.height = 256;
+
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) return;
+
+        ctx.drawImage(
+          image,
+          sx,
+          sy,
+          side,
+          side,
+          0,
+          0,
+          256,
+          256
+        );
+
+        const compressedPhoto = canvas.toDataURL(
+          "image/jpeg",
+          0.7
+        );
+
+        setEmployeePhoto(compressedPhoto);
+      };
+
+      image.onerror = () => {
+        alert("No se pudo procesar la fotografía.");
+      };
+
+      image.src = reader.result;
     };
 
-    /* SAVE ACTIVE */
+    reader.onerror = () => {
+      alert("No se pudo leer la fotografía.");
+    };
+
+    reader.readAsDataURL(file);
+
+    event.target.value = "";
+  };
+
+  /* ============================================
+     EMPLOYEE CHECK IN
+  ============================================ */
+
+  const checkInEmployee = () => {
+    if (!selectedEmployee) return;
+
+    const now = new Date();
+
+    const activeEmployee = {
+      ...selectedEmployee,
+      checkIn: now.toLocaleTimeString(),
+      checkInDate: now.toLocaleDateString(),
+      active: true,
+    };
 
     localStorage.setItem(
-
       "activeEmployee",
-
-      JSON.stringify(
-        activeEmployee
-      )
-
+      JSON.stringify(activeEmployee)
     );
 
-    /* SAVE HISTORY */
+    let history = [];
 
-    const history =
+    try {
+      const saved = JSON.parse(
+        localStorage.getItem("employeeHistory") || "[]"
+      );
 
-      JSON.parse(
-
-        localStorage.getItem(
-          "employeeHistory"
-        )
-
-      ) || [];
+      history = Array.isArray(saved) ? saved : [];
+    } catch {
+      history = [];
+    }
 
     history.push({
-
       ...activeEmployee,
-
-      checkOut:null,
-
-      hoursWorked:null
+      checkOut: null,
+      hoursWorked: null,
     });
 
     localStorage.setItem(
-
       "employeeHistory",
-
-      JSON.stringify(
-        history
-      )
-
+      JSON.stringify(history)
     );
 
     goTo("home");
   };
 
+  /* ============================================
+     RENDER
+  ============================================ */
+
   return (
-
     <div className="employee-page">
+      {/* HEADER */}
 
-      {/* LEFT SIDE */}
+      <header className="employee-header">
+        <CoriBrand />
 
-      <section className="employee-left">
+        <button
+          type="button"
+          className="employee-back-button"
+          onClick={() => goTo("branchSelect")}
+        >
+          <span aria-hidden="true">←</span>
+          Sucursales
+        </button>
+      </header>
 
-        <img
-          src={heroImage}
+      {/* MAIN */}
 
-          alt="Coffee"
+      <main className="employee-main">
+        <section className="employee-layout">
+          {/* LEFT — COFFEE IMAGE */}
 
-          className="employee-bg"
-        />
-
-        <div className="employee-overlay" />
-
-        <div className="employee-left-content">
-
-          <p>
-            EL CORDOBÉS POS
-          </p>
-
-          <h1>
-
-            Team
-            <br />
-            Management
-
-          </h1>
-
-          <span>
-
-            Manage employees,
-            shifts and daily
-            café operations.
-
-          </span>
-
-        </div>
-
-      </section>
-
-      {/* RIGHT SIDE */}
-
-      <section className="employee-right">
-
-        <div className="employee-card">
-
-          <p className="employee-label">
-
-            STAFF MANAGEMENT
-
-          </p>
-
-          <h2>
-            Employees
-          </h2>
-
-          {/* FORM */}
-
-          <div className="employee-form">
-
-            {/* NAME */}
-
-            <input
-              type="text"
-
-              placeholder="Employee Name"
-
-              value={employeeName}
-
-              onChange={(e) =>
-                setEmployeeName(
-                  e.target.value
-                )
-              }
-
-              className="employee-input"
+          <div className="employee-visual">
+            <img
+              src={heroImage}
+              alt="Cafetería El Cordobés"
+              className="employee-bg"
             />
 
-            {/* ROLE */}
+            <div className="employee-overlay" />
 
-            <input
-              type="text"
+            <div className="employee-visual-copy">
+              <p>TU EQUIPO, TU CAFETERÍA</p>
 
-              placeholder="Role"
+              <h2>
+                Grandes cafés.
+                <br />
+                Grandes <span>personas.</span>
+              </h2>
 
-              value={employeeRole}
-
-              onChange={(e) =>
-                setEmployeeRole(
-                  e.target.value
-                )
-              }
-
-              className="employee-input"
-            />
-
-            {/* SHIFT */}
-
-            <input
-              type="text"
-
-              placeholder="Shift"
-
-              value={employeeShift}
-
-              onChange={(e) =>
-                setEmployeeShift(
-                  e.target.value
-                )
-              }
-
-              className="employee-input"
-            />
-
-            {/* AVATAR GRID */}
-
-            <div className="avatar-grid">
-
-              {defaultAvatars.map(
-                (avatar, index) => (
-
-                <button
-                  key={index}
-
-                  type="button"
-
-                  className={
-
-                    employeePhoto === avatar
-
-                      ? "avatar-btn active"
-
-                      : "avatar-btn"
-                  }
-
-                  onClick={() =>
-                    selectAvatar(
-                      avatar
-                    )
-                  }
-                >
-
-                  <img
-                    src={avatar}
-
-                    alt="Avatar"
-                  />
-
-                </button>
-
-              ))}
-
+              <small>
+                Buen café. Mejores historias.
+              </small>
             </div>
-
-            {/* CUSTOM PHOTO */}
-
-            <label className="upload-photo-btn">
-
-              Upload Custom Photo
-
-              <input
-                type="file"
-
-                hidden
-
-                accept="image/*"
-
-                onChange={(e) => {
-
-                  const file =
-                    e.target.files[0];
-
-                  if (!file)
-                    return;
-
-                  const reader =
-                    new FileReader();
-
-                  reader.onload =
-                    (event) => {
-
-                    const img =
-                      new Image();
-
-                    img.onload =
-                      () => {
-
-                      const canvas =
-                        document.createElement(
-                          "canvas"
-                        );
-
-                      const MAX_WIDTH =
-                        400;
-
-                      const scaleSize =
-                        MAX_WIDTH /
-                        img.width;
-
-                      canvas.width =
-                        MAX_WIDTH;
-
-                      canvas.height =
-                        img.height *
-                        scaleSize;
-
-                      const ctx =
-                        canvas.getContext(
-                          "2d"
-                        );
-
-                      ctx.drawImage(
-
-                        img,
-
-                        0,
-                        0,
-
-                        canvas.width,
-                        canvas.height
-                      );
-
-                      const compressed =
-                        canvas.toDataURL(
-
-                          "image/jpeg",
-
-                          0.6
-                        );
-
-                      setEmployeePhoto(
-                        compressed
-                      );
-
-                    };
-
-                    img.src =
-                      event.target.result;
-
-                  };
-
-                  reader.readAsDataURL(
-                    file
-                  );
-
-                }}
-              />
-
-            </label>
-
-            {/* PREVIEW */}
-
-            {employeePhoto && (
-
-              <img
-                src={employeePhoto}
-
-                alt="Preview"
-
-                className="employee-preview"
-              />
-
-            )}
-
-            {/* ADD */}
-
-            <button
-              className="add-employee-btn"
-
-              onClick={addEmployee}
-            >
-
-              Add Employee
-
-            </button>
-
           </div>
 
-          {/* EMPTY */}
+          {/* RIGHT — EMPLOYEE PANEL */}
 
-          {employees.length === 0 && (
+          <section className="employee-panel">
+            {/* PANEL HEADER */}
 
-            <div className="empty-employees">
+            <div className="employee-panel-header">
+              <div>
+                <p className="employee-label">
+                  CORI POS / EQUIPO
+                </p>
 
-              No employees yet
+                <h1>
+                  Elige tu <span>perfil.</span>
+                </h1>
 
-            </div>
-
-          )}
-
-          {/* EMPLOYEE LIST */}
-
-          <div className="employee-users">
-
-            {employees.map((employee) => (
-
-              <div
-                key={employee.id}
-
-                className="employee-user-wrapper"
-              >
-
-                {/* CARD */}
-
-                <button
-                  className={
-
-                    selectedEmployee?.id ===
-                    employee.id
-
-                      ? "employee-user active"
-
-                      : "employee-user"
-                  }
-
-                  onClick={() => {
-
-                    setSelectedEmployee(
-                      employee
-                    );
-                  }}
-                >
-
-                  <img
-                    src={employee.photo}
-
-                    alt={employee.name}
-                  />
-
-                  <div>
-
-                    <h3>
-                      {employee.name}
-                    </h3>
-
-                    <p>
-                      {employee.role}
-                    </p>
-
-                    <span>
-                      {employee.shift}
-                    </span>
-
-                  </div>
-
-                </button>
-
-                {/* EDIT */}
-
-                <button
-                  className="edit-employee-btn"
-
-                  onClick={() => {
-
-                    setSelectedEmployee(
-                      employee
-                    );
-
-                    setShowEditModal(
-                      true
-                    );
-                  }}
-                >
-
-                  Edit Employee
-
-                </button>
-
-                {/* DELETE */}
-
-                <button
-                  className="delete-employee-btn"
-
-                  onClick={() =>
-                    deleteEmployee(
-                      employee.id
-                    )
-                  }
-                >
-
-                  Remove Employee
-
-                </button>
-
+                <p className="employee-subtitle">
+                  {activeBranch} · Selecciona tu perfil
+                </p>
               </div>
 
-            ))}
+              <button
+                type="button"
+                className="employee-new-btn"
+                onClick={() => setShowAdd(true)}
+              >
+                + Nuevo
+              </button>
+            </div>
 
-          </div>
+            {/* EMPLOYEE LIST */}
 
-          {/* CHECK IN */}
+            <div className="employee-users">
+              {employees.length === 0 ? (
+                <div className="empty-employees">
+                  <span aria-hidden="true">✦</span>
 
-          <button
-            className="employee-button"
+                  <strong>
+                    Tu equipo comienza aquí.
+                  </strong>
 
-            disabled={!selectedEmployee}
+                  <p>
+                    Registra a tu primer empleado.
+                  </p>
 
-            onClick={
-              checkInEmployee
+                  <button
+                    type="button"
+                    onClick={() => setShowAdd(true)}
+                  >
+                    + Agregar empleado
+                  </button>
+                </div>
+              ) : (
+                employees.map((employee) => (
+                  <article
+                    key={employee.id}
+                    className={
+                      selectedId === employee.id
+                        ? "employee-profile selected"
+                        : "employee-profile"
+                    }
+                  >
+                    {/* SELECT PROFILE */}
+
+                    <button
+                      type="button"
+                      className="employee-profile-select"
+                      onClick={() =>
+                        setSelectedId(employee.id)
+                      }
+                      aria-pressed={
+                        selectedId === employee.id
+                      }
+                    >
+                      <div className="employee-profile-photo">
+                        {employee.photo ? (
+                          <img
+                            src={employee.photo}
+                            alt=""
+                          />
+                        ) : (
+                          <Initials name={employee.name} />
+                        )}
+                      </div>
+
+                      <div className="employee-profile-info">
+                        <strong>
+                          {employee.name}
+                        </strong>
+
+                        <span>
+                          {employee.role}
+                          {employee.shift
+                            ? ` · ${employee.shift}`
+                            : ""}
+                        </span>
+                      </div>
+
+                      <span
+                        className="employee-profile-check"
+                        aria-hidden="true"
+                      >
+                        {selectedId === employee.id
+                          ? "✓"
+                          : "○"}
+                      </span>
+                    </button>
+
+                    {/* EDIT / DELETE */}
+
+                    <div className="employee-profile-actions">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedId(employee.id);
+                          setShowEditModal(true);
+                        }}
+                      >
+                        Editar
+                      </button>
+
+                      <button
+                        type="button"
+                        className="employee-delete"
+                        onClick={() =>
+                          deleteEmployee(employee)
+                        }
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </article>
+                ))
+              )}
+            </div>
+
+            {/* CHECK IN */}
+
+            <div className="employee-checkin">
+              {selectedEmployee && (
+                <p>
+                  Listo para comenzar:{" "}
+                  <strong>
+                    {selectedEmployee.name}
+                  </strong>
+                </p>
+              )}
+
+              <button
+                type="button"
+                className="employee-button"
+                disabled={!selectedEmployee}
+                onClick={checkInEmployee}
+              >
+                Iniciar turno
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      {/* ADD EMPLOYEE MODAL */}
+
+      {showAdd && (
+        <div
+          className="employee-modal-backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              closeAdd();
             }
+          }}
+        >
+          <section
+            className="employee-add-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="employee-add-title"
           >
+            {/* MODAL HEADER */}
 
-            Check In
+            <div className="employee-modal-header">
+              <div>
+                <p className="employee-label">
+                  CORI POS / NUEVO PERFIL
+                </p>
 
-          </button>
+                <h2 id="employee-add-title">
+                  Nuevo empleado
+                </h2>
+              </div>
 
+              <button
+                type="button"
+                className="employee-modal-close"
+                onClick={closeAdd}
+                aria-label="Cerrar"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* FORM */}
+
+            <form
+              className="employee-form"
+              onSubmit={addEmployee}
+            >
+              <div className="employee-form-row">
+                <label>
+                  Nombre
+
+                  <input
+                    className="employee-input"
+                    value={employeeName}
+                    placeholder="Nombre completo"
+                    onChange={(event) =>
+                      setEmployeeName(event.target.value)
+                    }
+                    required
+                  />
+                </label>
+
+                <label>
+                  Puesto
+
+                  <input
+                    className="employee-input"
+                    value={employeeRole}
+                    placeholder="Barista"
+                    onChange={(event) =>
+                      setEmployeeRole(event.target.value)
+                    }
+                    required
+                  />
+                </label>
+              </div>
+
+              <label>
+                Turno
+
+                <input
+                  className="employee-input"
+                  value={employeeShift}
+                  placeholder="Matutino / Vespertino"
+                  onChange={(event) =>
+                    setEmployeeShift(event.target.value)
+                  }
+                />
+              </label>
+
+              {/* PHOTO SECTION */}
+
+              <div className="employee-photo-section">
+                <span>
+                  FOTOGRAFÍA DEL EMPLEADO
+                </span>
+
+                <div className="employee-photo-row">
+                  <div className="employee-photo-preview">
+                    {employeePhoto ? (
+                      <img
+                        src={employeePhoto}
+                        alt="Vista previa"
+                      />
+                    ) : (
+                      <Initials name={employeeName} />
+                    )}
+                  </div>
+
+                  <div className="employee-photo-actions">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        cameraInputRef.current?.click()
+                      }
+                    >
+                      <span aria-hidden="true">
+                        ◉
+                      </span>
+                      Tomar foto
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        libraryInputRef.current?.click()
+                      }
+                    >
+                      <span aria-hidden="true">
+                        ↑
+                      </span>
+                      Elegir foto
+                    </button>
+                  </div>
+                </div>
+
+                <small>
+                  Puedes usar la cámara del iPad
+                  o seleccionar una fotografía existente.
+                </small>
+
+                {/* CAMERA INPUT */}
+
+                <input
+                  ref={cameraInputRef}
+                  type="file"
+                  accept="image/*"
+                  capture="user"
+                  hidden
+                  onChange={handlePhoto}
+                />
+
+                {/* PHOTO LIBRARY INPUT */}
+
+                <input
+                  ref={libraryInputRef}
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handlePhoto}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="add-employee-btn"
+              >
+                Guardar empleado →
+              </button>
+            </form>
+          </section>
         </div>
-
-      </section>
-
-      {/* MODAL */}
-
-      {showEditModal && (
-
-        <EditEmployeeModal
-
-          employee={
-            selectedEmployee
-          }
-
-          employees={employees}
-
-          setEmployees={
-            setEmployees
-          }
-
-          onClose={() =>
-            setShowEditModal(
-              false
-            )
-          }
-        />
-
       )}
 
-    </div>
+      {/* EDIT EMPLOYEE MODAL */}
 
+      {showEditModal && selectedEmployee && (
+        <EditEmployeeModal
+          employee={selectedEmployee}
+          employees={employees}
+          setEmployees={(updated) => {
+            const next =
+              typeof updated === "function"
+                ? updated(employees)
+                : updated;
+
+            saveEmployees(next);
+          }}
+          onClose={() =>
+            setShowEditModal(false)
+          }
+        />
+      )}
+    </div>
   );
 }

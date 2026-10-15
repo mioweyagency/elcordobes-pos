@@ -1,451 +1,529 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-import {
-  supabase
-} from "../lib/supabase";
+import { supabase } from "../lib/supabase";
 
 import "../styles/createstore.css";
 
-import heroImage
-from "../assets/cordobespos.png";
+import heroImage from "../assets/cordobespos.png";
 
 export default function CreateStore({ goTo }) {
-
-  /* =========================================================
+  /* ==========================================
      STATES
-  ========================================================= */
+  ========================================== */
 
-  const [shopName,
-    setShopName] =
-    useState("");
+  const [shopName, setShopName] = useState("");
+  const [ownerName, setOwnerName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [ownerName,
-    setOwnerName] =
-    useState("");
+  const [country, setCountry] = useState("México");
+  const [currency, setCurrency] = useState("MXN");
 
-  const [email,
-    setEmail] =
-    useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const [password,
-    setPassword] =
-    useState("");
+  const submittingRef = useRef(false);
 
-  const [country,
-    setCountry] =
-    useState("");
+  /* ==========================================
+     VALIDATION
+  ========================================== */
 
-  const [currency,
-    setCurrency] =
-    useState("MXN");
-
-  const [loading,
-    setLoading] =
-    useState(false);
-
-  /* =========================================================
-     CREATE STORE
-  ========================================================= */
-
-  const createStore =
-    async () => {
-
+  const validateForm = () => {
     if (
-      !shopName ||
-      !ownerName ||
-      !email ||
+      !shopName.trim() ||
+      !ownerName.trim() ||
+      !email.trim() ||
       !password
     ) {
-
-      alert(
-        "Please complete all fields"
-      );
-
-      return;
+      return "Por favor, completa todos los campos obligatorios.";
     }
 
-    setLoading(true);
-
-    /* =========================================================
-       SIGN UP
-    ========================================================= */
-
-    const {
-
-      data,
-
-      error
-
-    } = await supabase.auth.signUp({
-
-      email,
-
-      password,
-
-      options: {
-
-        data: {
-
-          shop_name:
-            shopName,
-
-          owner_name:
-            ownerName,
-
-          country,
-
-          currency
-
-        }
-
-      }
-
-    });
-
-    /* =========================================================
-       ERROR
-    ========================================================= */
-
-    if (error) {
-
-      alert(
-        error.message
-      );
-
-      setLoading(false);
-
-      return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      return "Ingresa un correo electrónico válido.";
     }
 
-    /* =========================================================
-       USER ID
-    ========================================================= */
-
-    const userId =
-      data.user?.id;
-
-    /* =========================================================
-       CREATE STORE DATABASE
-    ========================================================= */
-
-    if (userId) {
-
-      const {
-        error: storeError
-      } = await supabase
-
-        .from("stores")
-
-        .insert([{
-
-          user_id:
-            userId,
-
-          shop_name:
-            shopName,
-
-          owner_name:
-            ownerName,
-
-          email,
-
-          country,
-
-          currency
-
-        }]);
-
-      if (storeError) {
-
-        console.log(
-          storeError
-        );
-
-      }
-
+    if (password.length < 6) {
+      return "La contraseña debe tener al menos 6 caracteres.";
     }
 
-    /* =========================================================
-       EMAIL NOTIFICATION
-    ========================================================= */
-
-    try {
-
-      await fetch(
-
-        "https://formsubmit.co/ajax/pos@elcordobescoffee.com",
-
-        {
-
-          method: "POST",
-
-          headers: {
-
-            "Content-Type":
-              "application/json",
-
-            Accept:
-              "application/json"
-
-          },
-
-          body: JSON.stringify({
-
-            shopName,
-
-            ownerName,
-
-            email,
-
-            country,
-
-            currency
-
-          })
-
-        }
-
-      );
-
-    } catch (err) {
-
-      console.log(err);
-
+    if (!country.trim()) {
+      return "Selecciona un país.";
     }
 
-    /* =========================================================
-       SUCCESS
-    ========================================================= */
-
-    alert(
-
-      "Store created successfully. Please verify your email."
-
-    );
-
-    setLoading(false);
-
-    goTo("branchSelect");
-
+    return "";
   };
 
+  /* ==========================================
+     CREATE STORE RECORD
+     Requires an authenticated session
+  ========================================== */
+
+  const saveStore = async (userId, values) => {
+    const { error: storeError } = await supabase
+      .from("stores")
+      .insert([
+        {
+          user_id: userId,
+          shop_name: values.shopName,
+          owner_name: values.ownerName,
+          email: values.email,
+          country: values.country,
+          currency: values.currency,
+        },
+      ]);
+
+    if (storeError) {
+      throw new Error(
+        `La cuenta fue creada, pero no se pudo registrar la cafetería: ${storeError.message}`
+      );
+    }
+  };
+
+  /* ==========================================
+     EMAIL NOTIFICATION
+     Non-critical operation
+  ========================================== */
+
+  const sendNotification = async (values) => {
+    try {
+      const response = await fetch(
+        "https://formsubmit.co/ajax/pos@elcordobescoffee.com",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            shopName: values.shopName,
+            ownerName: values.ownerName,
+            email: values.email,
+            country: values.country,
+            currency: values.currency,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        console.warn(
+          "No se pudo enviar la notificación de registro."
+        );
+      }
+    } catch (notificationError) {
+      console.warn(
+        "Notification error:",
+        notificationError
+      );
+    }
+  };
+
+  /* ==========================================
+     CREATE ACCOUNT
+  ========================================== */
+
+  const createStore = async (event) => {
+    event?.preventDefault();
+
+    if (submittingRef.current) return;
+
+    setError("");
+    setSuccess("");
+
+    const validationError = validateForm();
+
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    const values = {
+      shopName: shopName.trim(),
+      ownerName: ownerName.trim(),
+      email: email.trim().toLowerCase(),
+      country: country.trim(),
+      currency,
+    };
+
+    submittingRef.current = true;
+    setLoading(true);
+
+    try {
+      /* ==========================================
+         SIGN UP
+      ========================================== */
+
+      const { data, error: signUpError } =
+        await supabase.auth.signUp({
+          email: values.email,
+          password,
+          options: {
+            data: {
+              shop_name: values.shopName,
+              owner_name: values.ownerName,
+              country: values.country,
+              currency: values.currency,
+            },
+          },
+        });
+
+      if (signUpError) {
+        throw signUpError;
+      }
+
+      const userId = data?.user?.id;
+      const session = data?.session;
+
+      if (!userId) {
+        throw new Error(
+          "Supabase no devolvió un usuario válido."
+        );
+      }
+
+      /* ==========================================
+         EMAIL CONFIRMATION REQUIRED
+      ========================================== */
+
+      if (!session) {
+        setSuccess(
+          "Revisa tu correo electrónico para verificar tu cuenta. Después inicia sesión para completar el registro de tu cafetería."
+        );
+
+        await sendNotification(values);
+
+        return;
+      }
+
+      /* ==========================================
+         SAVE STORE
+      ========================================== */
+
+      await saveStore(userId, values);
+
+      /* ==========================================
+         NOTIFY
+      ========================================== */
+
+      await sendNotification(values);
+
+      /* ==========================================
+         SUCCESS
+      ========================================== */
+
+      setSuccess(
+        "¡Tu cafetería se registró correctamente!"
+      );
+
+      goTo?.("branchSelect");
+    } catch (createError) {
+      console.error(
+        "CreateStore error:",
+        createError
+      );
+
+      setError(
+        createError?.message ||
+          "Ocurrió un error al crear la cuenta."
+      );
+    } finally {
+      submittingRef.current = false;
+      setLoading(false);
+    }
+  };
+
+  /* ==========================================
+     RENDER
+  ========================================== */
+
   return (
-
     <div className="create-page">
-
-      {/* =========================================================
-         LEFT SIDE
-      ========================================================= */}
+      {/* ==========================================
+          LEFT SIDE
+      ========================================== */}
 
       <section className="create-left">
-
         <img
           src={heroImage}
-
-          alt="Coffee"
-
+          alt="El Cordobés Coffee"
           className="create-bg"
         />
 
         <div className="create-overlay" />
 
         <div className="create-left-content">
+          <div className="create-brand">
+            <span className="create-brand-icon">
+              ✦
+            </span>
 
-          <p>
-            EL CORDOBÉS POS
+            <div>
+              <strong>Cori POS</strong>
+              <small>by El Cordobés</small>
+            </div>
+          </div>
+
+          <p className="create-eyebrow">
+            COFFEE TECH STUDIO
           </p>
 
           <h1>
-
-            Coffee Shop
+            Tu cafetería.
             <br />
-            Operating System
-
+            <span>Tu universo.</span>
           </h1>
 
-          <span>
+          <p className="create-description">
+            Ventas, inventario y administración
+            en un solo lugar.
+            <br />
+            Comienza tu experiencia con Cori.
+          </p>
 
-            Minimal Apple-style POS
-            built for modern cafés.
-
-          </span>
-
+          <div className="create-left-footer">
+            <span>✦</span>
+            Diseñado para cafeterías modernas.
+          </div>
         </div>
-
       </section>
 
-      {/* =========================================================
-         RIGHT SIDE
-      ========================================================= */}
+      {/* ==========================================
+          RIGHT SIDE
+      ========================================== */}
 
       <section className="create-right">
-
         <div className="create-card">
+          {/* HEADER */}
 
-          <p className="create-label">
+          <div className="create-card-header">
+            <div className="create-card-symbol">
+              ✦
+            </div>
 
-            REGISTER STORE
+            <p className="create-label">
+              BIENVENIDO A CORI POS
+            </p>
 
-          </p>
+            <h2>
+              Crea tu cuenta
+            </h2>
 
-          <h2>
-            Create Account
-          </h2>
-
-          {/* =========================================================
-             INPUTS
-          ========================================================= */}
-
-          <div className="create-inputs">
-
-            {/* SHOP */}
-
-            <input
-              type="text"
-
-              placeholder="Coffee Shop Name"
-
-              value={shopName}
-
-              onChange={(e) =>
-                setShopName(
-                  e.target.value
-                )
-              }
-            />
-
-            {/* OWNER */}
-
-            <input
-              type="text"
-
-              placeholder="Owner Name"
-
-              value={ownerName}
-
-              onChange={(e) =>
-                setOwnerName(
-                  e.target.value
-                )
-              }
-            />
-
-            {/* EMAIL */}
-
-            <input
-              type="email"
-
-              placeholder="Business Email"
-
-              value={email}
-
-              onChange={(e) =>
-                setEmail(
-                  e.target.value
-                )
-              }
-            />
-
-            {/* PASSWORD */}
-
-            <input
-              type="password"
-
-              placeholder="Password"
-
-              value={password}
-
-              onChange={(e) =>
-                setPassword(
-                  e.target.value
-                )
-              }
-            />
-
-            {/* COUNTRY */}
-
-            <input
-              type="text"
-
-              placeholder="Country"
-
-              value={country}
-
-              onChange={(e) =>
-                setCountry(
-                  e.target.value
-                )
-              }
-            />
-
-            {/* CURRENCY */}
-
-            <select
-              value={currency}
-
-              onChange={(e) =>
-                setCurrency(
-                  e.target.value
-                )
-              }
-            >
-
-              <option>
-                MXN
-              </option>
-
-              <option>
-                USD
-              </option>
-
-              <option>
-                EUR
-              </option>
-
-            </select>
-
+            <p className="create-subtitle">
+              Registra tu cafetería y comienza
+              a administrar tu negocio.
+            </p>
           </div>
 
-          {/* =========================================================
-             BUTTON
-          ========================================================= */}
+          {/* FORM */}
 
-          <button
-            className="create-button"
-
-            onClick={createStore}
-
-            disabled={loading}
+          <form
+            className="create-form"
+            onSubmit={createStore}
           >
+            <div className="create-inputs">
+              {/* SHOP NAME */}
 
-            {
-              loading
-                ? "Creating..."
-                : "Continue"
-            }
+              <label className="create-field">
+                <span>
+                  Nombre de la cafetería *
+                </span>
 
-          </button>
+                <input
+                  type="text"
+                  placeholder="Ej. El Cordobés Café"
+                  value={shopName}
+                  maxLength={100}
+                  autoComplete="organization"
+                  required
+                  onChange={(event) =>
+                    setShopName(event.target.value)
+                  }
+                />
+              </label>
 
-          {/* =========================================================
-             LOGIN
-          ========================================================= */}
+              {/* OWNER NAME */}
+
+              <label className="create-field">
+                <span>
+                  Nombre del propietario *
+                </span>
+
+                <input
+                  type="text"
+                  placeholder="Nombre completo"
+                  value={ownerName}
+                  maxLength={100}
+                  autoComplete="name"
+                  required
+                  onChange={(event) =>
+                    setOwnerName(event.target.value)
+                  }
+                />
+              </label>
+
+              {/* EMAIL */}
+
+              <label className="create-field">
+                <span>
+                  Correo electrónico *
+                </span>
+
+                <input
+                  type="email"
+                  placeholder="correo@cafeteria.com"
+                  value={email}
+                  autoComplete="email"
+                  required
+                  onChange={(event) =>
+                    setEmail(event.target.value)
+                  }
+                />
+              </label>
+
+              {/* PASSWORD */}
+
+              <label className="create-field">
+                <span>
+                  Contraseña *
+                </span>
+
+                <input
+                  type="password"
+                  placeholder="Mínimo 6 caracteres"
+                  value={password}
+                  minLength={6}
+                  autoComplete="new-password"
+                  required
+                  onChange={(event) =>
+                    setPassword(event.target.value)
+                  }
+                />
+              </label>
+
+              {/* COUNTRY + CURRENCY */}
+
+              <div className="create-form-row">
+                <label className="create-field">
+                  <span>
+                    País
+                  </span>
+
+                  <select
+                    value={country}
+                    onChange={(event) => {
+                      const selectedCountry =
+                        event.target.value;
+
+                      setCountry(selectedCountry);
+
+                      if (selectedCountry === "México") {
+                        setCurrency("MXN");
+                      } else if (
+                        selectedCountry === "Estados Unidos"
+                      ) {
+                        setCurrency("USD");
+                      }
+                    }}
+                  >
+                    <option value="México">
+                      México
+                    </option>
+
+                    <option value="Estados Unidos">
+                      Estados Unidos
+                    </option>
+
+                    <option value="Otro">
+                      Otro
+                    </option>
+                  </select>
+                </label>
+
+                <label className="create-field">
+                  <span>
+                    Moneda
+                  </span>
+
+                  <select
+                    value={currency}
+                    onChange={(event) =>
+                      setCurrency(event.target.value)
+                    }
+                  >
+                    <option value="MXN">
+                      MXN
+                    </option>
+
+                    <option value="USD">
+                      USD
+                    </option>
+
+                    <option value="EUR">
+                      EUR
+                    </option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            {/* ERROR */}
+
+            {error && (
+              <div
+                className="create-message create-error"
+                role="alert"
+              >
+                <span>⚠</span>
+                {error}
+              </div>
+            )}
+
+            {/* SUCCESS */}
+
+            {success && (
+              <div
+                className="create-message create-success"
+                role="status"
+              >
+                <span>✓</span>
+                {success}
+              </div>
+            )}
+
+            {/* SUBMIT */}
+
+            <button
+              type="submit"
+              className="create-button"
+              disabled={loading || Boolean(success)}
+            >
+              {loading
+                ? "Creando cuenta..."
+                : success
+                ? "Revisa tu correo"
+                : "Crear mi cafetería →"}
+            </button>
+          </form>
+
+          {/* LOGIN */}
 
           <p className="create-login-text">
+            ¿Ya tienes una cuenta?
 
-            Already have an account?
-
-            <span>
-              Sign In
-            </span>
-
+            <button
+              type="button"
+              onClick={() => goTo?.("signIn")}
+            >
+              Iniciar sesión →
+            </button>
           </p>
 
+          <div className="create-security">
+            <span>✦</span>
+            Tu información está protegida
+            mediante autenticación segura.
+          </div>
         </div>
-
       </section>
-
     </div>
-
   );
-
 }

@@ -1,0 +1,327 @@
+
+/* ==============================================
+   CORI POS — COFFEE TECH STUDIO
+   SHARED SIDEBAR + TOPBAR OVERRIDES
+============================================== */
+
+.cori-app {
+  --cori-olive: #b6d18b;
+  --cori-cream: #111713;
+  --cori-paper: #1b251e;
+  --cori-ink: #f4f6ee;
+  --cori-muted: #9aaa98;
+  --cori-copper: #b6d18b;
+  --cori-border: rgba(182, 209, 139, .16);
+
+  background: #111713;
+  color: #f4f6ee;
+}
+
+/* SIDEBAR */
+
+.cori-app .cori-studio-sidebar {
+  background:
+    linear-gradient(
+      180deg,
+      #1a291d 0%,
+      #111b14 60%,
+      #101711 100%
+    );
+
+  border-right: 1px solid rgba(182, 209, 139, .12);
+
+  padding: 34px 20px 24px;
+  color: #f4f6ee;
+}
+
+/* BRAND */
+
+.cori-app .cori-studio-sidebar .sidebar-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+  padding: 12px 0 30px;
+  margin-bottom: 26px;
+
+  border-bottom: 1px solid rgba(182, 209, 139, .12);
+  text-align: center;
+}
+
+.cori-app .cori-studio-symbol {
+  width: 56px;
+  height: 56px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 17px;
+  border: 1px solid rgba(182, 209, 139, .2);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(182, 209, 139, .13),
+      rgba(182, 209, 139, .025)
+    );
+
+  color: #c5dda1;
+  font-size: 27px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .1);
+}
+
+.cori-app .cori-studio-sidebar .sidebar-logo h3 {
+  font-family: Inter, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -.9px;
+
+  color: #f4f6ee;
+}
+
+.cori-app .cori-studio-sidebar .sidebar-logo p {
+  margin-top: 7px;
+
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+
+  color: #8fa387;
+}
+
+/* NAVIGATION */
+
+.cori-app .cori-studio-sidebar .sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cori-app .cori-studio-sidebar .nav-item {
+  width: 100%;
+  min-height: 54px;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 14px 17px;
+
+  border: 1px solid transparent;
+  border-radius: 13px;
+
+  background: transparent;
+  color: #a9b8a3;
+
+  font-family: Inter, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  font-size: 13px;
+  font-weight: 550;
+  text-align: left;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease;
+}
+
+.cori-app .cori-studio-sidebar .nav-item svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: #a9c08f;
+}
+
+.cori-app .cori-studio-sidebar .nav-item.active {
+  background: rgba(182, 209, 139, .13);
+  border-color: rgba(182, 209, 139, .16);
+  color: #e0f0c9;
+}
+
+.cori-app .cori-studio-sidebar .nav-item.active svg {
+  color: #c5e3a2;
+}
+
+@media (hover: hover) {
+  .cori-app .cori-studio-sidebar .nav-item:hover {
+    background: rgba(182, 209, 139, .08);
+    color: #f4f6ee;
+  }
+}
+
+/* LANGUAGE */
+
+.cori-app .cori-studio-sidebar .sidebar-language {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.cori-app .cori-studio-sidebar .language-switcher {
+  display: flex;
+  gap: 8px;
+}
+
+.cori-app .cori-studio-sidebar .language-btn {
+  flex: 1;
+  min-height: 45px;
+
+  border: 1px solid rgba(182, 209, 139, .16);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, .025);
+  color: #a9b8a3;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.cori-app .cori-studio-sidebar .language-btn.active {
+  background: rgba(182, 209, 139, .15);
+  border-color: rgba(182, 209, 139, .35);
+  color: #d8efb9;
+}
+
+/* FOOTER */
+
+.cori-app .cori-studio-sidebar .sidebar-caption {
+  margin: 24px 0 0;
+  padding-top: 22px;
+
+  border-top: 1px solid rgba(182, 209, 139, .12);
+
+  color: #779174;
+  text-align: center;
+
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 3px;
+  line-height: 2.2;
+}
+
+/* TOPBAR */
+
+.cori-app .topbar h1 {
+  font-family: Inter, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  font-size: clamp(30px, 3vw, 42px);
+  font-weight: 800;
+  letter-spacing: -1.3px;
+
+  color: #f4f6ee;
+}
+
+.cori-app .topbar .eyebrow {
+  color: #a8c09a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.cori-app .store-pill {
+  min-height: 46px;
+
+  border: 1px solid rgba(182, 209, 139, .22);
+  border-radius: 13px;
+
+  background: rgba(182, 209, 139, .045);
+  color: #d8e9c8;
+
+  font-family: Inter, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* IPAD */
+
+@media (max-width: 1200px) {
+  .cori-app .cori-studio-sidebar {
+    padding-inline: 12px;
+  }
+
+  .cori-app .cori-studio-sidebar .nav-item {
+    padding-inline: 13px;
+    gap: 10px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+  .cori-app .cori-studio-sidebar {
+    height: auto;
+    padding: 14px;
+  }
+
+  .cori-app .cori-studio-sidebar .sidebar-logo {
+    flex-direction: row;
+    justify-content: center;
+    padding: 0 0 14px;
+    margin-bottom: 12px;
+  }
+
+  .cori-app .cori-studio-symbol {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+  }
+
+  .cori-app .cori-studio-sidebar .sidebar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .cori-app .cori-studio-sidebar .nav-item {
+    width: auto;
+    flex-shrink: 0;
+    min-height: 46px;
+    white-space: nowrap;
+  }
+
+  .cori-app .cori-studio-sidebar .sidebar-caption {
+    display: none;
+  }
+
+/* CORI POS — OFFICIAL BRAND */
+
+.cori-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cori-brand-icon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.cori-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cori-brand-text strong {
+  color: #f4f6ee;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.cori-brand-text small {
+  color: #a3afa1;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+  
+}

@@ -1,643 +1,999 @@
-/* =========================================================
-   EMPLOYEE PAGE
-========================================================= */
 
-.employee-page{
-  min-height:100vh;
+/* ============================================
+   CORI POS — COFFEE TECH STUDIO
+   EMPLOYEE SELECT / IPAD FIRST
+============================================ */
 
-  display:grid;
+/* ============================================
+   01. BASE
+============================================ */
+
+.employee-page {
+  --ep-bg: #111713;
+  --ep-panel: #1b251e;
+  --ep-olive: #b6d18b;
+  --ep-text: #f4f6ee;
+  --ep-muted: #a3afa1;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow-x: hidden;
+
+  background:
+    radial-gradient(
+      ellipse at 65% 45%,
+      rgba(110, 145, 84, .12),
+      transparent 55%
+    ),
+    #111713;
+
+  color: var(--ep-text);
+  font-family: Inter, Arial, sans-serif;
+}
+
+.employee-page *,
+.employee-page *::before,
+.employee-page *::after {
+  box-sizing: border-box;
+}
+
+.employee-page button,
+.employee-page input {
+  font: inherit;
+}
+
+.employee-page button {
+  cursor: pointer;
+}
+
+.employee-page button:focus-visible,
+.employee-page input:focus-visible {
+  outline: 2px solid #b6d18b;
+  outline-offset: 3px;
+}
+
+/* ============================================
+   02. HEADER
+============================================ */
+
+.employee-header {
+  width: 100%;
+  max-width: 1450px;
+  margin: 0 auto;
+
+  padding: 17px 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* ============================================
+   03. CORI BRAND — OFFICIAL LOGO
+
+   CHANGE LOGO SIZE HERE
+============================================ */
+
+.employee-header .cori-brand {
+  --cori-logo-size: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
+}
+
+.employee-header .cori-brand-icon {
+  display: block;
+
+  width: var(--cori-logo-size);
+  height: var(--cori-logo-size);
+
+  min-width: var(--cori-logo-size);
+  min-height: var(--cori-logo-size);
+
+  max-width: var(--cori-logo-size);
+  max-height: var(--cori-logo-size);
+
+  flex: 0 0 var(--cori-logo-size);
+
+  object-fit: contain;
+  border-radius: 9px;
+}
+
+.employee-header .cori-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.employee-header .cori-brand-text strong {
+  color: #f4f6ee;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  line-height: 1.15;
+}
+
+.employee-header .cori-brand-text small {
+  color: #a3afa1;
+  font-size: 10px;
+  letter-spacing: .5px;
+}
+
+/* ============================================
+   04. BACK BUTTON
+============================================ */
+
+.employee-back-button {
+  min-height: 43px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 0 16px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(182, 209, 139, .2);
+
+  background: rgba(182, 209, 139, .06);
+  color: #c5dda1;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  transition:
+    background .25s ease,
+    transform .25s ease;
+}
+
+.employee-back-button:hover {
+  background: rgba(182, 209, 139, .14);
+  transform: translateX(-2px);
+}
+
+/* ============================================
+   05. MAIN
+============================================ */
+
+.employee-main {
+  flex: 1;
+
+  width: 100%;
+  max-width: 1450px;
+  min-height: 0;
+
+  margin: 0 auto;
+  padding: 10px 36px 18px;
+
+  display: flex;
+}
+
+.employee-layout {
+  width: 100%;
+  min-height: 0;
+
+  display: grid;
 
   grid-template-columns:
-    1.1fr 0.9fr;
+    minmax(0, 1fr)
+    minmax(0, 1fr);
 
-  background:#0a0a0a;
+  gap: 12px;
+
+  border-radius: 22px;
+  background: rgba(23, 33, 26, .6);
+  border: 1px solid rgba(182, 209, 139, .12);
+
+  padding: 11px;
 }
 
-/* =========================================================
-   LEFT SIDE
-========================================================= */
+/* ============================================
+   06. LEFT IMAGE
+============================================ */
 
-.employee-left{
-  position:relative;
+.employee-visual {
+  position: relative;
 
-  overflow:hidden;
+  min-height: 420px;
+  overflow: hidden;
+
+  border-radius: 16px;
+  background: #223026;
 }
 
-.employee-bg{
-  width:100%;
-  height:100%;
+.employee-bg {
+  position: absolute;
+  inset: 0;
 
-  object-fit:cover;
+  width: 100%;
+  height: 100%;
 
-  transform:scale(1.02);
+  object-fit: cover;
+  object-position: center;
 }
 
-/* OVERLAY */
+.employee-overlay {
+  position: absolute;
+  inset: 0;
 
-.employee-overlay{
-  position:absolute;
-
-  inset:0;
-
-  background:
-    linear-gradient(
-      to top,
-      rgba(0,0,0,0.78),
-      rgba(0,0,0,0.18)
-    );
+  background: linear-gradient(
+    to top,
+    rgba(8, 19, 11, .93),
+    rgba(8, 19, 11, .04) 62%
+  );
 }
 
-/* CONTENT */
+.employee-visual-copy {
+  position: absolute;
 
-.employee-left-content{
-  position:absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
-  bottom:70px;
-  left:70px;
-
-  z-index:2;
-
-  max-width:520px;
+  padding: 27px;
 }
 
-.employee-left-content p{
-  color:#9acd32;
+.employee-visual-copy p {
+  margin: 0;
 
-  font-size:12px;
-  font-weight:800;
-
-  letter-spacing:3px;
-
-  margin-bottom:18px;
+  color: #b6d18b;
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  font-weight: 800;
 }
 
-.employee-left-content h1{
-  color:white;
+.employee-visual-copy h2 {
+  margin: 12px 0;
 
-  font-size:76px;
+  font-size: clamp(26px, 3vw, 43px);
+  line-height: 1.12;
+  letter-spacing: -.05em;
 
-  line-height:0.95;
-
-  margin-bottom:24px;
-
-  font-weight:900;
+  color: #ffffff;
 }
 
-.employee-left-content span{
-  color:
-    rgba(255,255,255,0.72);
-
-  font-size:18px;
-
-  line-height:1.7;
+.employee-visual-copy h2 span {
+  color: #b6d18b;
 }
 
-/* =========================================================
-   RIGHT SIDE
-========================================================= */
-
-.employee-right{
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  padding:42px;
+.employee-visual-copy small {
+  color: #b2c1ad;
+  font-size: 11px;
 }
 
-/* =========================================================
-   CARD
-========================================================= */
+/* ============================================
+   07. RIGHT PANEL
+============================================ */
 
-.employee-card{
-  width:100%;
-  max-width:540px;
+.employee-panel {
+  min-width: 0;
+  min-height: 0;
 
-  background:
-    rgba(18,18,18,0.86);
+  display: flex;
+  flex-direction: column;
 
-  border:
-    1px solid rgba(255,255,255,0.06);
+  padding: 22px;
 
-  backdrop-filter:blur(20px);
+  border: 1px solid rgba(182, 209, 139, .14);
+  border-radius: 16px;
 
-  border-radius:42px;
+  background: #1b251e;
+}
 
-  padding:42px;
+/* ============================================
+   08. PANEL HEADER
+============================================ */
+
+.employee-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(182, 209, 139, .12);
+}
+
+.employee-label {
+  margin: 0 0 10px;
+
+  color: #b6d18b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.employee-panel h1 {
+  margin: 0;
+
+  color: #f4f6ee;
+
+  font-size: clamp(27px, 3vw, 39px);
+  font-weight: 800;
+  letter-spacing: -.05em;
+}
+
+.employee-panel h1 span {
+  color: #b6d18b;
+}
+
+.employee-subtitle {
+  margin: 9px 0 0;
+
+  color: #a3afa1;
+  font-size: 12px;
+}
+
+.employee-new-btn {
+  min-height: 42px;
+  flex-shrink: 0;
+
+  padding: 0 15px;
+
+  border: 1px solid rgba(182, 209, 139, .3);
+  border-radius: 11px;
+
+  background: rgba(182, 209, 139, .09);
+  color: #c5dda1;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  transition: background .2s ease;
+}
+
+.employee-new-btn:hover {
+  background: rgba(182, 209, 139, .17);
+}
+
+/* ============================================
+   09. EMPLOYEE LIST
+============================================ */
+
+.employee-users {
+  flex: 1;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  padding: 15px 2px 12px;
+}
+
+.employee-users::-webkit-scrollbar {
+  width: 5px;
+}
+
+.employee-users::-webkit-scrollbar-thumb {
+  background: rgba(182, 209, 139, .22);
+  border-radius: 10px;
+}
+
+/* ============================================
+   10. EMPLOYEE PROFILE
+============================================ */
+
+.employee-profile {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 7px;
+
+  border-radius: 13px;
+  border: 1px solid rgba(182, 209, 139, .1);
+
+  background: rgba(255, 255, 255, .025);
+
+  transition:
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.employee-profile.selected {
+  background: rgba(182, 209, 139, .09);
+  border-color: rgba(182, 209, 139, .6);
+}
+
+.employee-profile-select {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 3px;
+
+  border: none;
+  background: transparent;
+  color: #f4f6ee;
+
+  text-align: left;
+}
+
+/* PROFILE PHOTO */
+
+.employee-profile-photo {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+
+  border-radius: 13px;
+  overflow: hidden;
+
+  background: #344334;
+}
+
+.employee-profile-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.employee-initials {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  place-items: center;
+
+  color: #d7e8c3;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* PROFILE TEXT */
+
+.employee-profile-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.employee-profile-info strong {
+  color: #f4f6ee;
+  font-size: 14px;
+
+  overflow-wrap: anywhere;
+}
+
+.employee-profile-info > span {
+  color: #a3afa1;
+  font-size: 11px;
+}
+
+.employee-profile-check {
+  margin-left: auto;
+
+  color: #b6d18b;
+  font-size: 20px;
+}
+
+/* ============================================
+   11. EDIT / DELETE
+============================================ */
+
+.employee-profile-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.employee-profile-actions button {
+  min-height: 38px;
+  padding: 0 9px;
+
+  border-radius: 9px;
+  border: 1px solid rgba(182, 209, 139, .14);
+
+  background: rgba(182, 209, 139, .05);
+  color: #b6d18b;
+
+  font-size: 11px;
+}
+
+.employee-profile-actions button:hover {
+  background: rgba(182, 209, 139, .13);
+}
+
+.employee-profile-actions .employee-delete {
+  color: #d5a1a1;
+}
+
+.employee-profile-actions .employee-delete:hover {
+  background: rgba(190, 75, 75, .12);
+  border-color: rgba(220, 100, 100, .25);
+}
+
+/* ============================================
+   12. EMPTY STATE
+============================================ */
+
+.empty-employees {
+  flex: 1;
+  min-height: 170px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  text-align: center;
+}
+
+.empty-employees > span {
+  font-size: 32px;
+  color: #b6d18b;
+}
+
+.empty-employees strong {
+  font-size: 15px;
+}
+
+.empty-employees p {
+  margin: 0;
+  color: #a3afa1;
+  font-size: 12px;
+}
+
+.empty-employees button {
+  padding: 12px 17px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #c5dda1;
+  color: #182116;
+
+  font-weight: 800;
+}
+
+/* ============================================
+   13. CHECK IN
+============================================ */
+
+.employee-checkin {
+  padding-top: 15px;
+  margin-top: auto;
+
+  border-top: 1px solid rgba(182, 209, 139, .13);
+}
+
+.employee-checkin p {
+  margin: 0 0 10px;
+
+  color: #a3afa1;
+  font-size: 12px;
+}
+
+.employee-checkin p strong {
+  color: #eaf2df;
+}
+
+.employee-button {
+  width: 100%;
+  min-height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #c5dda1;
+  color: #182116;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.employee-button:not(:disabled):hover {
+  background: #e0f0c3;
+  transform: translateY(-1px);
+}
+
+.employee-button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   14. ADD EMPLOYEE MODAL
+============================================ */
+
+.employee-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: grid;
+  place-items: center;
+
+  padding: 20px;
+
+  background: rgba(4, 10, 6, .83);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.employee-add-modal {
+  width: min(560px, 100%);
+  max-height: 90dvh;
+  overflow-y: auto;
+
+  padding: 26px;
+
+  border-radius: 22px;
+  border: 1px solid rgba(182, 209, 139, .25);
+
+  background: #1b251e;
+  color: #f4f6ee;
 
   box-shadow:
-    0 30px 90px rgba(0,0,0,0.38);
+    0 30px 90px rgba(0, 0, 0, .4);
 }
 
-/* LABEL */
+.employee-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
 
-.employee-label{
-  color:#9acd32;
-
-  font-size:12px;
-  font-weight:800;
-
-  letter-spacing:3px;
-
-  margin-bottom:16px;
+  margin-bottom: 20px;
 }
 
-/* TITLE */
+.employee-modal-header h2 {
+  margin: 0;
 
-.employee-card h2{
-  color:white;
-
-  font-size:46px;
-
-  line-height:1;
-
-  margin-bottom:36px;
-
-  font-weight:900;
+  font-size: 28px;
+  letter-spacing: -.04em;
 }
 
-/* =========================================================
-   FORM
-========================================================= */
+.employee-modal-close {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
 
-.employee-form{
-  display:flex;
+  border: 1px solid rgba(182, 209, 139, .2);
+  border-radius: 11px;
 
-  flex-direction:column;
+  background: rgba(255, 255, 255, .05);
+  color: #ffffff;
 
-  gap:16px;
-
-  margin-bottom:30px;
+  font-size: 25px;
 }
 
-/* INPUT */
+/* ============================================
+   15. EMPLOYEE FORM
+============================================ */
 
-.employee-input{
-  width:100%;
-
-  background:#1c1c1c;
-
-  border:
-    1px solid rgba(255,255,255,0.05);
-
-  border-radius:20px;
-
-  padding:18px;
-
-  color:white;
-
-  font-size:15px;
-
-  outline:none;
-
-  transition:0.25s;
+.employee-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.employee-input:focus{
-  border-color:
-    rgba(154,205,50,0.4);
+.employee-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-/* =========================================================
-   AVATAR GRID
-========================================================= */
+.employee-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
-.avatar-grid{
-  display:grid;
+  color: #b6c6ae;
 
-  grid-template-columns:
-    repeat(4,1fr);
-
-  gap:14px;
-
-  margin-top:8px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-/* AVATAR BUTTON */
+.employee-input {
+  width: 100%;
+  min-height: 49px;
 
-.avatar-btn{
-  background:#1a1a1a;
+  padding: 0 14px;
 
-  border:
-    2px solid transparent;
+  border-radius: 11px;
+  border: 1px solid rgba(182, 209, 139, .18);
 
-  border-radius:22px;
+  outline: none;
 
-  padding:8px;
+  background: #111713;
+  color: #f4f6ee;
 
-  cursor:pointer;
-
-  transition:0.25s;
+  font-size: 13px;
 }
 
-.avatar-btn:hover{
-  transform:translateY(-2px);
-
-  border-color:
-    rgba(154,205,50,0.3);
+.employee-input::placeholder {
+  color: #778a76;
 }
 
-.avatar-btn.active{
-  border-color:#9acd32;
-
-  background:
-    rgba(154,205,50,0.08);
+.employee-input:focus {
+  border-color: rgba(182, 209, 139, .55);
+  box-shadow: 0 0 0 3px rgba(182, 209, 139, .08);
 }
 
-/* AVATAR IMAGE */
+/* ============================================
+   16. EMPLOYEE PHOTO
+============================================ */
 
-.avatar-btn img{
-  width:100%;
-  aspect-ratio:1;
+.employee-photo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
-  object-fit:cover;
+  padding: 15px;
 
-  border-radius:16px;
+  border-radius: 15px;
+  border: 1px solid rgba(182, 209, 139, .13);
+
+  background: rgba(182, 209, 139, .035);
 }
 
-/* =========================================================
-   UPLOAD BUTTON
-========================================================= */
+.employee-photo-section > span {
+  color: #b6d18b;
 
-.upload-photo-btn{
-  background:#1f1f1f;
-
-  border:
-    1px solid rgba(255,255,255,0.05);
-
-  color:white;
-
-  height:58px;
-
-  border-radius:20px;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  cursor:pointer;
-
-  font-size:14px;
-  font-weight:700;
-
-  transition:0.25s;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
-.upload-photo-btn:hover{
-  background:#262626;
+.employee-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-/* =========================================================
-   PREVIEW
-========================================================= */
+.employee-photo-preview {
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
 
-.employee-preview{
-  width:120px;
-  height:120px;
+  overflow: hidden;
+  border-radius: 17px;
 
-  object-fit:cover;
-
-  border-radius:28px;
-
-  margin:auto;
-
-  border:
-    3px solid rgba(154,205,50,0.2);
+  background: #344334;
 }
 
-/* =========================================================
-   SAVE BUTTON
-========================================================= */
+.employee-photo-preview img {
+  display: block;
 
-.add-employee-btn{
-  background:
-    linear-gradient(
-      135deg,
-      #9acd32,
-      #556b2f
-    );
+  width: 100%;
+  height: 100%;
 
-  border:none;
-
-  color:#111111;
-
-  height:60px;
-
-  border-radius:22px;
-
-  font-size:15px;
-  font-weight:800;
-
-  cursor:pointer;
-
-  transition:0.25s;
+  object-fit: cover;
 }
 
-.add-employee-btn:hover{
-  transform:translateY(-2px);
+.employee-photo-preview .employee-initials {
+  font-size: 29px;
 }
 
-/* =========================================================
-   EMPTY
-========================================================= */
+.employee-photo-actions {
+  flex: 1;
 
-.empty-employees{
-  background:
-    rgba(255,255,255,0.03);
-
-  border:
-    1px dashed rgba(255,255,255,0.08);
-
-  border-radius:24px;
-
-  padding:26px;
-
-  text-align:center;
-
-  color:#777;
-
-  margin-bottom:20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* =========================================================
-   EMPLOYEE LIST
-========================================================= */
+.employee-photo-actions button {
+  min-height: 40px;
 
-.employee-users{
-  display:flex;
+  border-radius: 10px;
+  border: 1px solid rgba(182, 209, 139, .2);
 
-  flex-direction:column;
+  background: rgba(182, 209, 139, .07);
+  color: #e2efda;
 
-  gap:18px;
-
-  margin-bottom:24px;
-
-  max-height:420px;
-
-  overflow-y:auto;
-
-  padding-right:4px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-/* SCROLLBAR */
-
-.employee-users::-webkit-scrollbar{
-  width:6px;
+.employee-photo-actions button:hover {
+  background: rgba(182, 209, 139, .14);
 }
 
-.employee-users::-webkit-scrollbar-thumb{
-  background:
-    rgba(154,205,50,0.22);
-
-  border-radius:999px;
+.employee-photo-actions button span {
+  margin-right: 8px;
 }
 
-/* =========================================================
-   WRAPPER
-========================================================= */
+.employee-photo-section small {
+  color: #90a08a;
 
-.employee-user-wrapper{
-  display:flex;
-
-  flex-direction:column;
-
-  gap:10px;
+  font-size: 11px;
+  line-height: 1.5;
 }
 
-/* =========================================================
-   EMPLOYEE CARD
-========================================================= */
+/* ============================================
+   17. SAVE EMPLOYEE BUTTON
+============================================ */
 
-.employee-user{
-  width:100%;
+.add-employee-btn {
+  min-height: 53px;
 
-  background:#1a1a1a;
+  border: none;
+  border-radius: 12px;
 
-  border:
-    1px solid rgba(255,255,255,0.05);
+  background: #c5dda1;
+  color: #182116;
 
-  border-radius:26px;
-
-  padding:18px;
-
-  display:flex;
-
-  align-items:center;
-
-  gap:18px;
-
-  cursor:pointer;
-
-  transition:0.25s;
-
-  text-align:left;
+  font-size: 14px;
+  font-weight: 800;
 }
 
-.employee-user:hover{
-  transform:translateY(-2px);
-
-  border-color:
-    rgba(154,205,50,0.22);
-
-  background:
-    rgba(154,205,50,0.05);
+.add-employee-btn:hover {
+  background: #e0f0c3;
 }
 
-.employee-user.active{
-  border-color:#9acd32;
+/* ============================================
+   18. IPAD LANDSCAPE
+============================================ */
 
-  background:
-    rgba(154,205,50,0.08);
-}
-
-/* =========================================================
-   EMPLOYEE IMAGE
-========================================================= */
-
-.employee-user img{
-  width:72px;
-  height:72px;
-
-  object-fit:cover;
-
-  border-radius:22px;
-
-  flex-shrink:0;
-
-  border:
-    2px solid rgba(255,255,255,0.06);
-}
-
-/* =========================================================
-   TEXT
-========================================================= */
-
-.employee-user h3{
-  color:white;
-
-  font-size:20px;
-
-  margin-bottom:4px;
-
-  font-weight:800;
-}
-
-.employee-user p{
-  color:#a5a5a5;
-
-  font-size:14px;
-
-  margin-bottom:4px;
-}
-
-.employee-user span{
-  color:#9acd32;
-
-  font-size:13px;
-
-  font-weight:700;
-}
-
-/* =========================================================
-   DELETE BUTTON
-========================================================= */
-
-.delete-employee-btn{
-  width:100%;
-
-  height:48px;
-
-  border:none;
-
-  border-radius:18px;
-
-  background:#252525;
-
-  color:#bdbdbd;
-
-  font-size:13px;
-  font-weight:700;
-
-  cursor:pointer;
-
-  transition:0.25s;
-}
-
-.delete-employee-btn:hover{
-  background:#341818;
-
-  color:#ff8a8a;
-}
-
-/* =========================================================
-   CHECK IN BUTTON
-========================================================= */
-
-.employee-button{
-  width:100%;
-
-  background:
-    linear-gradient(
-      135deg,
-      #9acd32,
-      #556b2f
-    );
-
-  border:none;
-
-  color:#111111;
-
-  height:64px;
-
-  border-radius:24px;
-
-  font-size:16px;
-  font-weight:900;
-
-  cursor:pointer;
-
-  transition:0.25s;
-}
-
-.employee-button:hover{
-  transform:translateY(-2px);
-}
-
-.employee-button:disabled{
-  opacity:0.45;
-
-  cursor:not-allowed;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media (max-width:980px){
-
-  .employee-page{
-    grid-template-columns:1fr;
+@media (min-width: 901px) and (max-height: 850px) {
+  .employee-header {
+    padding-top: 12px;
+    padding-bottom: 12px;
   }
 
-  .employee-left{
-    display:none;
+  .employee-main {
+    padding-top: 8px;
+    padding-bottom: 12px;
   }
 
-  .employee-right{
-    padding:20px;
+  .employee-panel {
+    padding: 18px;
   }
 
-  .employee-card{
-    padding:30px;
-
-    border-radius:30px;
+  .employee-visual {
+    min-height: 390px;
   }
 
-  .employee-card h2{
-    font-size:38px;
+  .employee-profile-photo {
+    width: 48px;
+    height: 48px;
   }
 
+  .employee-users {
+    padding-top: 12px;
+    padding-bottom: 10px;
+  }
+
+  .employee-panel-header {
+    padding-bottom: 12px;
+  }
+
+  .employee-checkin {
+    padding-top: 12px;
+  }
 }
 
-@media (max-width:640px){
+/* ============================================
+   19. IPAD PORTRAIT
+============================================ */
 
-  .avatar-grid{
+@media (max-width: 900px) {
+  .employee-header {
+    padding: 16px 22px;
+  }
+
+  .employee-main {
+    padding: 10px 22px 20px;
+  }
+
+  .employee-layout {
     grid-template-columns:
-      repeat(2,1fr);
+      minmax(0, .8fr)
+      minmax(0, 1.2fr);
   }
 
+  .employee-visual-copy {
+    padding: 18px;
+  }
+
+  .employee-visual-copy h2 {
+    font-size: 27px;
+  }
+
+  .employee-panel {
+    padding: 18px;
+  }
+
+  .employee-panel-header {
+    flex-wrap: wrap;
+  }
+
+  .employee-profile {
+    flex-wrap: wrap;
+  }
+
+  .employee-profile-actions {
+    margin-left: 58px;
+  }
 }
 
-/* =========================================================
-   EDIT EMPLOYEE BUTTON
-========================================================= */
+/* ============================================
+   20. MOBILE
+============================================ */
 
-.edit-employee-btn{
-  width:100%;
+@media (max-width: 650px) {
+  .employee-header {
+    padding: 15px;
+  }
 
-  height:48px;
+  .employee-header .cori-brand-text strong {
+    font-size: 16px;
+  }
 
-  border:none;
+  .employee-header .cori-brand-text small {
+    font-size: 9px;
+  }
 
-  border-radius:18px;
+  .employee-main {
+    padding: 10px 14px 20px;
+  }
 
-  background:
-    rgba(154,205,50,0.12);
+  .employee-layout {
+    grid-template-columns: 1fr;
+  }
 
-  color:#9acd32;
+  .employee-visual {
+    display: none;
+  }
 
-  font-size:13px;
-  font-weight:700;
+  .employee-panel {
+    min-height: 65dvh;
+  }
 
-  cursor:pointer;
+  .employee-form-row {
+    grid-template-columns: 1fr;
+  }
 
-  transition:0.25s;
+  .employee-add-modal {
+    padding: 20px;
+  }
+
+  .employee-photo-preview {
+    width: 72px;
+    height: 72px;
+  }
 }
 
-.edit-employee-btn:hover{
-  background:
-    rgba(154,205,50,0.18);
+/* ============================================
+   21. ACCESSIBILITY
+============================================ */
 
-  transform:translateY(-2px);
+@media (prefers-reduced-motion: reduce) {
+  .employee-page *,
+  .employee-page *::before,
+  .employee-page *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
 }

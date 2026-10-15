@@ -1,219 +1,103 @@
 import "../styles/receipt.css";
 
-export default function Receipt({
+import {
+  formatMoney,
+  priceCents,
+} from "../utils/posUtils";
 
+export default function Receipt({
   orderNumber,
   customerName,
   paymentMethod,
   tableNumber,
   currentDate,
-  cart,
-  subtotal,
-  iva,
-  total
-
+  cart = [],
+  subtotal = 0,
+  iva = 0,
+  total = 0,
 }) {
+  const paymentLabels = {
+    Card: "Tarjeta",
+    Cash: "Efectivo",
+    Transferencia: "Transferencia",
+    QR: "QR",
+  };
 
   return (
-
     <div className="receipt-print">
-
-      {/* =========================================================
-         HEADER
-      ========================================================= */}
-
       <div className="receipt-header">
+        <h1>EL CORDOBÉS</h1>
+        <p>Café y panadería</p>
 
-        <h1>
-          EL CORDOBÉS POS
-        </h1>
-
-        <p>
-          Premium Coffee System
-        </p>
-
-        <h2>
-          ORDER #{orderNumber}
-        </h2>
-
-        <span>
-          {currentDate}
-        </span>
-
+        <h2>ORDEN #{orderNumber}</h2>
+        <span>{currentDate}</span>
       </div>
-
-      {/* =========================================================
-         INFO
-      ========================================================= */}
 
       <div className="receipt-info">
-
         <div className="receipt-line">
-
-          <span>
-            Customer
-          </span>
-
-          <strong>
-            {customerName || "Guest"}
-          </strong>
-
+          <span>Cliente</span>
+          <strong>{customerName || "Cliente"}</strong>
         </div>
 
         <div className="receipt-line">
-
-          <span>
-            Table
-          </span>
-
-          <strong>
-            {tableNumber || "-"}
-          </strong>
-
+          <span>Mesa</span>
+          <strong>{tableNumber || "-"}</strong>
         </div>
 
         <div className="receipt-line">
-
-          <span>
-            Payment
-          </span>
-
+          <span>Pago registrado</span>
           <strong>
-            {paymentMethod}
+            {paymentLabels[paymentMethod] || paymentMethod}
           </strong>
-
         </div>
-
       </div>
 
-      {/* =========================================================
-         DIVIDER
-      ========================================================= */}
-
-      <div className="receipt-divider"></div>
-
-      {/* =========================================================
-         ITEMS
-      ========================================================= */}
+      <div className="receipt-divider" />
 
       <div className="receipt-items">
-
-        {cart.length === 0 && (
-
-          <div className="receipt-empty">
-
-            No items
-
-          </div>
-
-        )}
+        {cart.length === 0 && <p>Sin artículos</p>}
 
         {cart.map((item) => (
-
-          <div
-            key={item.id}
-            className="receipt-item"
-          >
-
+          <div key={item.id} className="receipt-item">
             <div className="receipt-item-left">
-
-              {item.name}
-
-              {" "}x{item.quantity}
-
+              {item.name} × {item.quantity}
             </div>
 
             <div className="receipt-item-right">
-
-              ${(
-                parseFloat(
-                  item.price.replace(
-                    /[^0-9.]/g,
-                    ""
-                  )
-                ) * item.quantity
-              ).toFixed(2)}
-
+              {formatMoney(
+                priceCents(item.price) *
+                item.quantity /
+                100
+              )}
             </div>
-
           </div>
-
         ))}
-
       </div>
 
-      {/* =========================================================
-         DIVIDER
-      ========================================================= */}
-
-      <div className="receipt-divider"></div>
-
-      {/* =========================================================
-         TOTALS
-      ========================================================= */}
+      <div className="receipt-divider" />
 
       <div className="receipt-totals-print">
-
         <div className="receipt-line">
-
-          <span>
-            Subtotal
-          </span>
-
-          <strong>
-            ${subtotal.toFixed(2)}
-          </strong>
-
+          <span>Subtotal</span>
+          <strong>{formatMoney(subtotal)}</strong>
         </div>
 
         <div className="receipt-line">
-
-          <span>
-            IVA 16%
-          </span>
-
-          <strong>
-            ${iva.toFixed(2)}
-          </strong>
-
+          <span>IVA incluido · 16%</span>
+          <strong>{formatMoney(iva)}</strong>
         </div>
 
         <div className="receipt-line total-line">
-
-          <span>
-            TOTAL
-          </span>
-
-          <strong>
-            ${total.toFixed(2)} MXN
-          </strong>
-
+          <span>TOTAL</span>
+          <strong>{formatMoney(total)} MXN</strong>
         </div>
-
       </div>
-
-      {/* =========================================================
-         FOOTER
-      ========================================================= */}
 
       <div className="receipt-footer">
-
-        <p>
-          Gracias por visitar
-        </p>
-
-        <h3>
-          
-        </h3>
-
-        <span>
-          
-        </span>
-
+        <p>Gracias por tu visita.</p>
+        <p>Buen café. Mejores historias.</p>
+        <small>Recibo de venta · No es factura fiscal.</small>
       </div>
-
     </div>
-
   );
-
 }

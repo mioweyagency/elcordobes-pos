@@ -1,631 +1,1093 @@
-.pos-layout {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 20px;
-  margin-top: 20px;
-  align-items: start;
-}
 
-/* LEFT SIDE */
-
-.pos-products {
-  background: #161616;
-  border-radius: 30px;
-  padding: 20px;
-  border: 1px solid rgba(255,255,255,0.05);
-  overflow: hidden;
-}
-
-.pos-header h2 {
-  color: white;
-  font-size: 24px;
-  margin-bottom: 4px;
-}
-
-.pos-header p {
-  color: #9d9d9d;
-  margin-bottom: 20px;
-  font-size: 14px;
-}
-
-/* CAROUSEL */
-
-.pos-products-grid {
-  display: flex;
-  gap: 18px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-bottom: 10px;
-  scroll-behavior: smooth;
-}
-
-/* SCROLLBAR */
-
-.pos-products-grid::-webkit-scrollbar {
-  height: 8px;
-}
-
-.pos-products-grid::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.pos-products-grid::-webkit-scrollbar-thumb {
-  background: #2c2c2c;
-  border-radius: 20px;
-}
-
-/* PRODUCT CARD */
-
-.pos-product-card {
-  min-width: 180px;
-  max-width: 180px;
-  flex-shrink: 0;
-
-  background: #1d1d1d;
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: 0.25s;
-}
-
-.pos-product-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(154,205,50,0.25);
-}
-
-/* IMAGE */
-
-.pos-product-image {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-}
-
-/* CONTENT */
-
-.pos-product-content {
-  padding: 14px;
-}
-
-.pos-product-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
-.pos-product-top h3 {
-  color: white;
-  font-size: 15px;
-}
-
-.pos-product-top span {
-  color: #9acd32;
-  font-weight: 700;
-  font-size: 14px;
-}
-
-.pos-product-content p {
-  color: #9d9d9d;
-  margin-bottom: 12px;
-  font-size: 13px;
-}
-
-/* ORDER PANEL */
-
-.cart-panel {
-  width: 320px;
-
-  background: #161616;
-  border-radius: 26px;
-  padding: 18px;
-  border: 1px solid rgba(255,255,255,0.05);
-
-  display: flex;
-  flex-direction: column;
-
-  height: calc(100vh - 150px);
-}
-
-.cart-header h2 {
-  color: white;
-  font-size: 20px;
-  margin-bottom: 4px;
-}
-
-.cart-header p {
-  color: #9d9d9d;
-  font-size: 14px;
-}
-
-.cart-items {
-  flex: 1;
-  overflow-y: auto;
-  margin-top: 20px;
-}
-
-.empty-cart {
-  color: #777;
-}
-
-.cart-item {
-  background: #1f1f1f;
-  border-radius: 16px;
-  padding: 14px;
-  margin-bottom: 12px;
-
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.cart-item h4 {
-  color: white;
-  margin-bottom: 4px;
-  font-size: 15px;
-}
-
-.cart-item p {
-  color: #9d9d9d;
-  font-size: 13px;
-}
-
-.cart-right {
-  text-align: right;
-}
-
-.cart-right span {
-  color: #9acd32;
-  font-weight: 700;
-  display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
-}
-
-.remove-item-btn {
-  background: #8b1e1e;
-  color: white;
-  border: none;
-  padding: 7px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.cart-footer {
-  margin-top: 18px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding-top: 18px;
-}
-
-.cart-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.cart-total span {
-  color: #9d9d9d;
-}
-
-.cart-total h2 {
-  color: white;
-  font-size: 20px;
-}
-
-.charge-btn {
-  width: 100%;
-
-  background: #9acd32;
-  color: #111111;
-
-  border: none;
-
-  padding: 16px;
-
-  border-radius: 16px;
-
-  font-size: 15px;
-  font-weight: 800;
-
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.charge-btn:hover {
-  background: #b5e03a;
-  transform: translateY(-2px);
-}
-
-/* CHECKOUT OVERLAY */
-
-.checkout-overlay {
-  position: fixed;
-  inset: 0;
-
-  background: rgba(0,0,0,0.7);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: 999;
-}
-
-/* MODAL */
-
-.checkout-modal {
-  width: 420px;
-
-  background: #161616;
-
-  border-radius: 28px;
-
-  padding: 28px;
-
-  border: 1px solid rgba(255,255,255,0.06);
-
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-
-  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-}
-
-.checkout-modal h2 {
-  color: white;
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-
-/* INPUTS */
-
-.checkout-modal input,
-.checkout-modal select {
-  background: #1f1f1f;
-
-  border: 1px solid rgba(255,255,255,0.06);
-
-  border-radius: 16px;
-
-  padding: 16px;
-
-  color: white;
-
-  font-size: 14px;
-
-  outline: none;
-
-  transition: 0.25s;
-}
-
-.checkout-modal input:focus,
-.checkout-modal select:focus {
-  border-color: rgba(154,205,50,0.35);
-}
-
-/* SUMMARY */
-
-.checkout-summary {
-  margin-top: 10px;
-
-  background: #1d1d1d;
-
-  border-radius: 18px;
-
-  padding: 16px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.checkout-item {
-  display: flex;
-  justify-content: space-between;
-
-  color: white;
-
-  font-size: 14px;
-}
-
-/* TOTAL */
-
-.checkout-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin-top: 8px;
-}
-
-.checkout-total span {
-  color: #9d9d9d;
-}
-
-.checkout-total h3 {
-  color: #9acd32;
-  font-size: 24px;
-}
-
-/* BUTTONS */
-
-.checkout-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-/* CANCEL */
-
-.cancel-checkout-btn {
-  flex: 1;
-
-  background: #2a2a2a;
-  color: white;
-
-  border: none;
-
-  padding: 14px;
-
-  border-radius: 16px;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.cancel-checkout-btn:hover {
-  background: #353535;
-  transform: translateY(-2px);
-}
-
-/* COMPLETE */
-
-.complete-order-btn {
-  flex: 1;
-
-  background: #9acd32;
-  color: #111111;
-
-  border: none;
-
-  padding: 14px;
-
-  border-radius: 16px;
-
-  font-size: 14px;
-  font-weight: 800;
-
-  cursor: pointer;
-  transition: 0.25s;
-
-  box-shadow: 0 10px 25px rgba(154,205,50,0.18);
-}
-
-.complete-order-btn:hover {
-  background: #b5e03a;
-  transform: translateY(-2px);
-}
-
-/* BRAND IVA */
-
-.receipt-brand {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.receipt-brand h2 {
-  color: white;
-  font-size: 24px;
-  margin-bottom: 4px;
-}
-
-.receipt-brand p {
-  color: #9acd32;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.receipt-brand span {
-  color: #888;
-  font-size: 13px;
-}
-
-.receipt-totals {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.receipt-row {
-  display: flex;
-  justify-content: space-between;
-
-  color: white;
-  font-size: 14px;
-}
-
-/* TICKET STYLE */
-
-/* SUCCESS OVERLAY */
-
-.success-overlay {
-  position: fixed;
-
-  inset: 0;
+/* ==================================================
+   CORI POS — COFFEE TECH STUDIO
+   NUEVA VENTA · IPAD FIRST
+================================================== */
+
+#cori-pos {
+  --cpos-bg: #101713;
+  --cpos-panel: #1b2620;
+  --cpos-panel-light: #25352a;
+  --cpos-ink: #f4f1e8;
+  --cpos-muted: #a1afa0;
+  --cpos-olive: #b6d18b;
+  --cpos-copper: #c89b71;
+  --cpos-line: rgba(182, 209, 139, 0.14);
+
+  min-width: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  color: var(--cpos-ink);
 
   background:
-    rgba(0,0,0,0.75);
-
-  backdrop-filter: blur(10px);
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  z-index: 9999;
-
-  animation:
-    fadeIn 0.25s ease;
+    radial-gradient(
+      ellipse at 80% 10%,
+      rgba(119, 155, 83, 0.14),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 10% 90%,
+      rgba(148, 99, 59, 0.08),
+      transparent 45%
+    ),
+    var(--cpos-bg);
 }
 
-/* MODAL */
+#cori-pos,
+#cori-pos *,
+#cori-pos *::before,
+#cori-pos *::after {
+  box-sizing: border-box;
+}
 
-.success-modal {
-  width: 100%;
-  max-width: 420px;
+#cori-pos button {
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#cori-pos button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#cori-pos .cpos-main {
+  min-width: 0;
+  padding: 26px clamp(16px, 2.5vw, 38px) 40px;
+  color: var(--cpos-ink);
+  text-align: left;
+}
+
+/* ==================================================
+   SIDEBAR
+================================================== */
+
+#cori-pos .sidebar {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(43, 60, 44, 0.36),
+      rgba(13, 21, 15, 0.92)
+    ),
+    #101711;
+
+  border-right: 1px solid var(--cpos-line);
+  color: #edf2e6;
+}
+
+#cori-pos .nav-item {
+  min-height: 48px;
+  border-radius: 12px;
+  color: #a4b59e;
+}
+
+#cori-pos .nav-item:hover {
+  background: rgba(182, 209, 139, 0.09);
+  color: #fff;
+}
+
+#cori-pos .nav-item.active,
+#cori-pos .nav-item.is-active,
+#cori-pos .nav-item[aria-current="page"] {
+  background: rgba(182, 209, 139, 0.15);
+  color: #d8efb9;
+}
+
+/* ==================================================
+   PREMIUM HEADER
+================================================== */
+
+#cori-pos .cpos-premium-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  min-width: 0;
+  margin-bottom: 25px;
+  padding-bottom: 22px;
+
+  border-bottom: 1px solid var(--cpos-line);
+}
+
+#cori-pos .cpos-premium-heading {
+  min-width: 0;
+}
+
+#cori-pos .cpos-premium-eyebrow {
+  margin: 0 0 8px;
+  color: var(--cpos-olive);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 2px;
+}
+
+#cori-pos .cpos-premium-heading h1 {
+  margin: 0 0 8px;
+  color: var(--cpos-ink);
+
+  font-size: clamp(27px, 3vw, 39px);
+  font-weight: 800;
+  letter-spacing: -1.3px;
+  line-height: 1.15;
+}
+
+#cori-pos .cpos-premium-heading > p:last-child {
+  margin: 0;
+  color: var(--cpos-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#cori-pos .cpos-premium-brand {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+#cori-pos .cpos-premium-brand .cori-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+#cori-pos .cpos-premium-brand .cori-brand-icon {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+#cori-pos .cpos-premium-brand .cori-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+#cori-pos .cpos-premium-brand .cori-brand-text strong {
+  color: #f3f3e9;
+  font-size: 15px;
+}
+
+#cori-pos .cpos-premium-brand .cori-brand-text small {
+  color: var(--cpos-copper);
+  font-size: 11px;
+}
+
+/* ==================================================
+   MAIN TWO-COLUMN LAYOUT
+================================================== */
+
+#cori-pos .cpos-layout {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(305px, 350px);
+
+  gap: 18px;
+  align-items: start;
+  min-width: 0;
+}
+
+/* ==================================================
+   PRODUCT PANEL
+================================================== */
+
+#cori-pos .cpos-menu {
+  min-width: 0;
+  padding: 20px;
+
+  border: 1px solid var(--cpos-line);
+  border-radius: 22px;
 
   background:
     linear-gradient(
       145deg,
-      #181818,
-      #101010
+      rgba(34, 48, 39, 0.96),
+      rgba(18, 27, 22, 0.98)
     );
 
-  border:
-    1px solid rgba(255,255,255,0.05);
-
-  border-radius: 38px;
-
-  padding: 42px 32px;
-
-  text-align: center;
-
-  box-shadow:
-    0 30px 70px rgba(0,0,0,0.35);
-
-  animation:
-    modalPop 0.28s ease;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* CHECK ICON */
+#cori-pos .cpos-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 22px;
+}
 
-.success-icon {
-  width: 90px;
-  height: 90px;
+#cori-pos .cpos-menu-header h2 {
+  margin: 0 0 8px;
+  color: var(--cpos-ink);
+  font-size: clamp(20px, 2vw, 27px);
+  font-weight: 760;
+  letter-spacing: -0.7px;
+}
 
-  margin: 0 auto 24px;
+#cori-pos .cpos-menu-header p {
+  margin: 0;
+  color: var(--cpos-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
 
-  border-radius: 999px;
+/* SEARCH */
+
+#cori-pos .cpos-search {
+  width: min(100%, 235px);
+  min-height: 48px;
+  padding: 12px 15px;
+
+  color: var(--cpos-ink);
+  background: rgba(255, 255, 255, 0.045);
+
+  border: 1px solid var(--cpos-line);
+  border-radius: 13px;
+  outline: none;
+
+  font-size: 16px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#cori-pos .cpos-search::placeholder {
+  color: #82977e;
+}
+
+#cori-pos .cpos-search:focus {
+  border-color: var(--cpos-olive);
+}
+
+/* ==================================================
+   PRODUCT GRID
+================================================== */
+
+#cori-pos .cpos-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(145px, 1fr));
+
+  align-content: start;
+  gap: 13px;
+}
+
+#cori-pos .cpos-product {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 213px;
+  padding: 0;
+  margin: 0;
+
+  overflow: hidden;
+  text-align: left;
+
+  border: 1px solid var(--cpos-line);
+  border-radius: 17px;
 
   background:
     linear-gradient(
-      135deg,
-      #9acd32,
-      #556b2f
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
     );
 
-  color: #111111;
+  color: var(--cpos-ink);
 
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+#cori-pos .cpos-product:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+#cori-pos .cpos-photo {
+  display: block;
+  width: 100%;
+  height: 115px;
+  min-height: 115px;
+
+  object-fit: cover;
+  background: #27372a;
+}
+
+#cori-pos .cpos-photo-empty {
+  display: grid;
+  place-items: center;
+
+  font-size: 38px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(182, 209, 139, 0.18),
+      transparent 70%
+    ),
+    #202d23;
+}
+
+#cori-pos .cpos-product-info {
+  flex: 1;
   display: flex;
+  flex-direction: column;
+  gap: 7px;
 
+  min-width: 0;
+  padding: 12px;
+}
+
+#cori-pos .cpos-product-name {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  color: var(--cpos-ink);
+  font-size: 13px;
+  font-weight: 720;
+}
+
+#cori-pos .cpos-product-price {
+  color: #c5e3a2;
+  font-size: 16px;
+  font-weight: 780;
+}
+
+#cori-pos .cpos-product-add {
+  display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 42px;
-  font-weight: 900;
+  min-height: 35px;
+  margin-top: auto;
 
-  box-shadow:
-    0 20px 40px rgba(154,205,50,0.18);
+  border: 1px solid rgba(182, 209, 139, 0.14);
+  border-radius: 10px;
+
+  background: rgba(182, 209, 139, 0.1);
+  color: #d0e9b1;
+
+  font-size: 12px;
+  font-weight: 700;
 }
 
-/* TITLE */
+/* ==================================================
+   ORDER TICKET
+================================================== */
 
-.success-modal h2 {
-  color: white;
+#cori-pos .cpos-ticket {
+  position: sticky;
+  top: 20px;
 
-  font-size: 34px;
-  font-weight: 800;
+  display: flex;
+  flex-direction: column;
 
-  margin-bottom: 10px;
-}
-
-/* TEXT */
-
-.success-modal p {
-  color: #9d9d9d;
-
-  margin-bottom: 20px;
-}
-
-/* TOTAL */
-
-.success-modal h1 {
-  color: #9acd32;
-
-  font-size: 52px;
-  font-weight: 900;
-
-  margin-bottom: 28px;
-}
-
-/* BUTTON */
-
-.success-btn {
   width: 100%;
+  min-width: 0;
+  height: min(720px, calc(100dvh - 110px));
+  min-height: 390px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(182, 209, 139, 0.2);
+  border-radius: 22px;
 
   background:
     linear-gradient(
-      135deg,
-      #9acd32,
-      #556b2f
+      145deg,
+      rgba(35, 51, 38, 0.97),
+      rgba(22, 33, 25, 0.99)
     );
 
-  border: none;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.17);
+}
 
-  color: #111111;
+#cori-pos .cpos-ticket.is-reviewing {
+  height: min(760px, calc(100dvh - 110px));
+}
 
-  padding: 18px;
+#cori-pos .cpos-ticket-header {
+  flex-shrink: 0;
+  padding: 22px;
 
-  border-radius: 20px;
+  border-bottom: 1px solid var(--cpos-line);
+
+  background:
+    radial-gradient(
+      ellipse at 95% 0%,
+      rgba(182, 209, 139, 0.1),
+      transparent 70%
+    );
+}
+
+#cori-pos .cpos-ticket-header h2 {
+  margin: 0 0 8px;
+  color: var(--cpos-ink);
+
+  font-size: 23px;
+  font-weight: 780;
+  letter-spacing: -0.7px;
+}
+
+#cori-pos .cpos-ticket-header p {
+  margin: 0;
+  color: var(--cpos-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+#cori-pos .cpos-ticket-body {
+  flex: 1;
+  min-height: 0;
+
+  padding: 10px 20px;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  scrollbar-width: thin;
+  scrollbar-color: #536b4a transparent;
+}
+
+#cori-pos .cpos-message {
+  padding: 20px 0;
+  margin: 0;
+
+  color: #a3b59d;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+#cori-pos .cpos-message p {
+  color: #a3b59d;
+}
+
+/* ==================================================
+   ORDER ITEMS
+================================================== */
+
+#cori-pos .cpos-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 17px 0;
+  border-bottom: 1px solid var(--cpos-line);
+}
+
+#cori-pos .cpos-item > strong {
+  flex-shrink: 0;
+  color: #d5e8c3;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+#cori-pos .cpos-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  min-width: 0;
+}
+
+#cori-pos .cpos-item-info > strong {
+  color: var(--cpos-ink);
+  font-size: 14px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+#cori-pos .cpos-item-info > span {
+  color: var(--cpos-muted);
+  font-size: 12px;
+}
+
+/* QUANTITY */
+
+#cori-pos .cpos-quantity {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+#cori-pos .cpos-quantity button {
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+
+  border: 1px solid rgba(182, 209, 139, 0.18);
+  border-radius: 11px;
+
+  background: rgba(182, 209, 139, 0.09);
+  color: #d2e8b6;
+  font-size: 23px;
+}
+
+#cori-pos .cpos-quantity span {
+  min-width: 24px;
+  text-align: center;
+
+  color: var(--cpos-ink);
+  font-size: 15px;
+  font-weight: 750;
+}
+
+/* ==================================================
+   TOTAL AND CHECKOUT
+================================================== */
+
+#cori-pos .cpos-ticket-footer {
+  flex-shrink: 0;
+  padding: 20px;
+
+  border-top: 1px solid rgba(182, 209, 139, 0.2);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(182, 209, 139, 0.045),
+      rgba(182, 209, 139, 0.09)
+    );
+}
+
+#cori-pos .cpos-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 17px;
+}
+
+#cori-pos .cpos-total > span {
+  color: #afc0a8;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+#cori-pos .cpos-total strong {
+  color: #d6efb5;
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+#cori-pos .cpos-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 50px;
+  padding: 12px 16px;
+
+  border: 1px solid var(--cpos-olive);
+  border-radius: 12px;
+
+  background: var(--cpos-olive);
+  color: #182116;
+
+  font-size: 13px;
+  font-weight: 750;
+  text-align: center;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+#cori-pos .cpos-wide {
+  width: 100%;
+}
+
+#cori-pos .cpos-secondary {
+  color: #d0e4bc;
+  background: rgba(182, 209, 139, 0.06);
+  border-color: rgba(182, 209, 139, 0.25);
+}
+
+#cori-pos .cpos-actions {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 10px;
+}
+
+#cori-pos .cpos-actions .cpos-button {
+  min-width: 0;
+  padding-inline: 8px;
+  font-size: 12px;
+}
+
+/* ==================================================
+   PAYMENT FORM
+================================================== */
+
+#cori-pos .cpos-form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 20px 0;
+}
+
+#cori-pos .cpos-form label {
+  display: block;
+  color: #b9cbb1;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+#cori-pos .cpos-form input,
+#cori-pos .cpos-form select {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+
+  margin: 0 0 7px;
+  padding: 12px 13px;
+
+  border: 1px solid rgba(182, 209, 139, 0.2);
+  border-radius: 11px;
+
+  background: #17231a;
+  color: var(--cpos-ink);
 
   font-size: 16px;
-  font-weight: 800;
-
-  cursor: pointer;
-
-  transition: 0.25s;
+  outline: none;
+  color-scheme: dark;
 }
 
-.success-btn:hover {
-  transform: translateY(-2px);
+#cori-pos .cpos-form input::placeholder {
+  color: #7e9379;
 }
 
-/* ANIMATIONS */
+#cori-pos .cpos-form input:focus,
+#cori-pos .cpos-form select:focus {
+  border-color: var(--cpos-olive);
+}
 
-@keyframes fadeIn {
+#cori-pos .cpos-form-pair {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 10px;
+}
 
-  from {
-    opacity: 0;
+#cori-pos .cpos-form-pair > div {
+  min-width: 0;
+}
+
+#cori-pos .cpos-form-pair label {
+  margin-bottom: 8px;
+}
+
+/* TAX */
+
+#cori-pos .cpos-tax-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  margin-top: 9px;
+  color: #a7bca1;
+  font-size: 12px;
+}
+
+#cori-pos .cpos-tax-row strong {
+  color: #e0edd4;
+}
+
+#cori-pos .cpos-note {
+  margin: 12px 0 0;
+  color: #9aaa94;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+#cori-pos .cpos-error {
+  flex-shrink: 0;
+
+  margin: 12px;
+  padding: 13px;
+
+  border: 1px solid rgba(218, 135, 93, 0.35);
+  border-radius: 11px;
+
+  background: rgba(190, 95, 58, 0.13);
+  color: #f1c1a5;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* ==================================================
+   RECEIPT DIALOG
+================================================== */
+
+#cori-pos .cpos-receipt-dialog {
+  position: fixed;
+  inset: 0;
+
+  width: min(470px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+
+  margin: auto;
+  padding: 24px;
+  overflow-y: auto;
+
+  border: 1px solid rgba(182, 209, 139, 0.25);
+  border-radius: 23px;
+
+  background: #1b281e;
+  color: var(--cpos-ink);
+
+  box-shadow: 0 35px 110px rgba(0, 0, 0, 0.5);
+}
+
+#cori-pos .cpos-receipt-dialog:not([open]) {
+  display: none;
+}
+
+#cori-pos .cpos-receipt-dialog[open] {
+  display: block;
+}
+
+#cori-pos .cpos-receipt-dialog::backdrop {
+  background: rgba(4, 10, 6, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* White receipt for printing */
+
+#cori-pos .cpos-receipt-dialog .receipt-print {
+  background: white;
+  color: #211b15;
+  border-radius: 10px;
+}
+
+#cori-pos .cpos-receipt-dialog .receipt-print :is(
+  h1, h2, h3, h4, p, span, strong, small, div
+) {
+  color: #211b15;
+}
+
+#cori-pos .cpos-pdf-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#cori-pos .cpos-pdf-actions .cpos-button {
+  min-width: 0;
+  padding: 12px 8px;
+  font-size: 12px;
+}
+
+#cori-pos .cpos-whatsapp {
+  display: block;
+  margin: 12px 0;
+  padding: 14px;
+
+  border: 1px solid rgba(182, 209, 139, 0.2);
+  border-radius: 11px;
+
+  background: rgba(182, 209, 139, 0.07);
+  color: #c9e5a8;
+
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* ==================================================
+   FOCUS AND HOVER
+================================================== */
+
+#cori-pos .cpos-main :is(
+  button, input, select, a
+):focus-visible {
+  outline: 2px solid var(--cpos-olive);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  #cori-pos .cpos-product:not(:disabled):hover {
+    transform: translateY(-3px);
+    border-color: rgba(182, 209, 139, 0.45);
+    background: rgba(182, 209, 139, 0.065);
   }
 
-  to {
-    opacity: 1;
+  #cori-pos .cpos-button:not(:disabled):hover {
+    background: #d4ebb3;
+  }
+
+  #cori-pos .cpos-secondary:not(:disabled):hover {
+    background: rgba(182, 209, 139, 0.16);
+    color: #e5f5d5;
+  }
+
+  #cori-pos .cpos-quantity button:hover {
+    background: rgba(182, 209, 139, 0.2);
   }
 }
 
-@keyframes modalPop {
+/* ==================================================
+   IPAD LANDSCAPE
+================================================== */
 
-  from {
-    opacity: 0;
-
-    transform:
-      scale(0.92);
+@media (min-width: 701px) and (max-width: 1200px) {
+  #cori-pos .cpos-main {
+    padding: 20px 16px 32px;
   }
 
-  to {
-    opacity: 1;
+  #cori-pos .cpos-layout {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(270px, 35%);
+    gap: 12px;
+  }
 
-    transform:
-      scale(1);
+  #cori-pos .cpos-menu {
+    padding: 14px;
+  }
+
+  #cori-pos .cpos-grid {
+    grid-template-columns:
+      repeat(auto-fill, minmax(125px, 1fr));
+    gap: 10px;
+  }
+
+  #cori-pos .cpos-product {
+    min-height: 195px;
+  }
+
+  #cori-pos .cpos-photo {
+    height: 100px;
+    min-height: 100px;
+  }
+
+  #cori-pos .cpos-product-info {
+    padding: 10px;
+  }
+
+  #cori-pos .cpos-ticket-header,
+  #cori-pos .cpos-ticket-footer {
+    padding: 17px;
+  }
+
+  #cori-pos .cpos-ticket-body {
+    padding-inline: 17px;
   }
 }
+
+/* ==================================================
+   IPAD PORTRAIT
+================================================== */
+
+@media (min-width: 701px) and (max-width: 1024px)
+  and (orientation: portrait) {
+
+  #cori-pos .cpos-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #cori-pos .cpos-grid {
+    grid-template-columns:
+      repeat(auto-fill, minmax(135px, 1fr));
+  }
+
+  #cori-pos .cpos-ticket,
+  #cori-pos .cpos-ticket.is-reviewing {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 320px;
+    max-height: none;
+  }
+
+  #cori-pos .cpos-ticket-body {
+    overflow: visible;
+  }
+}
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media (max-width: 700px) {
+  #cori-pos {
+    display: block;
+  }
+
+  #cori-pos .sidebar {
+    position: relative;
+    height: auto;
+  }
+
+  #cori-pos .cpos-main {
+    padding: 17px 14px 32px;
+  }
+
+  #cori-pos .cpos-premium-header {
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  #cori-pos .cpos-premium-brand .cori-brand-text {
+    display: none;
+  }
+
+  #cori-pos .cpos-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #cori-pos .cpos-menu {
+    padding: 14px;
+  }
+
+  #cori-pos .cpos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  #cori-pos .cpos-search {
+    width: 100%;
+  }
+
+  #cori-pos .cpos-product {
+    min-height: 195px;
+  }
+
+  #cori-pos .cpos-photo {
+    height: 105px;
+    min-height: 105px;
+  }
+
+  #cori-pos .cpos-ticket,
+  #cori-pos .cpos-ticket.is-reviewing {
+    position: static;
+    height: auto;
+    min-height: 300px;
+    max-height: none;
+    margin-top: 12px;
+  }
+
+  #cori-pos .cpos-ticket-body {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 380px) {
+  #cori-pos .cpos-grid {
+    gap: 8px;
+  }
+
+  #cori-pos .cpos-product-info {
+    padding: 9px;
+  }
+
+  #cori-pos .cpos-form-pair {
+    grid-template-columns: 1fr;
+  }
+
+  #cori-pos .cpos-pdf-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================================================
+   ACCESSIBILITY
+================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  #cori-pos *,
+  #cori-pos *::before,
+  #cori-pos *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ==========================================
+   PRINT
+========================================== */
+
+@media print {
+  #cori-pos .cpos-receipt-dialog {
+    background: white !important;
+    color: black !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  #cori-pos .cpos-receipt-dialog .receipt-print {
+    background: white !important;
+    color: black !important;
+  }
+
+  #cori-pos .cpos-pdf-actions,
+  #cori-pos .cpos-whatsapp,
+  #cori-pos .cpos-receipt-dialog > .cpos-button {
+    display: none !important;
+  }
+
+  #cori-pos .cpos-academy-section {
+    display: none !important;
+  }
+}
+
+/* ==========================================
+   CORI ACADEMY — NUEVA VENTA
+========================================== */
+
+#cori-pos .cpos-academy-section {
+  width: 100%;
+  margin: 0 0 24px;
+}
+
+#cori-pos .cpos-academy-section .cacademy-card {
+  width: 100%;
+  min-height: 205px;
+}
+
+/* Desktop */
+
+@media (min-width: 1200px) {
+  #cori-pos .cpos-academy-section {
+    max-width: 100%;
+  }
+}
+
+/* iPad */
+
+@media (max-width: 1024px) {
+  #cori-pos .cpos-academy-section .cacademy-card {
+    min-height: 185px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  #cori-pos .cpos-academy-section {
+    margin-bottom: 18px;
+  }
+}
+
+
+

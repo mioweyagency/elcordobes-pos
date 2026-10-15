@@ -1,393 +1,947 @@
-.branch-page{
-  min-height:100vh;
 
-  display:grid;
+/* ============================================
+   CORI POS — COFFEE TECH STUDIO
+   BRANCH SELECT / IPAD FIRST
+============================================ */
 
+/* 01. BASE */
+
+.branch-page {
+  --bs-bg: #111713;
+  --bs-panel: #1b251e;
+  --bs-olive: #b6d18b;
+  --bs-olive-light: #c5dda1;
+  --bs-text: #f4f6ee;
+  --bs-muted: #a3afa1;
+  --bs-line: rgba(210, 235, 193, .13);
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  isolation: isolate;
+
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+
+  color: var(--bs-text);
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+
+  background:
+    radial-gradient(
+      ellipse at 78% 35%,
+      rgba(105, 138, 82, .17),
+      transparent 42%
+    ),
+    radial-gradient(
+      ellipse at 0% 100%,
+      rgba(95, 75, 51, .12),
+      transparent 36%
+    ),
+    var(--bs-bg);
+}
+
+.branch-page *,
+.branch-page *::before,
+.branch-page *::after {
+  box-sizing: border-box;
+}
+
+.branch-page button,
+.branch-page input {
+  font: inherit;
+}
+
+.branch-page button {
+  cursor: pointer;
+}
+
+.branch-page button:focus-visible,
+.branch-page input:focus-visible {
+  outline: 2px solid var(--bs-olive);
+  outline-offset: 3px;
+}
+
+/* 02. BACKGROUND */
+
+.branch-grid-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(194, 220, 177, .035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(194, 220, 177, .035) 1px,
+      transparent 1px
+    );
+
+  background-size: 58px 58px;
+  mask-image: linear-gradient(
+    to bottom,
+    black,
+    transparent 95%
+  );
+}
+
+/* 03. HEADER */
+
+.branch-header {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px clamp(24px, 4vw, 72px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  position: relative;
+  z-index: 10;
+}
+
+/* ============================================
+   04. OFFICIAL CORI BRAND
+
+   CHANGE LOGO SIZE HERE
+============================================ */
+
+.branch-header .cori-brand {
+  --cori-logo-size: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
+}
+
+.branch-header .cori-brand-icon {
+  display: block;
+
+  width: var(--cori-logo-size);
+  height: var(--cori-logo-size);
+
+  min-width: var(--cori-logo-size);
+  min-height: var(--cori-logo-size);
+
+  max-width: var(--cori-logo-size);
+  max-height: var(--cori-logo-size);
+
+  flex: 0 0 var(--cori-logo-size);
+  object-fit: contain;
+  border-radius: 9px;
+}
+
+.branch-header .cori-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.branch-header .cori-brand-text strong {
+  color: #f4f6ee;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  line-height: 1.15;
+}
+
+.branch-header .cori-brand-text small {
+  color: #a3afa1;
+  font-size: 10px;
+  letter-spacing: .5px;
+}
+
+/* BACK BUTTON */
+
+.branch-back-button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+
+  border: 1px solid rgba(182, 209, 139, .23);
+  border-radius: 13px;
+
+  background: rgba(182, 209, 139, .07);
+  color: #dbe9cf;
+
+  font-size: 12px !important;
+  font-weight: 650 !important;
+
+  transition: background .25s, transform .25s;
+}
+
+.branch-back-button:hover {
+  background: rgba(182, 209, 139, .14);
+  transform: translateX(-2px);
+}
+
+/* 05. MAIN LAYOUT */
+
+.branch-main {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  padding: 12px clamp(24px, 4vw, 72px) 20px;
+
+  display: grid;
   grid-template-columns:
-    1.1fr 0.9fr;
+    minmax(0, .96fr)
+    minmax(0, 1.04fr);
 
-  background:#0a0a0a;
+  align-items: stretch;
+  gap: clamp(16px, 2.5vw, 38px);
+
+  flex: 1;
+  min-height: 0;
 }
 
-/* =========================================================
-   LEFT SIDE
-========================================================= */
+/* 06. LEFT IMAGE */
 
-.branch-left{
-  position:relative;
-
-  overflow:hidden;
+.branch-left {
+  position: relative;
+  min-width: 0;
+  display: flex;
 }
 
-.branch-bg{
-  width:100%;
-  height:100%;
+.branch-image-container {
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  overflow: hidden;
 
-  object-fit:cover;
+  border-radius: 24px;
+  border: 1px solid rgba(182, 209, 139, .14);
 
-  transform:scale(1.02);
+  background: #19251b;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, .2);
 }
 
-/* OVERLAY */
+.branch-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 
-.branch-overlay{
-  position:absolute;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(.75) brightness(.73);
 
-  inset:0;
+  transform: scale(1.02);
+  transition: transform 1.2s ease;
+}
+
+.branch-image-container:hover .branch-bg {
+  transform: scale(1.06);
+}
+
+.branch-overlay {
+  position: absolute;
+  inset: 0;
 
   background:
     linear-gradient(
-      to top,
-      rgba(0,0,0,0.78),
-      rgba(0,0,0,0.18)
+      180deg,
+      rgba(10, 20, 12, .08) 0%,
+      rgba(10, 20, 12, .25) 38%,
+      rgba(8, 16, 10, .94) 100%
+    ),
+    linear-gradient(
+      110deg,
+      rgba(16, 36, 19, .22),
+      transparent 65%
     );
 }
 
-/* CONTENT */
-
-.branch-left-content{
-  position:absolute;
-
-  bottom:70px;
-  left:70px;
-
-  z-index:2;
-
-  max-width:520px;
+.branch-left-content {
+  position: absolute;
+  z-index: 2;
+  inset: auto 0 0;
+  padding: clamp(24px, 3vw, 46px);
+  max-width: 620px;
 }
 
-.branch-left-content p{
-  color:#9acd32;
+.branch-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
 
-  font-size:12px;
-  font-weight:800;
-
-  letter-spacing:3px;
-
-  margin-bottom:18px;
+  color: #d0e4b8;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
 }
 
-.branch-left-content h1{
-  color:white;
-
-  font-size:76px;
-
-  line-height:0.95;
-
-  margin-bottom:24px;
-
-  font-weight:900;
+.branch-status-dot,
+.branch-label-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #b8df86;
+  box-shadow: 0 0 15px rgba(184, 223, 134, .8);
 }
 
-.branch-left-content span{
-  color:
-    rgba(255,255,255,0.72);
+.branch-left-content h1 {
+  margin: 0 0 18px;
+  color: #f8f6ee;
 
-  font-size:18px;
-
-  line-height:1.7;
+  font-size: clamp(44px, 5vw, 74px);
+  font-weight: 800;
+  letter-spacing: -.075em;
+  line-height: 1.04;
 }
 
-/* =========================================================
-   RIGHT SIDE
-========================================================= */
+.branch-left-content h1 span {
+  background: linear-gradient(
+    110deg,
+    #e0f0c3,
+    #a7c67d 55%,
+    #79985d
+  );
 
-.branch-right{
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  padding:42px;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* =========================================================
-   CARD
-========================================================= */
+.branch-hero-description {
+  max-width: 410px;
+  margin: 0;
+  color: #d0d8ca;
+  font-size: 14px;
+  line-height: 1.7;
+}
 
-.branch-card{
-  width:100%;
-  max-width:520px;
+.branch-hero-bottom {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
 
-  background:
-    rgba(18,18,18,0.86);
+  color: #a7bd9a;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 1.8px;
+}
 
-  border:
-    1px solid rgba(255,255,255,0.06);
+.branch-hero-line {
+  width: 28px;
+  height: 1px;
+  background: #b6d18b;
+}
 
-  backdrop-filter:blur(20px);
+/* 07. RIGHT PANEL */
 
-  border-radius:42px;
+.branch-right {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  padding:42px;
+.branch-card {
+  width: 100%;
+  max-width: 620px;
+  padding: clamp(22px, 2.7vw, 38px);
+
+  border: 1px solid rgba(182, 209, 139, .16);
+  border-radius: 24px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(35, 49, 37, .88),
+    rgba(20, 29, 23, .94)
+  );
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 
   box-shadow:
-    0 30px 90px rgba(0,0,0,0.38);
+    0 30px 90px rgba(0, 0, 0, .24),
+    inset 0 1px 0 rgba(255, 255, 255, .035);
 }
 
-/* LABEL */
+/* 08. CARD HEADER */
 
-.branch-label{
-  color:#9acd32;
+.branch-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
 
-  font-size:12px;
-  font-weight:800;
-
-  letter-spacing:3px;
-
-  margin-bottom:16px;
+  color: #b6d18b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
 }
 
-/* TITLE */
+.branch-card h2 {
+  margin: 0 0 12px;
+  color: #f8f6ee;
 
-.branch-card h2{
-  color:white;
-
-  font-size:46px;
-
-  line-height:1;
-
-  margin-bottom:36px;
-
-  font-weight:900;
+  font-size: clamp(36px, 3.8vw, 54px);
+  font-weight: 800;
+  letter-spacing: -.065em;
+  line-height: 1.08;
 }
 
-/* =========================================================
-   ADD BOX
-========================================================= */
-
-.branch-add-box{
-  display:flex;
-
-  gap:14px;
-
-  margin-bottom:26px;
+.branch-card h2 span {
+  color: #b6d18b;
 }
 
-/* INPUT */
-
-.branch-input{
-  flex:1;
-
-  background:#1c1c1c;
-
-  border:
-    1px solid rgba(255,255,255,0.05);
-
-  border-radius:20px;
-
-  padding:18px;
-
-  color:white;
-
-  font-size:15px;
-
-  outline:none;
-
-  transition:0.25s;
+.branch-subtitle {
+  max-width: 410px;
+  margin: 0 0 23px;
+  color: #aab6a7;
+  font-size: 13px;
+  line-height: 1.65;
 }
 
-.branch-input:focus{
-  border-color:
-    rgba(154,205,50,0.4);
+/* 09. ADD BRANCH */
+
+.branch-add-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
 }
 
-/* ADD BUTTON */
-
-.add-branch-btn{
-  background:
-    linear-gradient(
-      135deg,
-      #9acd32,
-      #556b2f
-    );
-
-  border:none;
-
-  color:#111111;
-
-  padding:0 26px;
-
-  border-radius:20px;
-
-  font-size:14px;
-  font-weight:800;
-
-  cursor:pointer;
-
-  transition:0.25s;
+.branch-input-label {
+  color: #a9bd9e;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
 }
 
-.add-branch-btn:hover{
-  transform:translateY(-2px);
+.branch-add-row {
+  display: flex;
+  gap: 10px;
 }
 
-/* =========================================================
-   EMPTY
-========================================================= */
+.branch-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 50px;
+  padding: 0 15px;
 
-.empty-branches{
-  background:
-    rgba(255,255,255,0.03);
+  border: 1px solid rgba(182, 209, 139, .16);
+  border-radius: 12px;
+  outline: none;
 
-  border:
-    1px dashed rgba(255,255,255,0.08);
+  background: rgba(8, 17, 11, .55);
+  color: #f4f6ee;
+  font-size: 13px;
 
-  border-radius:24px;
-
-  padding:26px;
-
-  text-align:center;
-
-  color:#777;
-
-  margin-bottom:20px;
+  transition: border-color .25s, box-shadow .25s;
 }
 
-/* =========================================================
-   BRANCH LIST
-========================================================= */
-
-.branch-list{
-  display:flex;
-
-  flex-direction:column;
-
-  gap:18px;
+.branch-input::placeholder {
+  color: #778a76;
 }
 
-/* =========================================================
-   WRAPPER
-========================================================= */
-
-.branch-item-wrapper{
-  display:flex;
-
-  flex-direction:column;
-
-  gap:10px;
+.branch-input:focus {
+  border-color: rgba(182, 209, 139, .55);
+  box-shadow: 0 0 0 3px rgba(182, 209, 139, .08);
 }
 
-/* =========================================================
-   ITEM
-========================================================= */
+.add-branch-btn {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 17px;
 
-.branch-item{
-  width:100%;
+  border: 1px solid #c5dda1;
+  border-radius: 12px;
 
-  background:#1a1a1a;
+  background: #c5dda1;
+  color: #182116;
 
-  border:
-    1px solid rgba(255,255,255,0.05);
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  white-space: nowrap;
 
-  border-radius:26px;
-
-  padding:24px;
-
-  cursor:pointer;
-
-  transition:0.25s;
-
-  text-align:left;
+  transition: background .25s, transform .25s;
 }
 
-.branch-item:hover{
-  transform:translateY(-2px);
-
-  border-color:
-    rgba(154,205,50,0.22);
-
-  background:
-    rgba(154,205,50,0.05);
+.add-branch-btn:hover {
+  background: #e0f0c3;
+  transform: translateY(-2px);
 }
 
-/* TEXT */
-
-.branch-item h3{
-  color:white;
-
-  font-size:22px;
-
-  margin-bottom:6px;
-
-  font-weight:800;
+.add-branch-btn span {
+  font-size: 20px;
+  font-weight: 400;
 }
 
-.branch-item p{
-  color:#8d8d8d;
+/* 10. BRANCH LIST HEADER */
 
-  font-size:14px;
+.branch-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
 
-  margin:0;
+  color: #a9bd9e;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
 }
 
-/* =========================================================
-   REMOVE BUTTON
-========================================================= */
+.branch-count {
+  min-width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  padding: 0 7px;
 
-.remove-branch-btn{
-  width:100%;
+  border-radius: 8px;
+  background: rgba(182, 209, 139, .1);
+  border: 1px solid rgba(182, 209, 139, .15);
 
-  height:48px;
-
-  border:none;
-
-  border-radius:18px;
-
-  background:#252525;
-
-  color:#bdbdbd;
-
-  font-size:13px;
-  font-weight:700;
-
-  cursor:pointer;
-
-  transition:0.25s;
+  color: #c5dda1;
+  font-size: 11px;
+  letter-spacing: 0;
 }
 
-.remove-branch-btn:hover{
-  background:#341818;
+/* 11. EMPTY STATE */
 
-  color:#ff8a8a;
+.empty-branches {
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  text-align: center;
+
+  border: 1px dashed rgba(182, 209, 139, .19);
+  border-radius: 16px;
+  background: rgba(182, 209, 139, .025);
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+.branch-empty-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
 
-@media (max-width:980px){
+  border-radius: 12px;
+  color: #b6d18b;
+  background: rgba(182, 209, 139, .09);
+}
 
-  .branch-page{
-    grid-template-columns:1fr;
+.branch-empty-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.empty-branches strong {
+  color: #f0f4e9;
+  font-size: 14px;
+}
+
+.empty-branches p {
+  max-width: 290px;
+  margin: 0;
+  color: #91a28d;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 12. BRANCH LIST */
+
+.branch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  max-height: 245px;
+  overflow-y: auto;
+  padding-right: 3px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.branch-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.branch-list::-webkit-scrollbar-thumb {
+  background: rgba(182, 209, 139, .22);
+  border-radius: 10px;
+}
+
+.branch-item-wrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.branch-item {
+  flex: 1;
+  min-width: 0;
+  min-height: 66px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 13px;
+
+  border: 1px solid rgba(182, 209, 139, .12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .035);
+
+  text-align: left;
+
+  transition:
+    background .25s,
+    border-color .25s,
+    transform .25s;
+}
+
+.branch-item:hover {
+  background: rgba(182, 209, 139, .09);
+  border-color: rgba(182, 209, 139, .35);
+  transform: translateY(-2px);
+}
+
+.branch-item-icon {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 11px;
+  color: #b6d18b;
+  background: rgba(182, 209, 139, .09);
+}
+
+.branch-item-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.branch-item-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.branch-item-content strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: #f4f6ee;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.branch-item-content small {
+  color: #91a28d;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.branch-item-arrow {
+  margin-left: auto;
+  color: #b6d18b;
+  font-size: 21px;
+}
+
+.remove-branch-btn {
+  width: 46px;
+  min-width: 46px;
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(182, 209, 139, .1);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .035);
+  color: #879a83;
+
+  transition:
+    background .25s,
+    color .25s,
+    border-color .25s;
+}
+
+.remove-branch-btn svg {
+  width: 19px;
+  height: 19px;
+}
+
+.remove-branch-btn:hover {
+  background: rgba(190, 75, 75, .12);
+  border-color: rgba(220, 100, 100, .25);
+  color: #ff9a9a;
+}
+
+/* 13. CARD FOOTER */
+
+.branch-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  margin-top: 19px;
+  padding-top: 15px;
+
+  border-top: 1px solid rgba(182, 209, 139, .1);
+
+  color: #849680;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.branch-secure-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #a3c57e;
+}
+
+/* 14. BOTTOM */
+
+.branch-bottom {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  padding: 12px clamp(24px, 4vw, 72px) 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  color: #71816f;
+  font-size: 11px;
+}
+
+/* 15. IPAD LANDSCAPE */
+
+@media (min-width: 901px) and (max-width: 1200px) {
+  .branch-main {
+    gap: 18px;
+    padding-bottom: 16px;
   }
 
-  .branch-left{
-    display:none;
+  .branch-image-container {
+    min-height: 440px;
   }
 
-  .branch-right{
-    padding:20px;
+  .branch-left-content {
+    padding: 27px;
   }
 
-  .branch-card{
-    padding:30px;
-
-    border-radius:30px;
+  .branch-left-content h1 {
+    font-size: clamp(43px, 4.7vw, 62px);
   }
 
-  .branch-card h2{
-    font-size:38px;
+  .branch-card {
+    padding: 24px;
   }
 
-  .branch-add-box{
-    flex-direction:column;
+  .branch-card h2 {
+    font-size: 42px;
+  }
+}
+
+/* SHORT IPAD LANDSCAPE */
+
+@media (min-width: 901px) and (max-height: 850px) {
+  .branch-header {
+    padding-top: 14px;
+    padding-bottom: 14px;
   }
 
-  .add-branch-btn{
-    width:100%;
-
-    height:56px;
+  .branch-main {
+    padding-top: 8px;
+    padding-bottom: 10px;
   }
 
+  .branch-image-container {
+    min-height: 410px;
+  }
+
+  .branch-card {
+    padding: 20px 24px;
+  }
+
+  .branch-label {
+    margin-bottom: 10px;
+  }
+
+  .branch-card h2 {
+    margin-bottom: 9px;
+    font-size: 39px;
+  }
+
+  .branch-subtitle {
+    margin-bottom: 15px;
+  }
+
+  .branch-add-box {
+    margin-bottom: 15px;
+  }
+
+  .branch-card-footer {
+    margin-top: 14px;
+    padding-top: 12px;
+  }
+
+  .branch-bottom {
+    padding-top: 8px;
+    padding-bottom: 10px;
+  }
+}
+
+/* 16. IPAD PORTRAIT */
+
+@media (max-width: 900px) {
+  .branch-header {
+    padding: 20px 28px;
+  }
+
+  .branch-main {
+    grid-template-columns: 1fr;
+    padding: 16px 28px 25px;
+  }
+
+  .branch-left {
+    display: none;
+  }
+
+  .branch-right {
+    align-items: flex-start;
+  }
+
+  .branch-card {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 30px;
+  }
+
+  .branch-bottom {
+    padding: 16px 28px;
+  }
+}
+
+/* 17. MOBILE */
+
+@media (max-width: 700px) {
+  .branch-header {
+    padding: 18px 20px;
+  }
+
+  .branch-header .cori-brand-text strong {
+    font-size: 16px;
+  }
+
+  .branch-header .cori-brand-text small {
+    font-size: 9px;
+  }
+
+  .branch-back-button {
+    min-height: 42px;
+    padding: 10px 13px;
+    font-size: 11px !important;
+  }
+
+  .branch-main {
+    padding: 20px 20px 25px;
+  }
+
+  .branch-card {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+
+  .branch-card h2 {
+    font-size: 42px;
+  }
+
+  .branch-subtitle {
+    font-size: 13px;
+  }
+
+  .branch-add-row {
+    flex-direction: column;
+  }
+
+  .add-branch-btn {
+    width: 100%;
+  }
+
+  .branch-item {
+    min-height: 70px;
+    padding: 11px;
+  }
+
+  .branch-item-icon {
+    width: 37px;
+    height: 37px;
+  }
+
+  .branch-item-content strong {
+    font-size: 13px;
+  }
+
+  .branch-item-content small {
+    font-size: 10px;
+  }
+
+  .remove-branch-btn {
+    width: 43px;
+    min-width: 43px;
+  }
+
+  .branch-bottom {
+    padding: 16px 20px;
+    flex-wrap: wrap;
+  }
+}
+
+/* 18. SMALL MOBILE */
+
+@media (max-width: 380px) {
+  .branch-card h2 {
+    font-size: 37px;
+  }
+
+  .branch-card {
+    padding: 20px 14px;
+  }
+
+  .branch-item-icon {
+    display: none;
+  }
+}
+
+/* 19. ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  .branch-page *,
+  .branch-page *::before,
+  .branch-page *::after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
 }

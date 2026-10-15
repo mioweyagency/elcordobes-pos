@@ -1,331 +1,323 @@
-import {
-  useState,
-  useEffect
-} from "react";
+
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import "../styles/inventorymodal.css";
 
-/* =========================================================
-   INVENTORY MODAL
-========================================================= */
-
 export default function InventoryModal({
-
   isOpen,
-
   onClose,
-
   onSave,
-
-  editingItem
-
+  editingItem,
 }) {
+  const { i18n } = useTranslation();
 
-  /* =========================================================
-     STATES
-  ========================================================= */
+  const es = (
+    i18n.resolvedLanguage ||
+    i18n.language ||
+    "es"
+  ).startsWith("es");
 
-  const [name, setName] =
-    useState("");
+  const t = (spanish, english) =>
+    es ? spanish : english;
 
-  const [stock, setStock] =
-    useState("");
+  const [name, setName] = useState("");
+  const [stock, setStock] = useState("");
+  const [minimumStock, setMinimumStock] = useState("");
+  const [unit, setUnit] = useState("kg");
+  const [supplier, setSupplier] = useState("");
+  const [cost, setCost] = useState("");
 
-  const [minimumStock, setMinimumStock] =
-    useState("");
-
-  const [unit, setUnit] =
-    useState("kg");
-
-  const [supplier, setSupplier] =
-    useState("");
-
-  const [cost, setCost] =
-    useState("");
-
-  /* =========================================================
-     LOAD EDIT DATA
-  ========================================================= */
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    if (!isOpen) return;
 
-    if (editingItem) {
+    setName(editingItem?.name ?? "");
+    setStock(editingItem?.stock ?? "");
+    setMinimumStock(editingItem?.minimumStock ?? "");
+    setUnit(editingItem?.unit ?? "kg");
+    setSupplier(editingItem?.supplier ?? "");
+    setCost(editingItem?.cost ?? "");
+    setError("");
+  }, [editingItem, isOpen]);
 
-      setName(
-        editingItem.name || ""
-      );
+  useEffect(() => {
+    if (!isOpen) return;
 
-      setStock(
-        editingItem.stock || ""
-      );
-
-      setMinimumStock(
-        editingItem.minimumStock || ""
-      );
-
-      setUnit(
-        editingItem.unit || "kg"
-      );
-
-      setSupplier(
-        editingItem.supplier || ""
-      );
-
-      setCost(
-        editingItem.cost || ""
-      );
-
-    } else {
-
-      setName("");
-      setStock("");
-      setMinimumStock("");
-      setUnit("kg");
-      setSupplier("");
-      setCost("");
+    function handleKeyDown(event) {
+      if (event.key === "Escape" && !saving) {
+        onClose();
+      }
     }
 
-  }, [editingItem]);
+    window.addEventListener("keydown", handleKeyDown);
 
-  /* =========================================================
-     SAVE
-  ========================================================= */
-
-  const handleSave =
-    () => {
-
-    if (!name.trim())
-      return;
-
-    const inventoryItem = {
-
-      id:
-
-        editingItem?.id ||
-
-        Date.now(),
-
-      name,
-
-      stock:
-        Number(stock),
-
-      minimumStock:
-        Number(minimumStock),
-
-      unit,
-
-      supplier,
-
-      cost:
-        Number(cost)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
     };
+  }, [isOpen, saving, onClose]);
 
-    onSave(
-      inventoryItem
-    );
+  async function handleSave(event) {
+    event.preventDefault();
 
-    onClose();
-  };
+    if (saving) return;
 
-  /* =========================================================
-     CLOSE
-  ========================================================= */
+    if (
+      !name.trim() ||
+      stock === "" ||
+      minimumStock === "" ||
+      cost === ""
+    ) {
+      setError(
+        t(
+          "Completa el nombre, existencias, mínimo y costo.",
+          "Complete the name, stock, minimum and cost."
+        )
+      );
+      return;
+    }
 
-  if (!isOpen)
-    return null;
+    const values = [
+      Number(stock),
+      Number(minimumStock),
+      Number(cost),
+    ];
+
+    if (
+      values.some(
+        (value) =>
+          !Number.isFinite(value) || value < 0
+      )
+    ) {
+      setError(
+        t(
+          "Los valores deben ser números iguales o mayores a cero.",
+          "Values must be zero or greater."
+        )
+      );
+      return;
+    }
+
+    setSaving(true);
+    setError("");
+
+    try {
+      await onSave({
+        ...(editingItem || {}),
+        id: editingItem?.id ?? Date.now(),
+        name: name.trim(),
+        stock: Number(stock),
+        minimumStock: Number(minimumStock),
+        unit,
+        supplier: supplier.trim(),
+        cost: Number(cost),
+      });
+
+      onClose();
+    } catch (err) {
+      console.error("Inventory save error:", err);
+
+      setError(
+        t(
+          "No se pudo guardar. Los datos siguen en el formulario.",
+          "Could not save. Your information remains in the form."
+        )
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (!isOpen) return null;
 
   return (
-
-    <div className="inventory-modal-overlay">
-
-      {/* =========================================================
-         MODAL
-      ========================================================= */}
-
-      <div className="inventory-modal">
-
-        {/* =========================================================
-           HEADER
-        ========================================================= */}
-
+    <div
+      className="inventory-modal-overlay"
+      onMouseDown={(event) => {
+        if (
+          event.target === event.currentTarget &&
+          !saving
+        ) {
+          onClose();
+        }
+      }}
+    >
+      <form
+        className="inventory-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="inventory-modal-title"
+        onSubmit={handleSave}
+      >
         <div className="inventory-modal-header">
-
           <div>
+            <p>CORI POS / INVENTORY</p>
 
-            <p>
-              EL CORDOBÉS POS
-            </p>
-
-            <h2>
-
+            <h2 id="inventory-modal-title">
               {editingItem
-
-                ? "Edit Inventory"
-
-                : "Add Inventory"}
-
+                ? t("Editar insumo", "Edit supply")
+                : t("Nuevo insumo", "New supply")}
             </h2>
 
+            <span>
+              {t(
+                "Organiza los recursos de tu cafetería.",
+                "Organize your café supplies."
+              )}
+            </span>
           </div>
 
           <button
+            type="button"
             className="inventory-close-btn"
-
+            aria-label={t("Cerrar", "Close")}
+            disabled={saving}
             onClick={onClose}
           >
-
-            ✕
-
+            ×
           </button>
-
         </div>
 
-        {/* =========================================================
-           FORM
-        ========================================================= */}
+        {error && (
+          <p className="cori-error" role="alert">
+            {error}
+          </p>
+        )}
 
         <div className="inventory-form">
+          <label className="inventory-field full">
+            <span>
+              {t("Nombre del insumo", "Supply name")}
+            </span>
 
-          {/* NAME */}
+            <input
+              autoFocus
+              required
+              type="text"
+              placeholder={t(
+                "Ej. Leche entera",
+                "E.g. Whole milk"
+              )}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </label>
 
-          <input
-            type="text"
+          <label className="inventory-field">
+            <span>
+              {t(
+                "Existencias actuales",
+                "Current stock"
+              )}
+            </span>
 
-            placeholder="Inventory Name"
+            <input
+              required
+              type="number"
+              min="0"
+              step="any"
+              inputMode="decimal"
+              placeholder="0"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+            />
+          </label>
 
-            value={name}
+          <label className="inventory-field">
+            <span>
+              {t("Stock mínimo", "Minimum stock")}
+            </span>
 
-            onChange={(e) =>
-              setName(
-                e.target.value
-              )
-            }
-          />
+            <input
+              required
+              type="number"
+              min="0"
+              step="any"
+              inputMode="decimal"
+              placeholder="0"
+              value={minimumStock}
+              onChange={(e) =>
+                setMinimumStock(e.target.value)
+              }
+            />
+          </label>
 
-          {/* STOCK */}
+          <label className="inventory-field">
+            <span>{t("Unidad", "Unit")}</span>
 
-          <input
-            type="number"
+            <select
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
+            >
+              <option value="kg">
+                {t("Kilogramos", "Kilograms")} · kg
+              </option>
 
-            placeholder="Current Stock"
+              <option value="L">
+                {t("Litros", "Liters")} · L
+              </option>
 
-            value={stock}
+              <option value="pcs">
+                {t("Piezas", "Pieces")} · pcs
+              </option>
+            </select>
+          </label>
 
-            onChange={(e) =>
-              setStock(
-                e.target.value
-              )
-            }
-          />
+          <label className="inventory-field">
+            <span>
+              {t("Costo por unidad", "Unit cost")} · MXN
+            </span>
 
-          {/* MINIMUM */}
+            <input
+              required
+              type="number"
+              min="0"
+              step="0.01"
+              inputMode="decimal"
+              placeholder="0.00"
+              value={cost}
+              onChange={(e) => setCost(e.target.value)}
+            />
+          </label>
 
-          <input
-            type="number"
+          <label className="inventory-field full">
+            <span>{t("Proveedor", "Supplier")}</span>
 
-            placeholder="Minimum Stock"
-
-            value={minimumStock}
-
-            onChange={(e) =>
-              setMinimumStock(
-                e.target.value
-              )
-            }
-          />
-
-          {/* UNIT */}
-
-          <select
-            value={unit}
-
-            onChange={(e) =>
-              setUnit(
-                e.target.value
-              )
-            }
-          >
-
-            <option value="kg">
-              kg
-            </option>
-
-            <option value="L">
-              L
-            </option>
-
-            <option value="pcs">
-              pcs
-            </option>
-
-          </select>
-
-          {/* SUPPLIER */}
-
-          <input
-            type="text"
-
-            placeholder="Supplier"
-
-            value={supplier}
-
-            onChange={(e) =>
-              setSupplier(
-                e.target.value
-              )
-            }
-          />
-
-          {/* COST */}
-
-          <input
-            type="number"
-
-            placeholder="Cost"
-
-            value={cost}
-
-            onChange={(e) =>
-              setCost(
-                e.target.value
-              )
-            }
-          />
-
+            <input
+              type="text"
+              placeholder={t(
+                "Nombre del proveedor",
+                "Supplier name"
+              )}
+              value={supplier}
+              onChange={(e) => setSupplier(e.target.value)}
+            />
+          </label>
         </div>
-
-        {/* =========================================================
-           ACTIONS
-        ========================================================= */}
 
         <div className="inventory-modal-actions">
-
           <button
+            type="button"
             className="inventory-cancel-btn"
-
+            disabled={saving}
             onClick={onClose}
           >
-
-            Cancel
-
+            {t("Cancelar", "Cancel")}
           </button>
 
           <button
+            type="submit"
             className="inventory-save-btn"
-
-            onClick={handleSave}
+            disabled={saving}
           >
-
-            Save Inventory
-
+            {saving
+              ? t("Guardando...", "Saving...")
+              : t("Guardar insumo →", "Save supply →")}
           </button>
-
         </div>
-
-      </div>
-
+      </form>
     </div>
-
   );
 }

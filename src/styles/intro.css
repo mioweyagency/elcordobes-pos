@@ -1,0 +1,1181 @@
+
+/* ============================================
+   CORI POS — COFFEE TECH STUDIO
+   INTRO + VIDEO TUTORIAL
+============================================ */
+
+/* ============================================
+   01. BASE
+============================================ */
+
+.cori-intro {
+  --ci-bg: #111713;
+  --ci-panel: #1b241d;
+  --ci-ink: #f5f2e9;
+  --ci-muted: #a3afa1;
+  --ci-olive: #b6d18b;
+  --ci-olive-dark: #78965e;
+  --ci-line: rgba(210, 235, 193, 0.13);
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+
+  color: var(--ci-ink);
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+
+  background:
+    radial-gradient(
+      ellipse at 76% 43%,
+      rgba(105, 138, 82, 0.24),
+      transparent 38%
+    ),
+    radial-gradient(
+      ellipse at 4% 90%,
+      rgba(95, 75, 51, 0.18),
+      transparent 35%
+    ),
+    #111713;
+}
+
+.cori-intro *,
+.cori-intro *::before,
+.cori-intro *::after {
+  box-sizing: border-box;
+}
+
+.cori-intro button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.cori-intro button:focus-visible {
+  outline: 2px solid var(--ci-olive);
+  outline-offset: 4px;
+}
+
+/* BACKGROUND GRID */
+
+.cori-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(
+      rgba(194, 220, 177, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(194, 220, 177, 0.035) 1px,
+      transparent 1px
+    );
+
+  background-size: 58px 58px;
+
+  mask-image: linear-gradient(
+    to bottom,
+    black,
+    transparent 90%
+  );
+}
+
+/* ============================================
+   02. HEADER
+============================================ */
+
+.ci2-header {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 27px clamp(24px, 4vw, 72px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  position: relative;
+  z-index: 20;
+}
+
+/* ============================================
+   03. CORI BRAND — OFFICIAL LOGO
+
+   CHANGE SIZE HERE:
+   --cori-logo-size: 36px;
+============================================ */
+
+.ci2-header .cori-brand {
+  --cori-logo-size: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex-shrink: 0;
+}
+
+.ci2-header .cori-brand-icon {
+  display: block;
+
+  width: var(--cori-logo-size);
+  height: var(--cori-logo-size);
+
+  min-width: var(--cori-logo-size);
+  min-height: var(--cori-logo-size);
+
+  max-width: var(--cori-logo-size);
+  max-height: var(--cori-logo-size);
+
+  flex: 0 0 var(--cori-logo-size);
+
+  object-fit: contain;
+  border-radius: 9px;
+}
+
+.ci2-header .cori-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ci2-header .cori-brand-text strong {
+  color: #f4f6ee;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+
+.ci2-header .cori-brand-text small {
+  color: #a3afa1;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+}
+
+/* HEADER ACTIONS */
+
+.ci2-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.ci2-help-link {
+  border: 0;
+  background: transparent;
+  color: #c4cfc0;
+
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+.ci2-help-link:hover {
+  color: #ffffff;
+}
+
+.ci2-header-button {
+  min-height: 45px;
+
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  padding: 12px 20px;
+  border-radius: 13px;
+
+  border: 1px solid rgba(182, 209, 139, 0.25);
+  background: rgba(182, 209, 139, 0.1);
+  color: #e7f2d9;
+
+  font-size: 13px !important;
+  font-weight: 650 !important;
+
+  transition: 0.25s ease;
+}
+
+.ci2-header-button:hover {
+  background: rgba(182, 209, 139, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   04. MAIN HERO
+============================================ */
+
+.ci2-main {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  padding:
+    25px
+    clamp(24px, 4vw, 72px)
+    35px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1.08fr);
+
+  align-items: center;
+  gap: clamp(15px, 3vw, 55px);
+
+  min-height: 560px;
+  flex: 1;
+}
+
+/* LEFT CONTENT */
+
+.ci2-copy {
+  position: relative;
+  z-index: 5;
+  max-width: 610px;
+}
+
+.ci2-badge {
+  width: fit-content;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 15px;
+  border-radius: 8px;
+
+  border: 1px solid rgba(182, 209, 139, 0.18);
+  background: rgba(182, 209, 139, 0.065);
+
+  color: #c3dca4;
+
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 2px;
+}
+
+.ci2-badge > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+
+  background: #b8df86;
+
+  box-shadow:
+    0 0 12px rgba(184, 223, 134, 0.7);
+
+  animation: ciPulse 2.5s infinite;
+}
+
+@keyframes ciPulse {
+  50% {
+    opacity: 0.45;
+
+    box-shadow:
+      0 0 22px rgba(184, 223, 134, 0.9);
+  }
+}
+
+/* HERO TITLE */
+
+.ci2-copy h1 {
+  margin: 31px 0 24px;
+
+  font-size: clamp(52px, 5.4vw, 88px);
+  font-weight: 800;
+  letter-spacing: -0.07em;
+  line-height: 1.06;
+
+  color: #f8f6ee;
+}
+
+.ci2-copy h1 span {
+  color: #b6d18b;
+
+  background: linear-gradient(
+    110deg,
+    #e0f0c3,
+    #a7c67d 55%,
+    #79985d
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ci2-description {
+  max-width: 440px;
+  margin: 0;
+
+  color: #aab6a7;
+
+  font-size: clamp(14px, 1.3vw, 17px);
+  line-height: 1.85;
+}
+
+/* ============================================
+   05. BUTTONS
+============================================ */
+
+.ci2-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.ci2-button {
+  min-height: 56px;
+  padding: 16px 23px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+
+  border-radius: 13px;
+
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  white-space: nowrap;
+
+  transition:
+    transform 0.25s,
+    background 0.25s,
+    box-shadow 0.25s;
+}
+
+.ci2-button span {
+  font-size: 19px;
+  font-weight: 400;
+}
+
+.ci2-primary {
+  background: #c5dda1;
+  border: 1px solid #c5dda1;
+  color: #182116;
+
+  box-shadow:
+    0 12px 35px rgba(146, 184, 102, 0.13);
+}
+
+.ci2-primary:hover {
+  background: #e0f0c3;
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 16px 40px rgba(146, 184, 102, 0.22);
+}
+
+.ci2-outline {
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(226, 238, 214, 0.19);
+  color: #e8eee1;
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ci2-outline:hover {
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-3px);
+}
+
+/* BARISTA LINK */
+
+.ci2-barista-link {
+  margin-top: 26px;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  color: #b9d69a;
+
+  font-size: 12px !important;
+  font-weight: 650 !important;
+}
+
+.ci2-barista-link:hover {
+  color: #ffffff;
+}
+
+/* IPAD NOTE */
+
+.ci2-device-note {
+  margin-top: 47px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #819080;
+  font-size: 11px;
+}
+
+.ci2-ipad-icon {
+  width: 15px;
+  height: 19px;
+
+  display: inline-block;
+
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+
+  position: relative;
+}
+
+.ci2-ipad-icon::after {
+  content: "";
+  position: absolute;
+
+  width: 3px;
+  height: 3px;
+
+  background: currentColor;
+  border-radius: 50%;
+
+  bottom: 2px;
+  left: 50%;
+
+  transform: translateX(-50%);
+}
+
+/* ============================================
+   06. CORI 3D STAGE
+============================================ */
+
+.ci2-character {
+  width: 100%;
+  min-width: 0;
+
+  height: clamp(440px, 43vw, 650px);
+
+  position: relative;
+  isolation: isolate;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ci2-character-glow {
+  position: absolute;
+  z-index: -2;
+
+  width: 90%;
+  max-width: 570px;
+
+  aspect-ratio: 1;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(159, 197, 122, 0.32) 0%,
+    rgba(111, 149, 85, 0.14) 38%,
+    transparent 72%
+  );
+
+  filter: blur(22px);
+  pointer-events: none;
+}
+
+.ci2-orbit {
+  position: absolute;
+  z-index: -1;
+
+  width: min(90%, 530px);
+  aspect-ratio: 1;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(181, 217, 150, 0.18);
+
+  box-shadow:
+    0 0 0 32px rgba(181, 217, 150, 0.025),
+    0 0 0 68px rgba(181, 217, 150, 0.018),
+    inset 0 0 60px rgba(181, 217, 150, 0.025);
+
+  animation: ciOrbit 40s linear infinite;
+
+  pointer-events: none;
+}
+
+.ci2-orbit::before {
+  content: "";
+  position: absolute;
+
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+
+  top: 15%;
+  left: 13%;
+
+  background: #c3e69a;
+  box-shadow: 0 0 24px #a9d47c;
+}
+
+.ci2-orbit::after {
+  content: "";
+  position: absolute;
+
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+
+  bottom: 17%;
+  right: 11%;
+
+  background: #d5b58b;
+  box-shadow: 0 0 18px #d5b58b;
+}
+
+@keyframes ciOrbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 3D CANVAS */
+
+.ci2-model {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ci2-model > * {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.ci2-model canvas {
+  display: block;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  outline: none;
+  touch-action: pan-y;
+}
+
+/* ============================================
+   07. INTERACTIVE SPEECH CARD
+============================================ */
+
+.ci2-speech {
+  position: absolute;
+  z-index: 5;
+
+  top: 13%;
+  right: 0;
+
+  min-width: 235px;
+  padding: 16px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  border: 1px solid rgba(214, 240, 195, 0.2);
+  border-radius: 16px;
+
+  background: rgba(30, 43, 31, 0.82);
+
+  box-shadow:
+    0 15px 55px rgba(0, 0, 0, 0.23),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+
+  animation: ciFloat 5s ease-in-out infinite;
+}
+
+.ci2-speech-video {
+  cursor: pointer;
+  pointer-events: auto;
+  text-align: left;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.ci2-speech-video:hover {
+  background: rgba(44, 65, 43, 0.94);
+  border-color: rgba(182, 209, 139, 0.55);
+
+  box-shadow:
+    0 15px 45px rgba(0, 0, 0, 0.3),
+    0 0 25px rgba(182, 209, 139, 0.1);
+}
+
+.ci2-speech-dot {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background: #b8df86;
+
+  box-shadow:
+    0 0 13px rgba(184, 223, 134, 0.7);
+}
+
+.ci2-speech-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.ci2-speech-content strong {
+  color: #f6f8f0;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.ci2-speech-content > span {
+  color: #afbea9;
+  font-size: 12px;
+}
+
+.ci2-speech-play {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #b6d18b;
+  color: #182116;
+
+  box-shadow:
+    0 0 20px rgba(182, 209, 139, 0.25);
+
+  transition: transform 0.25s ease;
+}
+
+.ci2-speech-play svg {
+  width: 17px;
+  height: 17px;
+  margin-left: 2px;
+}
+
+.ci2-speech-video:hover .ci2-speech-play {
+  transform: scale(1.12);
+}
+
+@keyframes ciFloat {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+.ci2-character-caption {
+  position: absolute;
+  z-index: 4;
+
+  bottom: 2%;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 2.6px;
+
+  white-space: nowrap;
+  color: #899f7e;
+
+  pointer-events: none;
+}
+
+/* ============================================
+   08. BOTTOM
+============================================ */
+
+.ci2-bottom {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  padding:
+    15px
+    clamp(24px, 4vw, 72px)
+    22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  color: #71816f;
+  font-size: 11px;
+}
+
+.ci2-bottom small {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================
+   09. VIDEO TUTORIAL MODAL
+============================================ */
+
+.ci2-dialog {
+  width: min(92vw, 680px);
+  max-width: 680px;
+  max-height: 90dvh;
+
+  margin: auto;
+  padding: 30px;
+  overflow-y: auto;
+
+  color: #f4f6ee;
+
+  background:
+    radial-gradient(
+      ellipse at top right,
+      rgba(182, 209, 139, 0.12),
+      transparent 55%
+    ),
+    #1b261d;
+
+  border: 1px solid rgba(182, 209, 139, 0.24);
+  border-radius: 24px;
+
+  box-shadow:
+    0 35px 110px rgba(0, 0, 0, 0.55);
+}
+
+.ci2-dialog:not([open]) {
+  display: none;
+}
+
+.ci2-dialog::backdrop {
+  background: rgba(4, 10, 6, 0.8);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.ci2-video-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ci2-dialog-label {
+  margin: 0;
+
+  color: #b6d18b;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.ci2-video-close {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(182, 209, 139, 0.2);
+  border-radius: 11px;
+
+  background: rgba(255, 255, 255, 0.045);
+  color: #e5f0dc;
+
+  font-size: 25px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.ci2-dialog h2 {
+  margin: 15px 0 9px;
+
+  color: #f4f6ee;
+
+  font-size: clamp(26px, 4vw, 35px);
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.ci2-video-description {
+  margin: 0 0 20px;
+
+  color: #a6b6a1;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* VIDEO PLAYER */
+
+.ci2-video-frame {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(182, 209, 139, 0.2);
+  border-radius: 17px;
+
+  background: #0c130e;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.ci2-tutorial-video {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  background: #0c130e;
+}
+
+/* VIDEO STEPS */
+
+.ci2-video-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.ci2-video-step {
+  min-width: 0;
+  min-height: 88px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 14px;
+
+  background: rgba(182, 209, 139, 0.055);
+
+  border: 1px solid rgba(182, 209, 139, 0.13);
+  border-radius: 13px;
+}
+
+.ci2-video-step span {
+  color: #b6d18b;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.ci2-video-step strong {
+  color: #edf4e8;
+
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+/* VIDEO ACTIONS */
+
+.ci2-video-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ci2-video-replay {
+  min-height: 54px;
+  padding: 14px 18px;
+
+  border: 1px solid rgba(182, 209, 139, 0.25);
+  border-radius: 12px;
+
+  background: rgba(182, 209, 139, 0.06);
+  color: #d6e8c4;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.ci2-video-actions .ci2-primary {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (hover: hover) {
+  .ci2-video-close:hover,
+  .ci2-video-replay:hover {
+    background: rgba(182, 209, 139, 0.15);
+    border-color: rgba(182, 209, 139, 0.4);
+  }
+}
+
+/* ============================================
+   10. IPAD LANDSCAPE
+============================================ */
+
+@media (max-width: 1200px) {
+  .ci2-main {
+    min-height: 480px;
+    gap: 12px;
+  }
+
+  .ci2-copy h1 {
+    font-size: clamp(45px, 5vw, 68px);
+  }
+
+  .ci2-character {
+    height: 490px;
+  }
+}
+
+/* ============================================
+   11. IPAD PORTRAIT
+============================================ */
+
+@media (max-width: 900px) {
+  .ci2-header {
+    padding: 23px 28px;
+  }
+
+  .ci2-main {
+    padding: 25px 28px 40px;
+
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .ci2-copy h1 {
+    font-size: clamp(40px, 5.5vw, 55px);
+  }
+
+  .ci2-description {
+    font-size: 13px;
+  }
+
+  .ci2-actions {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 310px;
+  }
+
+  .ci2-button {
+    justify-content: space-between;
+  }
+
+  .ci2-character {
+    height: 440px;
+  }
+
+  .ci2-speech {
+    right: 0;
+    top: 8%;
+
+    min-width: 205px;
+    padding: 13px;
+  }
+}
+
+/* ============================================
+   12. MOBILE
+============================================ */
+
+@media (max-width: 700px) {
+  .ci2-header {
+    padding: 20px;
+  }
+
+  .ci2-header .cori-brand-text strong {
+    font-size: 16px;
+  }
+
+  .ci2-header .cori-brand-text small {
+    font-size: 9px;
+  }
+
+  .ci2-header-actions {
+    gap: 10px;
+  }
+
+  .ci2-help-link {
+    display: none;
+  }
+
+  .ci2-header-button {
+    padding: 11px 14px;
+    gap: 10px;
+  }
+
+  .ci2-main {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 35px 20px 30px;
+    gap: 15px;
+
+    min-height: auto;
+  }
+
+  .ci2-copy h1 {
+    font-size: clamp(48px, 10vw, 66px);
+    margin: 27px 0 20px;
+  }
+
+  .ci2-description {
+    font-size: 14px;
+    max-width: 420px;
+  }
+
+  .ci2-actions {
+    max-width: 100%;
+    margin-top: 28px;
+  }
+
+  .ci2-button {
+    width: 100%;
+  }
+
+  .ci2-device-note {
+    margin-top: 27px;
+  }
+
+  .ci2-character {
+    height: clamp(350px, 100vw, 480px);
+  }
+
+  .ci2-orbit {
+    width: 77%;
+  }
+
+  .ci2-speech {
+    top: 7%;
+    right: 0;
+
+    min-width: 200px;
+    padding: 12px;
+  }
+
+  .ci2-speech-play {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ci2-bottom {
+    padding: 19px 20px;
+    flex-wrap: wrap;
+  }
+
+  .ci2-dialog {
+    width: calc(100% - 24px);
+    padding: 22px 16px;
+    border-radius: 18px;
+  }
+
+  .ci2-video-steps {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .ci2-video-step {
+    min-height: 54px;
+
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .ci2-video-actions {
+    flex-direction: column;
+  }
+
+  .ci2-video-replay,
+  .ci2-video-actions .ci2-primary {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   13. SMALL MOBILE
+============================================ */
+
+@media (max-width: 380px) {
+  .ci2-copy h1 {
+    font-size: 44px;
+  }
+
+  .ci2-character {
+    height: 340px;
+  }
+
+  .ci2-speech {
+    animation: none;
+    min-width: 185px;
+    padding: 11px;
+  }
+}
+
+/* ============================================
+   14. ACCESSIBILITY
+============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .cori-intro *,
+  .cori-intro *::before,
+  .cori-intro *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
