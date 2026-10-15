@@ -4,10 +4,10 @@
    COFFEE TECH STUDIO / IPAD FIRST
 \========================================== */
 .cori-inventory-page {
-  \--inv-olive: #c5dda1;
-  \--inv-text: #f4f6ee;
-  \--inv-muted: #9ead99;
-  \--inv-border: rgba(182, 209, 139, .16);
+  --inv-olive: #c5dda1;
+  --inv-text: #f4f6ee;
+  --inv-muted: #9ead99;
+  --inv-border: rgba(182, 209, 139, .16);
   color: var(--inv-text);
   min-height: 100dvh;
 }
