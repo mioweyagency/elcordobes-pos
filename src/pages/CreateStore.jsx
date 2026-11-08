@@ -1,3 +1,4 @@
+
 import { useRef, useState } from "react";
 
 import { supabase } from "../lib/supabase";
@@ -55,29 +56,65 @@ export default function CreateStore({ goTo }) {
   };
 
   /* ==========================================
-     CREATE STORE RECORD
-     Requires an authenticated session
+     CREATE BUSINESS — CORI CLOUD
+
+     Uses public.create_business()
+     instead of the old stores table.
   ========================================== */
 
   const saveStore = async (userId, values) => {
-    const { error: storeError } = await supabase
-      .from("stores")
-      .insert([
-        {
-          user_id: userId,
-          shop_name: values.shopName,
-          owner_name: values.ownerName,
-          email: values.email,
-          country: values.country,
-          currency: values.currency,
-        },
-      ]);
+    // Confirm the authenticated user.
+    const { data: authData, error: authError } =
+      await supabase.auth.getUser();
 
-    if (storeError) {
+    if (authError) {
+      throw authError;
+    }
+
+    if (!authData?.user || authData.user.id !== userId) {
       throw new Error(
-        `La cuenta fue creada, pero no se pudo registrar la cafetería: ${storeError.message}`
+        "Debes iniciar sesión para registrar tu cafetería."
       );
     }
+
+    // Check whether this owner already has a business.
+    const { data: existing, error: lookupError } =
+      await supabase
+        .from("businesses")
+        .select("id")
+        .eq("owner_id", userId)
+        .limit(1);
+
+    if (lookupError) {
+      throw lookupError;
+    }
+
+    if (existing?.length) {
+      return existing[0].id;
+    }
+
+    // Atomic database function:
+    // businesses + business_members +
+    // locations + subscriptions.
+    const { data: businessId, error: createError } =
+      await supabase.rpc("create_business", {
+        p_business_name: values.shopName,
+        p_location_name: "Sucursal Principal",
+      });
+
+    if (createError) {
+      throw new Error(
+        `No se pudo registrar la cafetería: ${createError.message}`
+      );
+    }
+
+    if (!businessId) {
+      throw new Error(
+        "No se recibió la confirmación del registro."
+      );
+    }
+
+    return businessId;
   };
 
   /* ==========================================
@@ -195,7 +232,7 @@ export default function CreateStore({ goTo }) {
       }
 
       /* ==========================================
-         SAVE STORE
+         SAVE BUSINESS IN CORI CLOUD
       ========================================== */
 
       await saveStore(userId, values);
@@ -237,9 +274,10 @@ export default function CreateStore({ goTo }) {
 
   return (
     <div className="create-page">
-      {/* ==========================================
+
+      {/* =====================================
           LEFT SIDE
-      ========================================== */}
+      ===================================== */}
 
       <section className="create-left">
         <img
@@ -286,12 +324,13 @@ export default function CreateStore({ goTo }) {
         </div>
       </section>
 
-      {/* ==========================================
+      {/* =====================================
           RIGHT SIDE
-      ========================================== */}
+      ===================================== */}
 
       <section className="create-right">
         <div className="create-card">
+
           {/* HEADER */}
 
           <div className="create-card-header">
@@ -320,6 +359,7 @@ export default function CreateStore({ goTo }) {
             onSubmit={createStore}
           >
             <div className="create-inputs">
+
               {/* SHOP NAME */}
 
               <label className="create-field">
@@ -403,9 +443,7 @@ export default function CreateStore({ goTo }) {
 
               <div className="create-form-row">
                 <label className="create-field">
-                  <span>
-                    País
-                  </span>
+                  <span>País</span>
 
                   <select
                     value={country}
@@ -439,9 +477,7 @@ export default function CreateStore({ goTo }) {
                 </label>
 
                 <label className="create-field">
-                  <span>
-                    Moneda
-                  </span>
+                  <span>Moneda</span>
 
                   <select
                     value={currency}
@@ -522,8 +558,10 @@ export default function CreateStore({ goTo }) {
             Tu información está protegida
             mediante autenticación segura.
           </div>
+
         </div>
       </section>
+
     </div>
   );
 }

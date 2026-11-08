@@ -1,278 +1,441 @@
-/* =========================================================
-   RECEIPT PRINT
-========================================================= */
+/* =========================================
+   CORI POS — PREMIUM RECEIPT
+   EL CORDOBÉS COFFEE TECH STUDIO
+========================================= */
 
 .receipt-print {
-
   width: 320px;
-
-  background: white;
-
-  color: black;
-
-  padding: 20px;
-
-  border-radius: 0;
-
+  max-width: 100%;
   margin: 0 auto;
+  padding: 28px 22px 30px;
 
-  font-family: monospace;
+  box-sizing: border-box;
 
-  box-shadow: none;
+  background: #ffffff;
+  color: #211f1b;
 
+  font-family:
+    "Courier New",
+    Courier,
+    monospace;
+
+  font-size: 12px;
+  line-height: 1.5;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 15px 45px rgba(0, 0, 0, 0.12);
 }
 
-/* =========================================================
-   HEADER
-========================================================= */
+/* HEADER */
 
 .receipt-header {
-
   text-align: center;
+  margin-bottom: 25px;
+}
 
-  margin-bottom: 20px;
-
+.receipt-brand-symbol {
+  font-size: 26px;
+  color: #65794b;
+  margin-bottom: 8px;
 }
 
 .receipt-header h1 {
-
   margin: 0;
 
-  font-size: 22px;
+  font-size: 24px;
+  font-weight: 900;
 
-  font-weight: 700;
-
+  letter-spacing: 2px;
+  line-height: 1.2;
 }
 
-.receipt-header p {
+.receipt-brand-subtitle {
+  margin: 7px 0 0;
 
-  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 700;
 
-  margin-bottom: 10px;
+  letter-spacing: 3px;
+  color: #777;
+}
 
-  opacity: 0.7;
+.receipt-brand-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  font-size: 12px;
+  margin: 18px 0;
+  gap: 12px;
 
+  color: #718657;
+}
+
+.receipt-brand-divider::before,
+.receipt-brand-divider::after {
+  content: "";
+
+  width: 65px;
+  height: 1px;
+
+  background: #d5d5d5;
+}
+
+.receipt-order-badge {
+  display: inline-block;
+
+  padding: 6px 12px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 4px;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+
+  margin-bottom: 12px;
 }
 
 .receipt-header h2 {
-
   margin: 0;
 
-  font-size: 18px;
+  font-size: 15px;
+  font-weight: 800;
 
+  overflow-wrap: anywhere;
 }
 
-.receipt-header span {
-
+.receipt-date {
   display: block;
 
-  margin-top: 8px;
+  margin-top: 7px;
 
-  font-size: 11px;
-
-  opacity: 0.7;
-
+  font-size: 10px;
+  color: #777;
 }
 
-/* =========================================================
-   INFO
-========================================================= */
+/* CUSTOMER */
 
 .receipt-info {
-
   display: flex;
-
   flex-direction: column;
 
-  gap: 10px;
-
+  gap: 9px;
 }
-
-/* =========================================================
-   LINES
-========================================================= */
 
 .receipt-line {
-
   display: flex;
-
   justify-content: space-between;
-
-  align-items: center;
-
-  gap: 20px;
-
-  font-size: 12px;
-
-}
-
-/* =========================================================
-   DIVIDER
-========================================================= */
-
-.receipt-divider {
-
-  border-top: 1px dashed #000;
-
-  margin: 18px 0;
-
-}
-
-/* =========================================================
-   ITEMS
-========================================================= */
-
-.receipt-items {
-
-  display: flex;
-
-  flex-direction: column;
+  align-items: flex-start;
 
   gap: 12px;
 
+  font-size: 11px;
+}
+
+.receipt-line span {
+  color: #777;
+}
+
+.receipt-line strong {
+  color: #252525;
+
+  font-weight: 800;
+  text-align: right;
+
+  overflow-wrap: anywhere;
+}
+
+/* DIVIDERS */
+
+.receipt-divider {
+  width: 100%;
+
+  border-top: 1px dashed #aaa;
+
+  margin: 22px 0;
+}
+
+/* PRODUCTS */
+
+.receipt-section-title {
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 1.4px;
+
+  margin-bottom: 16px;
+}
+
+.receipt-items {
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
 }
 
 .receipt-item {
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: flex-start;
 
-  gap: 20px;
-
-  font-size: 12px;
-
+  gap: 14px;
 }
 
-/* =========================================================
-   TOTALS
-========================================================= */
-
-.receipt-totals-print {
-
+.receipt-item-left {
   display: flex;
-
   flex-direction: column;
 
-  gap: 10px;
+  gap: 4px;
 
+  flex: 1;
+  min-width: 0;
 }
 
-.total-line {
+.receipt-item-left strong {
+  font-size: 12px;
+  font-weight: 800;
 
-  font-size: 18px;
-
-  font-weight: 700;
-
+  overflow-wrap: anywhere;
 }
 
-/* =========================================================
-   FOOTER
-========================================================= */
+.receipt-item-left small {
+  font-size: 10px;
+  color: #777;
+}
 
-.receipt-footer {
+.receipt-item-right {
+  font-size: 12px;
+  font-weight: 800;
 
-  margin-top: 26px;
+  white-space: nowrap;
+}
+
+/* TOTALS */
+
+.receipt-totals-print {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.receipt-discount-line span,
+.receipt-discount-line strong {
+  color: #526e38;
+  font-weight: 900;
+}
+
+.receipt-total-box {
+  margin-top: 12px;
+
+  padding: 19px 12px;
+
+  background: #f1f3eb;
+
+  border: 1px solid #dce3d2;
+  border-radius: 8px;
 
   text-align: center;
 
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
 }
 
-.receipt-footer p {
+.receipt-total-box span {
+  font-size: 10px;
+  font-weight: 900;
 
-  margin-bottom: 6px;
+  letter-spacing: 2px;
+}
 
-  font-size: 11px;
+.receipt-total-box strong {
+  font-size: 29px;
+  font-weight: 900;
 
+  letter-spacing: -1px;
+  line-height: 1.2;
+}
+
+.receipt-total-box small {
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+/* LOYALTY */
+
+.receipt-loyalty {
+  margin-top: 24px;
+
+  padding: 17px 14px;
+
+  border: 1px dashed #8c9b75;
+
+  border-radius: 8px;
+
+  background: #f8faf5;
+}
+
+.receipt-loyalty-title {
+  font-size: 12px;
+  font-weight: 900;
+
+  color: #526e38;
+
+  letter-spacing: 1px;
+}
+
+.receipt-loyalty p {
+  font-size: 10px;
+  color: #666;
+
+  margin: 9px 0 15px;
+}
+
+.receipt-loyalty .receipt-line {
+  margin-top: 8px;
+}
+
+.receipt-reward {
+  font-weight: 900;
+  color: #526e38 !important;
+}
+
+/* FOOTER */
+
+.receipt-footer {
+  margin-top: 30px;
+
+  text-align: center;
+}
+
+.receipt-footer-symbol {
+  font-size: 20px;
+  color: #65794b;
+
+  margin-bottom: 10px;
 }
 
 .receipt-footer h3 {
-
   margin: 0;
 
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 900;
 
+  letter-spacing: 1px;
 }
 
-/* =========================================================
-   SUCCESS MODAL
-========================================================= */
+.receipt-footer p {
+  margin: 10px 0 18px;
 
-.success-overlay {
-
-  position: fixed;
-
-  inset: 0;
-
-  background: rgba(0,0,0,0.75);
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  z-index: 9999;
-
+  font-size: 11px;
 }
 
-.success-modal {
+.receipt-footer-divider {
+  width: 80px;
+  height: 1px;
 
-  background: white;
+  margin: 0 auto 16px;
 
-  border-radius: 0;
-
-  padding: 0;
-
-  box-shadow: none;
-
+  background: #ddd;
 }
 
-/* =========================================================
-   PRINT MODE
-========================================================= */
+.receipt-footer small {
+  display: block;
+
+  font-size: 9px;
+  color: #888;
+
+  margin-top: 7px;
+}
+
+/* =========================================
+   PRINT — 80MM THERMAL
+========================================= */
 
 @media print {
 
-  body * {
-
-    visibility: hidden;
-
-  }
-
-  .success-modal,
-  .success-modal * {
-
-    visibility: visible;
-
-  }
-
-  .success-modal {
-
-    position: absolute;
-
-    left: 0;
-
-    top: 0;
-
-    width: 100%;
-
+  @page {
+    size: 80mm auto;
     margin: 0;
-
-    padding: 0;
-
-    background: white;
-
   }
 
-  .success-btn {
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
 
+    background: white !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .cpos-receipt-dialog,
+  .cpos-receipt-dialog .receipt-print,
+  .cpos-receipt-dialog .receipt-print * {
+    visibility: visible !important;
+  }
+
+  .cpos-receipt-dialog {
+    position: absolute !important;
+
+    left: 0 !important;
+    top: 0 !important;
+
+    width: 80mm !important;
+    max-width: 80mm !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background: white !important;
+
+    box-shadow: none !important;
+  }
+
+  .receipt-print {
+    width: 80mm !important;
+    max-width: 80mm !important;
+
+    padding: 5mm !important;
+
+    margin: 0 !important;
+
+    border-radius: 0 !important;
+    box-shadow: none !important;
+
+    background: white !important;
+    color: black !important;
+  }
+
+  .receipt-total-box,
+  .receipt-loyalty {
+    background: white !important;
+    border-color: #777 !important;
+  }
+
+  .receipt-brand-symbol,
+  .receipt-footer-symbol,
+  .receipt-loyalty-title,
+  .receipt-discount-line span,
+  .receipt-discount-line strong {
+    color: black !important;
+  }
+
+  .cpos-pdf-actions,
+  .cpos-pdf-actions *,
+  .cpos-receipt-dialog button {
     display: none !important;
-
   }
-
 }

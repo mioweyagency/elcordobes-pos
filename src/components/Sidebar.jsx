@@ -1,4 +1,3 @@
-
 import { useTranslation } from "react-i18next";
 import CoriBrand from "./CoriBrand";
 
@@ -35,6 +34,26 @@ function NavIcon({ name }) {
     sales: (
       <>
         <path d="M5 21V12M12 21V4M19 21V9" />
+      </>
+    ),
+
+    // CORI CASH CONTROL
+    cashControl: (
+      <>
+        <rect x="3" y="7" width="18" height="14" rx="2" />
+        <path d="M3 11h18" />
+        <path d="M7 7V4h10v3" />
+        <circle cx="12" cy="16" r="2" />
+      </>
+    ),
+
+    // CORI LOYALTY - CLIENTES
+    clientes: (
+      <>
+        <circle cx="9" cy="8" r="3" />
+        <path d="M3 20v-2a6 6 0 0 1 12 0v2" />
+        <path d="M17 5a3 3 0 0 1 0 6" />
+        <path d="M18 14a5 5 0 0 1 3 5v1" />
       </>
     ),
 
@@ -96,6 +115,19 @@ export default function Sidebar({ goTo, active }) {
       id: "sales",
       label: text("Ventas", "Sales"),
     },
+
+    // CORI CASH CONTROL
+    {
+      id: "cashControl",
+      label: text("Control de caja", "Cash Control"),
+    },
+
+    // CORI LOYALTY
+    {
+      id: "clientes",
+      label: text("Clientes", "Customers"),
+    },
+
     {
       id: "profile",
       label: text("Perfil", "Profile"),

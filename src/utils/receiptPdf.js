@@ -23,18 +23,19 @@ export async function createReceiptPdf(
     StandardFonts.HelveticaBold
   );
 
-  const width = 226.77; // 80 mm
+  const width = 226.77;
   const height = 600;
   const margin = 16;
 
-  const ink = rgb(0.16, 0.12, 0.08);
-  const olive = rgb(0.2, 0.22, 0.12);
+  const ink = rgb(0.13, 0.13, 0.12);
+  const olive = rgb(0.31, 0.40, 0.22);
 
   const supported = new Set(
     regular.getCharacterSet()
   );
 
-  const shop = settings.shopName || "El Cordobés";
+  const shop =
+    settings.shopName || "El Cordobés";
 
   let page;
   let y;
@@ -139,14 +140,18 @@ export async function createReceiptPdf(
     const size = strong ? 11 : 9;
 
     const right = clean(value);
-    const rightWidth = font.widthOfTextAtSize(
-      right,
-      size
+
+    const rightWidth =
+      font.widthOfTextAtSize(right, size);
+
+    const availableWidth = Math.max(
+      25,
+      width - margin * 2 - rightWidth - 10
     );
 
     const lines = wrap(
       label,
-      width - margin * 2 - rightWidth - 10,
+      availableWidth,
       font,
       size
     );
@@ -184,27 +189,73 @@ export async function createReceiptPdf(
 
   pdf.setAuthor(shop);
 
-  text(shop, bold, 15, true);
-  text("RECIBO DE VENTA", regular, 9, true);
+  // BRAND
+
+  text("✦", bold, 14, true);
+
+  text(
+    shop.toUpperCase(),
+    bold,
+    15,
+    true
+  );
+
+  text(
+    "COFFEE & BAKERY",
+    regular,
+    8,
+    true
+  );
+
+  y -= 8;
+
+  divider();
+
+  text(
+    "RECIBO DE VENTA",
+    bold,
+    9,
+    true
+  );
+
+  text(
+    `ORDEN #${sale.orderNumber}`,
+    bold,
+    10,
+    true
+  );
+
+  text(
+    new Date(sale.date).toLocaleString("es-MX"),
+    regular,
+    8,
+    true
+  );
 
   if (settings.shopAddress) {
-    text(settings.shopAddress, regular, 8, true);
+    text(
+      settings.shopAddress,
+      regular,
+      8,
+      true
+    );
   }
 
   divider();
 
-  text(`Orden #${sale.orderNumber}`, bold);
+  // CUSTOMER
 
   text(
-    new Date(sale.date).toLocaleString("es-MX")
+    `Cliente: ${sale.customerName || "Cliente"}`
+  );
+
+  text(
+    `Mesa: ${sale.tableNumber || "-"}`
   );
 
   if (sale.branch) {
     text(`Sucursal: ${sale.branch}`);
   }
-
-  text(`Cliente: ${sale.customerName || "Cliente"}`);
-  text(`Mesa: ${sale.tableNumber || "-"}`);
 
   const payments = {
     Card: "Tarjeta",
@@ -223,42 +274,147 @@ export async function createReceiptPdf(
 
   divider();
 
+  // PRODUCTS
+
+  text(
+    "DETALLE DEL PEDIDO",
+    bold,
+    9
+  );
+
+  y -= 6;
+
   for (const item of sale.items || []) {
     text(item.name, bold);
 
     row(
       `${item.quantity} x ${formatMoney(item.price)}`,
       formatMoney(
-        priceCents(item.price) *
-          item.quantity /
-          100
+        (
+          priceCents(item.price) *
+          item.quantity
+        ) / 100
       )
     );
 
     y -= 4;
   }
 
-  ensure(95);
   divider();
 
-  row("Subtotal", formatMoney(sale.subtotal));
-  row("IVA incluido 16%", formatMoney(sale.iva));
-  row("TOTAL MXN", formatMoney(sale.total), true);
+  // TOTALS
+
+  const discount =
+    Number(sale.discountAmount) || 0;
+
+  const hasDiscount = discount > 0;
+
+  if (
+    hasDiscount &&
+    sale.originalTotal != null
+  ) {
+    row(
+      "Importe original",
+      formatMoney(sale.originalTotal)
+    );
+  }
+
+  row(
+    "Subtotal",
+    formatMoney(sale.subtotal)
+  );
+
+  row(
+    "IVA incluido 16%",
+    formatMoney(sale.iva)
+  );
+
+  if (hasDiscount) {
+    row(
+      sale.discountLabel || "Descuento",
+      `-${formatMoney(discount)}`
+    );
+  }
+
+  y -= 8;
 
   divider();
 
-  text("Gracias por tu visita.", regular, 9, true);
+  row(
+    "TOTAL MXN",
+    formatMoney(sale.total),
+    true
+  );
+
+  divider();
+
+  // CORI LOYALTY
+
+  if (sale.loyaltyCustomerId) {
+    text(
+      "CORI LOYALTY",
+      bold,
+      10,
+      true
+    );
+
+    y -= 5;
+
+    row(
+      "Puntos ganados",
+      `+${sale.loyaltyPointsEarned || 0}`
+    );
+
+    if (sale.loyaltyPointsBalance != null) {
+      row(
+        "Saldo de puntos",
+        String(sale.loyaltyPointsBalance)
+      );
+    }
+
+    if (sale.loyaltyRewardAvailable) {
+      y -= 5;
+
+      text(
+        "META DE PUNTOS ALCANZADA",
+        bold,
+        8,
+        true
+      );
+    }
+
+    divider();
+  }
+
+  // FOOTER
+
   text(
-    "Buen café. Mejores historias.",
+    "GRACIAS POR TU VISITA",
+    bold,
+    10,
+    true
+  );
+
+  text(
+    "Buen cafe. Mejores historias.",
     regular,
     8,
     true
   );
 
+  y -= 8;
+
   text(
-    "Contacto: +52 55 4382 3213",
+    "EL CORDOBES",
+    bold,
+    9,
+    true
+  );
+
+  text(
+    "Powered by Cori POS",
     regular,
-    8,
+    7,
     true
   );
 
@@ -278,6 +434,8 @@ export async function createReceiptPdf(
   return new File(
     [new Uint8Array(bytes).buffer],
     `Recibo-${order || "venta"}.pdf`,
-    { type: "application/pdf" }
+    {
+      type: "application/pdf",
+    }
   );
 }

@@ -97,10 +97,12 @@ export default function Intro({ goTo }) {
             Cómo funciona
           </button>
 
+          {/* CORI CLOUD — SIGN IN */}
+
           <button
             type="button"
             className="ci2-header-button"
-            onClick={() => goTo("branchSelect")}
+            onClick={() => goTo("signIn")}
           >
             Entrar
 
@@ -147,10 +149,12 @@ export default function Intro({ goTo }) {
 
           <div className="ci2-actions">
 
+            {/* SIGN IN */}
+
             <button
               type="button"
               className="ci2-button ci2-primary"
-              onClick={() => goTo("branchSelect")}
+              onClick={() => goTo("signIn")}
             >
               Entrar a mi cafetería
 
@@ -158,6 +162,8 @@ export default function Intro({ goTo }) {
                 →
               </span>
             </button>
+
+            {/* CREATE STORE */}
 
             <button
               type="button"
@@ -178,7 +184,7 @@ export default function Intro({ goTo }) {
           <button
             type="button"
             className="ci2-barista-link"
-            onClick={() => goTo("branchSelect")}
+            onClick={() => goTo("signIn")}
           >
             Soy barista · Entrar a mi sucursal
 

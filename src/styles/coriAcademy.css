@@ -1,6 +1,7 @@
 /* ==========================================
    CORI ACADEMY
    COFFEE TECH STUDIO
+   IPAD FIRST
 ========================================== */
 
 .cacademy-card,
@@ -113,6 +114,7 @@
 
 /* ==========================================
    VIDEO PREVIEW
+   HOME INSPIRED — NO DARK FRAME
 ========================================== */
 
 .cacademy-preview {
@@ -122,10 +124,16 @@
   min-width: 0;
   height: 160px;
 
+  display: grid;
+  place-items: center;
+
   overflow: hidden;
 
-  border-radius: 13px;
-  background: #101b14;
+  border: none;
+  border-radius: 15px;
+
+  background: transparent;
+  box-shadow: none;
 }
 
 .cacademy-preview-video {
@@ -137,7 +145,10 @@
   object-fit: contain;
   object-position: center;
 
-  background: #101b14;
+  background: transparent;
+
+  border: none;
+  border-radius: 15px;
 }
 
 .cacademy-preview img {
@@ -148,6 +159,10 @@
 
   object-fit: contain;
   object-position: center;
+
+  background: transparent;
+  border: none;
+  border-radius: 15px;
 }
 
 /* ==========================================
@@ -296,7 +311,7 @@
   display: block;
 
   width: 100%;
-  max-height: 65dvh;
+  max-height: 75dvh;
 
   aspect-ratio: 16 / 9;
   object-fit: contain;
@@ -379,7 +394,11 @@
 }
 
 #cori-pos .cacademy-preview {
-  height: 360px;
+  height: 160px;
+
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 #cori-pos .cacademy-copy h2 {
@@ -394,7 +413,7 @@
   .cacademy-card,
   #cori-pos .cacademy-card {
     grid-template-columns: minmax(0, 1fr) minmax(180px, 40%);
-    gap: 14px;
+    gap: 10px;
     padding: 15px;
   }
 

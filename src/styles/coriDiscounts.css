@@ -1,0 +1,376 @@
+/* ==========================================
+   CORI DISCOUNTS
+   EL CORDOBÉS COFFEE TECH STUDIO
+========================================== */
+
+#cori-pos .cori-discounts {
+  width: 100%;
+  min-width: 0;
+  margin: 18px 0;
+  padding: 20px;
+
+  border: 1px solid rgba(182, 209, 139, 0.2);
+  border-radius: 20px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(182, 209, 139, 0.1),
+      transparent 48%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(34, 48, 39, 0.96),
+      rgba(17, 27, 21, 0.98)
+    );
+
+  color: #f4f1e8;
+}
+
+/* HEADER */
+
+#cori-pos .cori-discounts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 24px;
+}
+
+#cori-pos .cori-discounts-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+
+  color: #b6d18b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+#cori-pos .cori-discounts-header h3 {
+  margin: 0 0 8px;
+
+  color: #f4f1e8;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+#cori-pos .cori-discounts-header p {
+  margin: 0;
+
+  color: #a1afa0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+#cori-pos .cori-discounts-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid rgba(182, 209, 139, 0.25);
+  border-radius: 13px;
+
+  background: rgba(182, 209, 139, 0.1);
+  color: #c8e79b;
+
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* SECTIONS */
+
+#cori-pos .cori-discounts-section {
+  margin-bottom: 20px;
+}
+
+#cori-pos .cori-discounts-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 13px;
+}
+
+#cori-pos .cori-discounts-section-title span,
+#cori-pos .cori-discounts-section label {
+  color: #d6e6c9;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#cori-pos .cori-discounts-section-title small {
+  color: #879b82;
+  font-size: 11px;
+}
+
+/* DISCOUNT BUTTONS */
+
+#cori-pos .cori-discounts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#cori-pos .cori-discount-option {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
+  min-width: 0;
+  min-height: 76px;
+  padding: 10px 4px;
+
+  border: 1px solid rgba(182, 209, 139, 0.18);
+  border-radius: 13px;
+
+  background: rgba(255, 255, 255, 0.035);
+  color: #d6e6c9;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+#cori-pos .cori-discount-option strong {
+  font-size: 21px;
+  font-weight: 800;
+}
+
+#cori-pos .cori-discount-option span {
+  color: #91a58c;
+  font-size: 10px;
+}
+
+#cori-pos .cori-discount-option:hover {
+  border-color: #b6d18b;
+  background: rgba(182, 209, 139, 0.09);
+}
+
+#cori-pos .cori-discount-option.selected {
+  border-color: #b6d18b;
+  background: rgba(182, 209, 139, 0.18);
+  color: #d6efb5;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(182, 209, 139, 0.12);
+}
+
+#cori-pos .cori-discount-option.selected span {
+  color: #c8e79b;
+}
+
+#cori-pos .cori-discount-option:active {
+  transform: scale(0.97);
+}
+
+/* DIVIDER */
+
+#cori-pos .cori-discounts-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+}
+
+#cori-pos .cori-discounts-divider::before,
+#cori-pos .cori-discounts-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(182, 209, 139, 0.15);
+}
+
+#cori-pos .cori-discounts-divider span {
+  color: #82977e;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* COUPONS */
+
+#cori-pos .cori-discounts-coupon {
+  display: flex;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+#cori-pos .cori-discounts-coupon input {
+  flex: 1;
+  min-width: 0;
+  min-height: 46px;
+  margin: 0;
+  padding: 12px;
+
+  border: 1px solid rgba(182, 209, 139, 0.2);
+  border-radius: 11px;
+
+  background: #17231a;
+  color: #f4f1e8;
+
+  font-size: 14px;
+  text-transform: uppercase;
+  outline: none;
+}
+
+#cori-pos .cori-discounts-coupon input:focus {
+  border-color: #b6d18b;
+}
+
+#cori-pos .cori-discounts-coupon button {
+  flex-shrink: 0;
+  min-height: 46px;
+  padding: 0 16px;
+
+  border: 1px solid #b6d18b;
+  border-radius: 11px;
+
+  background: #b6d18b;
+  color: #17231a;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+#cori-pos .cori-discounts-message {
+  margin: 10px 0 0;
+  color: #c8e79b;
+  font-size: 12px;
+}
+
+/* SUMMARY */
+
+#cori-pos .cori-discounts-summary {
+  margin-top: 22px;
+  padding: 16px;
+
+  border: 1px solid rgba(182, 209, 139, 0.16);
+  border-radius: 14px;
+
+  background: rgba(0, 0, 0, 0.14);
+}
+
+#cori-pos .cori-discounts-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+#cori-pos .cori-discounts-row span {
+  color: #a1afa0;
+  font-size: 12px;
+}
+
+#cori-pos .cori-discounts-row strong {
+  color: #f4f1e8;
+  font-size: 13px;
+}
+
+#cori-pos .cori-discounts-row.saving strong {
+  color: #c8e79b;
+}
+
+#cori-pos .cori-discounts-final {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  margin-top: 16px;
+  padding-top: 16px;
+
+  border-top: 1px solid rgba(182, 209, 139, 0.2);
+}
+
+#cori-pos .cori-discounts-final > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+#cori-pos .cori-discounts-final small {
+  color: #a1afa0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+}
+
+#cori-pos .cori-discounts-final strong {
+  color: #d6efb5;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+#cori-pos .cori-discounts-badge {
+  align-self: flex-end;
+  padding: 7px 10px;
+
+  border-radius: 8px;
+  background: rgba(182, 209, 139, 0.13);
+  color: #c8e79b;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+#cori-pos .cori-discounts-remove {
+  width: 100%;
+  margin-top: 15px;
+  padding: 11px;
+
+  border: 1px solid rgba(182, 209, 139, 0.15);
+  border-radius: 10px;
+
+  background: transparent;
+  color: #a1afa0;
+
+  font-size: 12px;
+}
+
+#cori-pos .cori-discounts-remove:hover {
+  color: #f4f1e8;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+#cori-pos .cori-discounts-footnote {
+  margin: 15px 0 0;
+  color: #82977e;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* IPAD + MOBILE */
+
+@media (max-width: 600px) {
+  #cori-pos .cori-discounts {
+    padding: 15px;
+  }
+
+  #cori-pos .cori-discounts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #cori-pos .cori-discount-option {
+    min-height: 65px;
+  }
+
+  #cori-pos .cori-discounts-final strong {
+    font-size: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cori-pos .cori-discount-option {
+    transition: none;
+  }
+}

@@ -1062,12 +1062,12 @@
 
 #cori-pos .cpos-academy-section .cacademy-card {
   width: 100%;
-  min-height: 205px;
+  min-height: 230px;
 }
 
 /* Desktop */
 
-@media (min-width: 1200px) {
+@media (min-width: 1100px) {
   #cori-pos .cpos-academy-section {
     max-width: 100%;
   }
@@ -1077,7 +1077,7 @@
 
 @media (max-width: 1024px) {
   #cori-pos .cpos-academy-section .cacademy-card {
-    min-height: 185px;
+    min-height: 200px;
   }
 }
 

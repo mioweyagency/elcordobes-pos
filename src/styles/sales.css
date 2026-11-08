@@ -1,10 +1,8 @@
-
 /* ==================================================
    CORI POS — SALES
    COFFEE TECH STUDIO
    IPAD FIRST
-================================================== */
-
+\================================================== */
 .cori-sales-page {
   --sales-bg: #17231a;
   --sales-panel: #203026;
@@ -12,37 +10,30 @@
   --sales-cream: #f3f5ed;
   --sales-muted: #9eaf99;
   --sales-border: rgba(185, 213, 150, .16);
-
   min-height: 100dvh;
   color: var(--sales-cream);
 }
-
 .cori-sales-page *,
 .cori-sales-page *::before,
 .cori-sales-page *::after {
   box-sizing: border-box;
 }
-
 .cori-sales-page .cori-sales-main {
   min-width: 0;
 }
-
 .sales-page-content {
   min-width: 0;
   padding: 28px clamp(18px, 2.6vw, 42px) 55px;
 }
-
 .sales-page-content button {
   font-family: inherit;
   cursor: pointer;
   touch-action: manipulation;
 }
-
 .sales-page-content button:disabled {
   opacity: .55;
   cursor: not-allowed;
 }
-
 .sales-eyebrow {
   margin: 0 0 11px;
   color: #b8d593;
@@ -51,11 +42,9 @@
   letter-spacing: 2px;
   text-transform: uppercase;
 }
-
 /* ==================================================
    PAGE HEADER
-================================================== */
-
+\================================================== */
 .sales-page-header {
   display: flex;
   justify-content: space-between;
@@ -65,7 +54,6 @@
   padding-bottom: 24px;
   border-bottom: 1px solid var(--sales-border);
 }
-
 .sales-page-header h1 {
   margin: 0 0 9px;
   font-size: clamp(31px, 3.2vw, 43px);
@@ -73,7 +61,6 @@
   letter-spacing: -.05em;
   line-height: 1.12;
 }
-
 .sales-page-description {
   margin: 0;
   max-width: 620px;
@@ -81,7 +68,6 @@
   font-size: 13px;
   line-height: 1.65;
 }
-
 .sales-refresh-btn {
   flex-shrink: 0;
   min-height: 46px;
@@ -94,15 +80,12 @@
   font-weight: 750;
   transition: .2s ease;
 }
-
 .sales-refresh-btn:hover {
   background: rgba(185, 213, 150, .16);
 }
-
 /* ==================================================
    HERO
-================================================== */
-
+\================================================== */
 .sales-hero {
   display: flex;
   justify-content: space-between;
@@ -114,7 +97,6 @@
   overflow: hidden;
   border: 1px solid rgba(185, 213, 150, .23);
   border-radius: 22px;
-
   background:
     radial-gradient(
       circle at 85% 35%,
@@ -128,14 +110,12 @@
       #30432d
     );
 }
-
 .sales-hero h2 {
   margin: 0 0 10px;
   font-size: clamp(24px, 2.7vw, 34px);
   letter-spacing: -.045em;
   line-height: 1.2;
 }
-
 .sales-hero p:last-child {
   max-width: 580px;
   margin: 0;
@@ -143,7 +123,6 @@
   font-size: 13px;
   line-height: 1.65;
 }
-
 .sales-hero-mark {
   display: grid;
   place-items: center;
@@ -156,11 +135,9 @@
   color: #d1e6b1;
   font-size: 66px;
 }
-
 /* ==================================================
    PERIOD FILTER
-================================================== */
-
+\================================================== */
 .sales-period-row {
   display: flex;
   justify-content: space-between;
@@ -168,7 +145,6 @@
   gap: 14px;
   margin-bottom: 18px;
 }
-
 .sales-period-buttons {
   display: flex;
   gap: 8px;
@@ -177,7 +153,6 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-
 .sales-period-btn {
   flex-shrink: 0;
   min-height: 43px;
@@ -190,30 +165,25 @@
   font-weight: 750;
   transition: .2s ease;
 }
-
 .sales-period-btn.active {
   border-color: rgba(197, 221, 161, .4);
   background: rgba(197, 221, 161, .17);
   color: #e1efce;
 }
-
 .sales-period-label {
   color: var(--sales-muted);
   font-size: 12px;
   text-align: right;
 }
-
 /* ==================================================
    STATISTICS
-================================================== */
-
+\================================================== */
 .sales-stats-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 25px;
 }
-
 .sales-stat-card {
   position: relative;
   display: flex;
@@ -225,22 +195,18 @@
   overflow: hidden;
   border: 1px solid var(--sales-border);
   border-radius: 19px;
-
   background:
     linear-gradient(
       145deg,
       rgba(41, 57, 43, .8),
       rgba(22, 32, 25, .97)
     );
-
   transition: transform .2s ease, border-color .2s ease;
 }
-
 .sales-stat-card:hover {
   transform: translateY(-2px);
   border-color: rgba(197, 221, 161, .36);
 }
-
 .sales-stat-icon {
   display: grid;
   place-items: center;
@@ -251,12 +217,10 @@
   background: rgba(197, 221, 161, .1);
   color: var(--sales-olive);
 }
-
 .sales-stat-card > span {
   color: var(--sales-muted);
   font-size: 11px;
 }
-
 .sales-stat-card h2 {
   margin: 9px 0 7px;
   color: var(--sales-cream);
@@ -266,21 +230,17 @@
   line-height: 1.15;
   overflow-wrap: anywhere;
 }
-
 .sales-stat-card:first-child h2 {
   color: #d9edbd;
 }
-
 .sales-stat-card small {
   margin-top: auto;
   color: #81977e;
   font-size: 10px;
 }
-
 /* ==================================================
    ANALYTICS LAYOUT
-================================================== */
-
+\================================================== */
 .sales-analytics-grid {
   display: grid;
   grid-template-columns:
@@ -289,14 +249,12 @@
   gap: 15px;
   margin-bottom: 29px;
 }
-
 .sales-chart-panel,
 .sales-top-products {
   min-width: 0;
   padding: 22px;
   border: 1px solid var(--sales-border);
   border-radius: 20px;
-
   background:
     linear-gradient(
       145deg,
@@ -304,7 +262,6 @@
       rgba(22, 32, 25, .97)
     );
 }
-
 .sales-panel-heading {
   display: flex;
   justify-content: space-between;
@@ -312,22 +269,18 @@
   gap: 14px;
   margin-bottom: 22px;
 }
-
 .sales-panel-heading h2 {
   margin: 0;
   font-size: 19px;
   font-weight: 760;
   letter-spacing: -.035em;
 }
-
 .sales-panel-heading > strong {
   color: #d4e9b8;
   font-size: 15px;
   white-space: nowrap;
 }
-
 /* CHART */
-
 .sales-chart {
   display: flex;
   align-items: stretch;
@@ -337,7 +290,6 @@
   padding-top: 8px;
   overflow: hidden;
 }
-
 .sales-chart-column {
   display: flex;
   flex: 1;
@@ -347,7 +299,6 @@
   min-width: 0;
   gap: 10px;
 }
-
 .sales-chart-track {
   display: flex;
   flex-direction: column;
@@ -355,7 +306,6 @@
   width: 100%;
   height: 190px;
   border-bottom: 1px solid rgba(197, 221, 161, .15);
-
   background:
     repeating-linear-gradient(
       to top,
@@ -364,7 +314,6 @@
       rgba(197, 221, 161, .055) 25%
     );
 }
-
 .sales-chart-bar {
   width: min(100%, 36px);
   margin: 0 auto;
@@ -377,7 +326,6 @@
   box-shadow: 0 0 20px rgba(174, 204, 126, .09);
   transition: height .3s ease;
 }
-
 .sales-chart-column > span {
   width: 100%;
   color: #9bad96;
@@ -386,21 +334,17 @@
   white-space: nowrap;
   overflow: hidden;
 }
-
 .sales-chart-note {
   margin: 15px 0 0;
   color: #81947d;
   font-size: 11px;
   line-height: 1.6;
 }
-
 /* TOP PRODUCTS */
-
 .sales-top-list {
   display: flex;
   flex-direction: column;
 }
-
 .sales-top-item {
   display: flex;
   align-items: center;
@@ -409,11 +353,9 @@
   padding: 12px 0;
   border-bottom: 1px solid rgba(197, 221, 161, .1);
 }
-
 .sales-top-item:last-child {
   border-bottom: none;
 }
-
 .sales-top-rank {
   display: grid;
   place-items: center;
@@ -426,7 +368,6 @@
   font-size: 11px;
   font-weight: 800;
 }
-
 .sales-top-name {
   flex: 1;
   min-width: 0;
@@ -435,33 +376,27 @@
   font-weight: 650;
   overflow-wrap: anywhere;
 }
-
 .sales-top-item strong {
   color: #d4e9b8;
   font-size: 14px;
   white-space: nowrap;
 }
-
 .sales-top-item strong small {
   color: #8ea487;
   font-size: 10px;
   font-weight: 500;
 }
-
 .sales-no-products {
   color: var(--sales-muted);
   font-size: 13px;
   line-height: 1.6;
 }
-
 /* ==================================================
    REPORT SECTION
-================================================== */
-
+\================================================== */
 .sales-report-section {
   margin-bottom: 29px;
 }
-
 .sales-section-heading {
   display: flex;
   justify-content: space-between;
@@ -469,21 +404,17 @@
   gap: 15px;
   margin-bottom: 17px;
 }
-
 .sales-section-heading h2 {
   margin: 0;
   font-size: 23px;
   font-weight: 770;
   letter-spacing: -.035em;
 }
-
 .sales-section-heading > span {
   color: var(--sales-muted);
   font-size: 12px;
 }
-
 /* REPORT CARD */
-
 .sales-report-card {
   position: relative;
   padding: 28px;
@@ -491,7 +422,6 @@
   overflow: hidden;
   border: 1px solid rgba(197, 221, 161, .22);
   border-radius: 22px;
-
   background:
     radial-gradient(
       circle at 95% 5%,
@@ -503,10 +433,8 @@
       #26382a,
       #19271e
     );
-
   box-shadow: 0 18px 45px rgba(0, 0, 0, .12);
 }
-
 .report-header {
   display: flex;
   justify-content: space-between;
@@ -514,7 +442,6 @@
   gap: 18px;
   margin-bottom: 24px;
 }
-
 .report-label {
   margin: 0 0 10px;
   color: #b8d593;
@@ -522,7 +449,6 @@
   font-weight: 800;
   letter-spacing: 1.8px;
 }
-
 .report-header h2 {
   margin: 0 0 8px;
   color: #f4f6ee;
@@ -531,13 +457,11 @@
   letter-spacing: -.04em;
   line-height: 1.2;
 }
-
 .report-period {
   margin: 0;
   color: #a4b99b;
   font-size: 12px;
 }
-
 .report-logo,
 .report-brand-symbol {
   flex-shrink: 0;
@@ -547,28 +471,23 @@
   border-radius: 18px;
   background: rgba(197, 221, 161, .07);
 }
-
 .report-logo {
   display: block;
   object-fit: contain;
 }
-
 .report-brand-symbol {
   display: grid;
   place-items: center;
   color: #d1e7b0;
   font-size: 43px;
 }
-
 /* SHOP INFORMATION */
-
 .report-shop-info {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 18px;
 }
-
 .report-shop-info > div {
   min-width: 0;
   padding: 15px;
@@ -576,14 +495,12 @@
   border-radius: 13px;
   background: rgba(0, 0, 0, .08);
 }
-
 .report-shop-info span {
   color: #93a88d;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1px;
 }
-
 .report-shop-info h3 {
   margin: 9px 0 0;
   color: #f0f4e9;
@@ -591,16 +508,13 @@
   font-weight: 740;
   overflow-wrap: anywhere;
 }
-
 /* REPORT STATS */
-
 .report-stats-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 13px;
 }
-
 .report-stat {
   min-width: 0;
   padding: 19px;
@@ -608,19 +522,16 @@
   border-radius: 15px;
   background: rgba(0, 0, 0, .11);
 }
-
 .report-stat.featured {
   border-color: rgba(197, 221, 161, .28);
   background: rgba(197, 221, 161, .09);
 }
-
 .report-stat > span {
   color: #a4b99b;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1px;
 }
-
 .report-stat h2 {
   margin: 12px 0 6px;
   color: #f4f6ee;
@@ -630,28 +541,22 @@
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
-
 .report-stat.featured h2 {
   color: #d8edba;
 }
-
 .report-stat h2.report-top-product {
   font-size: clamp(16px, 1.8vw, 22px);
 }
-
 .report-stat small {
   color: #849b80;
   font-size: 10px;
 }
-
 /* PAYMENT SUMMARY */
-
 .report-payments {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
-
 .payment-card {
   min-width: 0;
   padding: 16px;
@@ -659,23 +564,19 @@
   border-radius: 14px;
   background: rgba(197, 221, 161, .075);
 }
-
 .payment-card span {
   color: #b7cfa9;
   font-size: 10px;
   font-weight: 750;
   letter-spacing: .6px;
 }
-
 .payment-card h2 {
   margin: 10px 0 0;
   color: #f2f5eb;
   font-size: 26px;
   font-weight: 800;
 }
-
 /* REPORT FOOTER */
-
 .report-footer {
   display: flex;
   justify-content: space-between;
@@ -684,22 +585,18 @@
   padding-top: 16px;
   border-top: 1px solid rgba(197, 221, 161, .13);
 }
-
 .report-footer span {
   color: #a6bb9b;
   font-size: 10px;
   font-weight: 700;
 }
-
 /* REPORT ACTIONS */
-
 .report-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 11px;
   margin-bottom: 12px;
 }
-
 .report-btn {
   display: inline-flex;
   align-items: center;
@@ -715,31 +612,25 @@
   font-weight: 800;
   transition: .2s ease;
 }
-
 .report-btn:hover {
   background: #d9edbc;
 }
-
 .report-btn.secondary {
   border-color: rgba(197, 221, 161, .25);
   background: rgba(197, 221, 161, .09);
   color: #d8ebc2;
 }
-
 .report-btn.secondary:hover {
   background: rgba(197, 221, 161, .16);
 }
-
 .sales-feedback {
   margin: 10px 0 0;
   color: #bcd8a0;
   font-size: 12px;
 }
-
 /* ==================================================
    SALES HISTORY
-================================================== */
-
+\================================================== */
 .sales-history {
   min-width: 0;
   padding: 23px;
@@ -751,7 +642,6 @@
     rgba(22, 32, 25, .97)
   );
 }
-
 .sales-history-header {
   display: flex;
   justify-content: space-between;
@@ -759,26 +649,22 @@
   gap: 15px;
   margin-bottom: 20px;
 }
-
 .sales-history-header h2 {
   margin: 0;
   font-size: 23px;
   font-weight: 770;
   letter-spacing: -.035em;
 }
-
 .sales-history-header > span {
   color: #a4b99b;
   font-size: 12px;
 }
-
 .sales-history-toolbar {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 19px;
 }
-
 .sales-history-search {
   display: flex;
   align-items: center;
@@ -792,11 +678,9 @@
   background: rgba(0, 0, 0, .13);
   color: #a9c39a;
 }
-
 .sales-history-search:focus-within {
   border-color: #c5dda1;
 }
-
 .sales-history-search input {
   flex: 1;
   min-width: 0;
@@ -808,11 +692,9 @@
   color: #f4f6ee;
   font-size: 16px;
 }
-
 .sales-history-search input::placeholder {
   color: #84977e;
 }
-
 .sales-payment-filter {
   flex-shrink: 0;
   min-height: 47px;
@@ -826,15 +708,12 @@
   cursor: pointer;
   color-scheme: dark;
 }
-
 .sales-history-list {
   display: flex;
   flex-direction: column;
   gap: 11px;
 }
-
 /* HISTORY CARD */
-
 .history-card {
   display: grid;
   grid-template-columns:
@@ -850,16 +729,13 @@
   background: rgba(0, 0, 0, .12);
   transition: .2s ease;
 }
-
 .history-card:hover {
   border-color: rgba(197, 221, 161, .3);
   background: rgba(197, 221, 161, .04);
 }
-
 .history-left {
   min-width: 0;
 }
-
 .history-left h3 {
   margin: 0 0 8px;
   color: #d2e8b7;
@@ -867,27 +743,23 @@
   font-weight: 800;
   letter-spacing: .5px;
 }
-
 .history-left p {
   margin: 0 0 7px;
   color: #eef3e9;
   font-size: 13px;
   font-weight: 650;
 }
-
 .history-left > span {
   color: #90a18b;
   font-size: 11px;
   line-height: 1.5;
 }
-
 .history-center {
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
   min-width: 0;
 }
-
 .history-item {
   display: inline-flex;
   align-items: center;
@@ -901,12 +773,10 @@
   font-weight: 650;
   overflow-wrap: anywhere;
 }
-
 .history-right {
   min-width: 0;
   text-align: right;
 }
-
 .history-right h2 {
   margin: 0 0 9px;
   color: #f2f5eb;
@@ -914,7 +784,6 @@
   font-weight: 800;
   overflow-wrap: anywhere;
 }
-
 .payment-badge {
   display: inline-flex;
   align-items: center;
@@ -926,7 +795,6 @@
   font-size: 10px;
   font-weight: 750;
 }
-
 .sales-empty {
   display: flex;
   flex-direction: column;
@@ -938,26 +806,21 @@
   border-radius: 14px;
   text-align: center;
 }
-
 .sales-empty > span {
   font-size: 35px;
 }
-
 .sales-empty h3 {
   margin: 13px 0 7px;
   font-size: 18px;
 }
-
 .sales-empty p {
   margin: 0;
   color: var(--sales-muted);
   font-size: 12px;
 }
-
 /* ==================================================
    CORI INSIGHTS
-================================================== */
-
+\================================================== */
 .sales-insights {
   display: flex;
   align-items: center;
@@ -972,7 +835,6 @@
     rgba(26, 41, 30, .94)
   );
 }
-
 .sales-insights-symbol {
   display: grid;
   place-items: center;
@@ -985,59 +847,48 @@
   color: #c5dda1;
   font-size: 36px;
 }
-
 .sales-insights h3 {
   margin: 0 0 7px;
   font-size: 18px;
   font-weight: 750;
 }
-
 .sales-insights p:last-child {
   margin: 0;
   color: #adbea5;
   font-size: 12px;
   line-height: 1.65;
 }
-
 /* ==================================================
    IPAD LANDSCAPE
-================================================== */
-
+\================================================== */
 @media (max-width: 1250px) {
   .sales-page-content {
     padding: 22px 18px 45px;
   }
-
   .sales-stats-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-
   .sales-stat-card {
     min-height: 145px;
   }
-
   .sales-analytics-grid {
     grid-template-columns:
       minmax(0, 1.2fr)
       minmax(250px, 1fr);
   }
 }
-
 /* ==================================================
    IPAD PORTRAIT
-================================================== */
-
+\================================================== */
 @media (max-width: 950px) {
   .sales-analytics-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-
   .history-card {
     grid-template-columns:
       minmax(130px, 1fr)
       minmax(0, 1.4fr);
   }
-
   .history-right {
     grid-column: 1 / -1;
     display: flex;
@@ -1048,168 +899,283 @@
     border-top: 1px solid rgba(197, 221, 161, .1);
     text-align: left;
   }
-
   .history-right h2 {
     margin: 0;
   }
 }
-
 /* ==================================================
    MOBILE
-================================================== */
-
+\================================================== */
 @media (max-width: 650px) {
   .sales-page-content {
     padding: 18px 14px 35px;
   }
-
   .sales-page-header {
     align-items: flex-start;
     flex-direction: column;
   }
-
   .sales-hero {
     padding: 22px;
   }
-
   .sales-hero-mark {
     display: none;
   }
-
   .sales-period-row {
     flex-direction: column;
     align-items: flex-start;
   }
-
   .sales-stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
-
   .sales-stat-card {
     min-height: 142px;
     padding: 14px;
   }
-
   .sales-stat-card h2 {
     font-size: 21px;
   }
-
   .sales-chart-panel,
   .sales-top-products,
   .sales-history {
     padding: 16px;
   }
-
   .sales-panel-heading {
     flex-wrap: wrap;
   }
-
   .sales-report-card {
     padding: 18px;
   }
-
   .report-header {
     align-items: flex-start;
   }
-
   .report-logo,
   .report-brand-symbol {
     width: 54px;
     height: 54px;
     border-radius: 13px;
   }
-
   .report-shop-info {
     gap: 9px;
   }
-
   .report-shop-info > div {
     padding: 12px;
   }
-
   .report-stats-grid {
     gap: 9px;
   }
-
   .report-stat {
     padding: 13px;
   }
-
   .report-stat h2 {
     font-size: 19px;
   }
-
   .report-payments {
     gap: 7px;
   }
-
   .payment-card {
     padding: 11px;
   }
-
   .payment-card h2 {
     font-size: 22px;
   }
-
   .payment-card span {
     font-size: 9px;
   }
-
   .sales-history-toolbar {
     flex-direction: column;
     align-items: stretch;
   }
-
   .sales-payment-filter {
     width: 100%;
   }
-
   .history-card {
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
   }
-
   .history-right {
     grid-column: auto;
   }
-
   .sales-insights {
     align-items: flex-start;
     padding: 18px;
   }
 }
-
 @media (max-width: 390px) {
   .sales-stats-grid {
     grid-template-columns: 1fr;
   }
-
   .report-payments {
     grid-template-columns: 1fr;
   }
-
   .report-footer {
     flex-direction: column;
   }
 }
-
 /* ==================================================
    ACCESSIBILITY
-================================================== */
-
+\================================================== */
 .cori-sales-page button:focus-visible,
 .cori-sales-page input:focus-visible,
 .cori-sales-page select:focus-visible {
   outline: 2px solid #c5dda1;
   outline-offset: 3px;
 }
-
 @media (prefers-reduced-motion: reduce) {
   .cori-sales-page *,
   .cori-sales-page *::before,
   .cori-sales-page *::after {
     transition: none !important;
     animation: none !important;
+  }
+}
+/* =====================================================
+   CORI ACADEMY — SALES
+   SAME VIDEO PRESENTATION AS CLIENTES
+\===================================================== */
+.cori-sales-page .sales-academy-section {
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 24px;
+}
+.cori-sales-page .sales-academy-section .cacademy-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 40%);
+  align-items: center;
+  gap: 16px;
+  min-height: 190px;
+  padding: 18px;
+}
+.cori-sales-page .sales-academy-section .cacademy-preview {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  box-shadow: none;
+}
+.cori-sales-page .sales-academy-section .cacademy-preview-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background: transparent;
+}
+@media (max-width: 1100px) {
+  .cori-sales-page .sales-academy-section .cacademy-card {
+    gap: 10px;
+    padding: 15px;
+  }
+  .cori-sales-page .sales-academy-section .cacademy-preview {
+    height: 200px;
+  }
+}
+@media (max-width: 600px) {
+  .cori-sales-page .sales-academy-section .cacademy-card {
+    grid-template-columns: 1fr;
+  }
+  .cori-sales-page .sales-academy-section .cacademy-preview {
+    height: 180px;
+  }
+}
+/* CORI LOYALTY + DISCOUNTS — additive styles */
+.cori-sales-page .sales-stats-grid {grid-template-columns: repeat(auto-fit,minmax(155px,1fr));}
+.sales-cori-summary {padding:24px;margin:0 0 25px;border:1px solid rgba(197,221,161,.22);border-radius:20px;background:linear-gradient(135deg,rgba(40,60,43,.9),rgba(20,31,24,.97));}
+.sales-cori-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;}
+.sales-cori-heading h2{margin:0;font-size:21px;color:#f3f5ed;}
+.sales-cori-heading>span{color:#9eaf99;font-size:12px;}
+.sales-cori-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+.sales-cori-metrics>div{padding:16px;border:1px solid rgba(197,221,161,.13);border-radius:14px;background:rgba(0,0,0,.12);min-width:0;}
+.sales-cori-metrics span{display:block;color:#a5b69f;font-size:11px;margin-bottom:10px;}
+.sales-cori-metrics strong{color:#d9edbd;font-size:clamp(16px,2vw,23px);overflow-wrap:anywhere;}
+.sales-discount-breakdown{margin-top:16px;border-top:1px solid rgba(197,221,161,.13);padding-top:10px;}
+.sales-discount-breakdown>div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;color:#c4d4bb;font-size:12px;}
+.sales-discount-breakdown strong{color:#d9edbd;}
+.sales-history-extras{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0;}
+.sales-discount-tag,.sales-loyalty-tag{display:inline-block;padding:6px 9px;border-radius:8px;font-size:11px;font-weight:700;overflow-wrap:anywhere;}
+.sales-discount-tag{color:#f1d7ac;background:rgba(205,149,74,.13);}
+.sales-loyalty-tag{color:#d9edbd;background:rgba(197,221,161,.12);}
+.sales-detail-toggle{border:1px solid rgba(197,221,161,.23);background:rgba(197,221,161,.08);color:#d9edbd;border-radius:8px;padding:7px 10px;font-size:11px;cursor:pointer;margin:6px 0;}
+.sales-sale-detail{grid-column:1/-1;width:100%;padding:16px;border-top:1px solid rgba(197,221,161,.15);background:rgba(0,0,0,.1);border-radius:12px;}
+.sales-sale-detail>div{display:flex;justify-content:space-between;gap:15px;padding:6px 0;color:#a9bba4;font-size:12px;}
+.sales-sale-detail strong{color:#e4efdb;text-align:right;}
+.sales-sale-detail-total{border-top:1px solid rgba(197,221,161,.18);margin-top:5px;padding-top:12px!important;}
+.sales-report-cori{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:10px 0;padding:15px;border:1px solid rgba(197,221,161,.2);border-radius:12px;background:#203026;color:#d9edbd;font-size:12px;}
+@media(max-width:900px){.sales-cori-metrics{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:540px){.sales-cori-summary{padding:16px}.sales-cori-metrics{grid-template-columns:1fr 1fr;gap:8px}.sales-cori-metrics>div{padding:12px}.sales-cori-heading{align-items:flex-start;flex-direction:column}}
+
+
+/* ==========================================================
+   CORI POS — HISTORIAL HORIZONTAL (clases reales de Sales.jsx)
+   Orden / Productos / Descuentos / Total + Pago + Detalle
+   ========================================================== */
+.cori-sales-page .history-card {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.1fr) minmax(125px, 1fr) minmax(135px, .9fr) minmax(270px, 1.5fr);
+  grid-template-areas: "customer products extras actions";
+  align-items: center;
+  gap: 16px;
+}
+.cori-sales-page .history-left { grid-area: customer; }
+.cori-sales-page .history-center { grid-area: products; }
+.cori-sales-page .sales-history-extras { grid-area: extras; }
+.cori-sales-page .history-right {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 12px;
+  min-width: 0;
+  text-align: right;
+}
+.cori-sales-page .history-right h2 {
+  margin: 0 auto 0 0;
+  white-space: nowrap;
+}
+.cori-sales-page .history-right .payment-badge {
+  order: 1;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.cori-sales-page .history-right .sales-detail-toggle {
+  order: 2;
+  flex: 0 0 auto;
+  margin: 0;
+  min-height: 36px;
+  white-space: nowrap;
+}
+.cori-sales-page .sales-sale-detail {
+  grid-area: auto;
+  grid-column: 1 / -1;
+}
+@media (max-width: 1250px) {
+  .cori-sales-page .history-card {
+    grid-template-columns: minmax(170px, 1fr) minmax(110px, 1fr) minmax(230px, 1.4fr);
+    grid-template-areas: "customer products actions" "extras extras extras";
+  }
+  .cori-sales-page .sales-history-extras { flex-direction: row; flex-wrap: wrap; }
+}
+@media (max-width: 760px) {
+  .cori-sales-page .history-card {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "customer products" "extras extras" "actions actions";
+    gap: 13px;
+  }
+  .cori-sales-page .history-right {
+    grid-column: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(197, 221, 161, .12);
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .cori-sales-page .history-right h2 { margin-right: auto; }
+}
+@media (max-width: 460px) {
+  .cori-sales-page .history-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "customer" "products" "extras" "actions";
   }
 }

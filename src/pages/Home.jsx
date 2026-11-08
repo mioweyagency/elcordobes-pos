@@ -6,10 +6,20 @@ import CoriBrand from "../components/CoriBrand";
 
 import "../styles/home.css";
 
+import Sidebar from "../components/Sidebar";
+
 
 /* SVG icons — identical to Nueva Venta */
 function HomeNavIcon({ name }) {
-  const shapes = {
+  const shapes = {     clientes: (
+      <>
+        <circle cx="9" cy="8" r="3" />
+        <path d="M3 20v-2a6 6 0 0 1 12 0v2" />
+        <path d="M17 5a3 3 0 0 1 0 6" />
+        <path d="M18 14a5 5 0 0 1 3 5v1" />
+      </>
+    ),
+
     home: <><path d="m3 10 9-7 9 7" /><path d="M5 9v12h14V9M9 21v-8h6v8" /></>,
     pos: <><circle cx="12" cy="12" r="9" /><path d="M12 7v10M7 12h10" /></>,
     products: <><path d="M4 5h12v8a6 6 0 0 1-12 0V5Z" /><path d="M16 6h2a3 3 0 0 1 0 6h-2M3 21h15" /></>,
@@ -373,6 +383,10 @@ const nav = [
   ["products", "products", text("Productos", "Products")],
   ["inventory", "inventory", text("Inventario", "Inventory")],
   ["sales", "sales", text("Ventas", "Sales")],
+
+  // CORI LOYALTY
+  ["clientes", "clientes", text("Clientes", "Customers")],
+
   ["profile", "profile", text("Perfil", "Profile")],
 ];
 
@@ -492,84 +506,7 @@ const nav = [
     <div className="cori-home">
       {/* SHARED SIDEBAR */}
 
-      <aside className="ch-sidebar">
-        <div className="ch-brand">
-          <CoriBrand />
-        </div>
-
-        <nav
-          aria-label={text(
-            "Navegación principal",
-            "Main navigation"
-          )}
-        >
-          {nav.map(([route, icon, label]) => (
-            <button
-              key={route}
-              type="button"
-              className={
-                route === "home" ? "is-active" : ""
-              }
-              aria-current={
-                route === "home" ? "page" : undefined
-              }
-              aria-label={label}
-              onClick={() => goTo(route)}
-            >
-              <span className="ch-nav-icon" aria-hidden="true">
-                <HomeNavIcon name={icon} />
-              </span>
-              <span className="ch-nav-label">
-                {label}
-              </span>
-            </button>
-          ))}
-        </nav>
-
-        <div className="ch-sidebar-bottom">
-          <button
-            type="button"
-            className="ch-team-link"
-            onClick={() => goTo("employeeSelect")}
-          >
-            {text(
-              "Seleccionar empleado",
-              "Select employee"
-            )}
-            <span>→</span>
-          </button>
-
-          {/* LANGUAGE — SIDEBAR */}
-
-          <div
-            className="ch-language"
-            role="group"
-            aria-label={text("Idioma", "Language")}
-          >
-            <button
-              type="button"
-              aria-pressed={es}
-              onClick={() => changeLanguage("es")}
-            >
-              Español
-            </button>
-
-            <button
-              type="button"
-              aria-pressed={!es}
-              onClick={() => changeLanguage("en")}
-            >
-              English
-            </button>
-          </div>
-
-          <p className="ch-sidebar-note">
-            BUEN CAFÉ
-            <br />
-            MEJORES HISTORIAS
-          </p>
-        </div>
-      </aside>
+   <Sidebar goTo={goTo} active="home" />
 
       {/* MAIN */}
 

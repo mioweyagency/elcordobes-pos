@@ -1,16 +1,22 @@
-import { createClient }
-from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
+
+/* ==========================================
+   CORI CLOUD — SUPABASE CONNECTION
+========================================== */
 
 const supabaseUrl =
-"https://phspugzthlbntzzdmsvv.supabase.co";
+  import.meta.env.VITE_SUPABASE_URL;
 
-const supabaseAnonKey =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoc3B1Z3p0aGxibnR6emRtc3Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0NDQ5MzUsImV4cCI6MjA5NTAyMDkzNX0.ZwayD5tIP8VW60Hkcw0lE_sRt-wQ1W7Lx26rgiJQlbU"
-;
+const supabasePublishableKey =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-export const supabase =
-createClient(
+if (!supabaseUrl || !supabasePublishableKey) {
+  throw new Error(
+    "Cori Cloud: faltan las variables de conexión de Supabase."
+  );
+}
+
+export const supabase = createClient(
   supabaseUrl,
-  supabaseAnonKey
+  supabasePublishableKey
 );
-

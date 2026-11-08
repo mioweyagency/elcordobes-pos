@@ -1,21 +1,17 @@
-
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import html2canvas from "html2canvas";
-
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import SalesReportCard from "../components/SalesReportCard";
-
 import "../styles/home.css";
 import "../styles/sales.css";
-
+import CoriAcademy from "../components/CoriAcademy";
 const currency = (value) =>
   new Intl.NumberFormat("es-MX", {
     style: "currency",
     currency: "MXN",
   }).format(Number(value) || 0);
-
 function readJSON(key, fallback) {
   try {
     const value = JSON.parse(localStorage.getItem(key));
@@ -24,22 +20,17 @@ function readJSON(key, fallback) {
     return fallback;
   }
 }
-
 function getSaleDate(sale) {
   const raw = sale.createdAt ?? sale.date ?? sale.timestamp;
-
   if (typeof raw === "number") {
     const date = new Date(raw);
     return Number.isNaN(date.getTime()) ? null : date;
   }
-
   if (!raw) return null;
-
   if (typeof raw === "string") {
     const match = raw.match(
-      /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:,?\s+(.+))?$/
-    );
-
+  /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:,?\s+(.+))?$/
+);
     if (match) {
       // Interpreta DD/MM/YYYY cuando el dato no es ISO.
       const [, day, month, year, time] = match;
@@ -48,28 +39,22 @@ function getSaleDate(sale) {
         Number(month) - 1,
         Number(day)
       );
-
       if (time) {
         const withTime = new Date(
           `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T${time}`
         );
-
         if (!Number.isNaN(withTime.getTime())) {
           return withTime;
         }
       }
-
       return parsed;
     }
   }
-
   const parsed = new Date(raw);
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
-
 function getPaymentType(method) {
   const value = String(method || "").toLowerCase();
-
   if (
     value.includes("card") ||
     value.includes("tarjeta") ||
@@ -78,12 +63,24 @@ function getPaymentType(method) {
   ) {
     return "card";
   }
-
   if (value.includes("cash") || value.includes("efectivo")) {
     return "cash";
   }
-
   return "other";
+}
+function saleDiscount(sale) {
+  const amount = Number(sale?.discountAmount ?? sale?.discount ?? 0);
+  return Number.isFinite(amount) ? Math.max(0, amount) : 0;
+}
+function salePoints(sale) {
+  const points = Number(sale?.loyaltyPointsEarned ?? 0);
+  return sale?.loyaltyCustomerId && Number.isFinite(points) ? Math.max(0, points) : 0;
+}
+function saleOriginalTotal(sale) {
+  const original = Number(sale?.originalTotal);
+  return Number.isFinite(original) && original > 0
+    ? original
+    : (Number(sale?.total) || 0) + saleDiscount(sale);
 }
 
 function SalesIcon({ name, size = 21 }) {
@@ -138,7 +135,6 @@ function SalesIcon({ name, size = 21 }) {
       </>
     ),
   };
-
   return (
     <svg
       width={size}
@@ -155,74 +151,57 @@ function SalesIcon({ name, size = 21 }) {
     </svg>
   );
 }
-
 export default function Sales({ goTo }) {
   const { i18n } = useTranslation();
-
   const es = (
     i18n.resolvedLanguage ||
     i18n.language ||
     "es"
   ).startsWith("es");
-
   const t = (spanish, english) =>
     es ? spanish : english;
-
   const reportRef = useRef(null);
-
   const [sales, setSales] = useState(() =>
     readJSON("sales", [])
   );
-
   const [storeSettings, setStoreSettings] = useState(() =>
     readJSON("storeSettings", {})
   );
-
   const [activeBranch, setActiveBranch] = useState(
     () => localStorage.getItem("activeBranch") || "Main Branch"
   );
-
   const [period, setPeriod] = useState("all");
   const [search, setSearch] = useState("");
   const [paymentFilter, setPaymentFilter] = useState("all");
   const [feedback, setFeedback] = useState("");
   const [exporting, setExporting] = useState(false);
-
   function refreshSales() {
     const savedSales = readJSON("sales", []);
-
     setSales(Array.isArray(savedSales) ? savedSales : []);
     setStoreSettings(readJSON("storeSettings", {}));
     setActiveBranch(
       localStorage.getItem("activeBranch") || "Main Branch"
     );
   }
-
   useEffect(() => {
     window.addEventListener("focus", refreshSales);
     window.addEventListener("storage", refreshSales);
-
     return () => {
       window.removeEventListener("focus", refreshSales);
       window.removeEventListener("storage", refreshSales);
     };
   }, []);
-
   const periodLabels = {
     today: t("Hoy", "Today"),
     week: t("Últimos 7 días", "Last 7 days"),
     month: t("Últimos 30 días", "Last 30 days"),
     all: t("Todo el historial", "All time"),
   };
-
   const periodSales = useMemo(() => {
     if (!Array.isArray(sales)) return [];
-
     if (period === "all") return sales;
-
     const now = new Date();
     const start = new Date(now);
-
     if (period === "today") {
       start.setHours(0, 0, 0, 0);
     } else {
@@ -230,56 +209,57 @@ export default function Sales({ goTo }) {
       start.setDate(start.getDate() - (days - 1));
       start.setHours(0, 0, 0, 0);
     }
-
     return sales.filter((sale) => {
       const date = getSaleDate(sale);
       return date && date >= start && date <= now;
     });
   }, [sales, period]);
-
   const analytics = useMemo(() => {
     const revenue = periodSales.reduce(
       (sum, sale) => sum + (Number(sale.total) || 0),
       0
     );
-
-    const orders = periodSales.length;
+    const discountsTotal = periodSales.reduce((sum, sale) => sum + saleDiscount(sale), 0);
+  const loyaltyPoints = periodSales.reduce((sum, sale) => sum + salePoints(sale), 0);
+  const discountedOrders = periodSales.filter((sale) => saleDiscount(sale) > 0).length;
+  const originalRevenue = periodSales.reduce((sum, sale) => sum + saleOriginalTotal(sale), 0);
+  const discountBreakdown = Object.values(periodSales.reduce((acc, sale) => {
+    const amount = saleDiscount(sale);
+    if (!amount) return acc;
+    const label = String(sale.discountLabel || sale.discountCode || "Descuento");
+    if (!acc[label]) acc[label] = { label, count: 0, amount: 0 };
+    acc[label].count += 1;
+    acc[label].amount += amount;
+    return acc;
+  }, {})).sort((a, b) => b.amount - a.amount);
+  const orders = periodSales.length;
     const averageTicket = orders ? revenue / orders : 0;
-
     let cardPayments = 0;
     let cashPayments = 0;
     let otherPayments = 0;
-
     const productCount = {};
-
     periodSales.forEach((sale) => {
       const type = getPaymentType(sale.paymentMethod);
-
       if (type === "card") cardPayments += 1;
       else if (type === "cash") cashPayments += 1;
       else otherPayments += 1;
-
       const items = Array.isArray(sale.items) ? sale.items : [];
-
       items.forEach((item) => {
         const name = String(item.name || "").trim();
         if (!name) return;
-
         productCount[name] =
           (productCount[name] || 0) +
           (Number(item.quantity) || 1);
       });
     });
-
     const rankedProducts = Object.entries(productCount)
       .sort((a, b) => b[1] - a[1]);
-
     const topProduct =
       rankedProducts[0]?.[0] ||
       t("Sin productos", "No products");
-
     return {
       revenue,
+      discountsTotal, loyaltyPoints, discountedOrders, originalRevenue, discountBreakdown,
       orders,
       averageTicket,
       cardPayments,
@@ -289,16 +269,13 @@ export default function Sales({ goTo }) {
       rankedProducts,
     };
   }, [periodSales, es]);
-
   const history = useMemo(() => {
     const term = search.trim().toLowerCase();
-
     return [...periodSales]
       .filter((sale) => {
         const matchesPayment =
           paymentFilter === "all" ||
           getPaymentType(sale.paymentMethod) === paymentFilter;
-
         const searchable = [
           sale.orderNumber,
           sale.customerName,
@@ -309,7 +286,6 @@ export default function Sales({ goTo }) {
         ]
           .join(" ")
           .toLowerCase();
-
         return matchesPayment && searchable.includes(term);
       })
       .sort((a, b) => {
@@ -318,18 +294,14 @@ export default function Sales({ goTo }) {
         return dateB - dateA;
       });
   }, [periodSales, search, paymentFilter]);
-
   const chartData = useMemo(() => {
     const now = new Date();
     const days = period === "month" ? 30 : 7;
-
     const buckets = [];
-
     for (let i = days - 1; i >= 0; i -= 1) {
       const day = new Date(now);
       day.setDate(day.getDate() - i);
       day.setHours(0, 0, 0, 0);
-
       buckets.push({
         key: `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`,
         label: day.toLocaleDateString(es ? "es-MX" : "en-US", {
@@ -339,27 +311,21 @@ export default function Sales({ goTo }) {
         value: 0,
       });
     }
-
     periodSales.forEach((sale) => {
       const date = getSaleDate(sale);
       if (!date) return;
-
       const key = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
       const bucket = buckets.find((entry) => entry.key === key);
-
       if (bucket) {
         bucket.value += Number(sale.total) || 0;
       }
     });
-
     return buckets;
   }, [periodSales, period, es]);
-
   const maxChartValue = Math.max(
     1,
     ...chartData.map((day) => day.value)
   );
-
   const reportText = [
     "CORI POS BY EL CORDOBÉS",
     t("REPORTE DE VENTAS", "SALES REPORT"),
@@ -371,7 +337,11 @@ export default function Sales({ goTo }) {
     `${t("Sucursal", "Branch")}: ${activeBranch}`,
     "",
     `${t("Ingresos", "Revenue")}: ${currency(analytics.revenue)}`,
-    `${t("Órdenes", "Orders")}: ${analytics.orders}`,
+    `${t("Ventas antes de descuentos", "Sales before discounts")}: ${currency(analytics.originalRevenue)}`,
+  `${t("Descuentos otorgados", "Discounts given")}: ${currency(analytics.discountsTotal)}`,
+  `${t("Ventas con descuento", "Discounted orders")}: ${analytics.discountedOrders}`,
+  `${t("Puntos Cori entregados", "Cori points awarded")}: ${analytics.loyaltyPoints}`,
+  `${t("Órdenes", "Orders")}: ${analytics.orders}`,
     `${t("Ticket promedio", "Average ticket")}: ${currency(
       analytics.averageTicket
     )}`,
@@ -390,11 +360,9 @@ export default function Sales({ goTo }) {
     "",
     "Generated by CORI POS",
   ].join("\n");
-
   async function copyReport() {
     try {
       await navigator.clipboard.writeText(reportText);
-
       setFeedback(
         t("Reporte copiado.", "Report copied.")
       );
@@ -407,32 +375,25 @@ export default function Sales({ goTo }) {
       );
     }
   }
-
   async function exportReportImage() {
     if (!reportRef.current || exporting) return;
-
     setExporting(true);
     setFeedback("");
-
     try {
       const canvas = await html2canvas(reportRef.current, {
         backgroundColor: "#1b281e",
         scale: Math.min(window.devicePixelRatio || 1, 2),
         useCORS: true,
       });
-
       const blob = await new Promise((resolve) =>
         canvas.toBlob(resolve, "image/png")
       );
-
       if (!blob) {
         throw new Error("Could not create report image");
       }
-
       const file = new File([blob], "cori-sales-report.png", {
         type: "image/png",
       });
-
       if (
         navigator.share &&
         navigator.canShare?.({ files: [file] })
@@ -448,18 +409,14 @@ export default function Sales({ goTo }) {
           if (err.name === "AbortError") return;
         }
       }
-
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-
       link.href = url;
       link.download = "cori-sales-report.png";
       document.body.appendChild(link);
       link.click();
       link.remove();
-
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-
       setFeedback(
         t("Reporte descargado.", "Report downloaded.")
       );
@@ -475,8 +432,16 @@ export default function Sales({ goTo }) {
       setExporting(false);
     }
   }
+  const [expandedSale, setExpandedSale] = useState(null);
+  const loyaltyCustomers = readJSON("cori_loyalty_customers", []);
+  const customerById = (id) => Array.isArray(loyaltyCustomers)
+    ? loyaltyCustomers.find((customer) => String(customer.id) === String(id))
+    : null;
 
   const stats = [
+    { icon: "revenue", label: t("Antes de descuentos", "Before discounts"), value: currency(analytics.originalRevenue), caption: t("Valor original", "Original value") },
+    { icon: "average", label: t("Descuentos", "Discounts"), value: currency(analytics.discountsTotal), caption: `${analytics.discountedOrders} ${t("ventas", "orders")}` },
+    { icon: "orders", label: t("Puntos Cori", "Cori points"), value: analytics.loyaltyPoints, caption: t("Puntos entregados", "Points awarded") },
     {
       icon: "revenue",
       label: t("Ingresos", "Revenue"),
@@ -508,26 +473,21 @@ export default function Sales({ goTo }) {
       caption: t("Pagos registrados", "Recorded payments"),
     },
   ];
-
   return (
     <div className="cori-home cori-sales-page">
   <Sidebar goTo={goTo} active="sales" />
-
   <main className="ch-main cori-sales-main">
         <Topbar
           title={t("Ventas", "Sales")}
           subtitle="CORI POS / SALES ANALYTICS"
         />
-
         <div className="sales-page-content">
           <header className="sales-page-header">
             <div>
               <p className="sales-eyebrow">
                 CORI POS / BUSINESS INTELLIGENCE
               </p>
-
               <h1>{t("Tus ventas", "Your sales")}</h1>
-
               <p className="sales-page-description">
                 {t(
                   "Cada venta cuenta. Descubre cómo está creciendo tu cafetería.",
@@ -535,7 +495,6 @@ export default function Sales({ goTo }) {
                 )}
               </p>
             </div>
-
             <button
               type="button"
               className="sales-refresh-btn"
@@ -544,20 +503,31 @@ export default function Sales({ goTo }) {
               ↻ {t("Actualizar", "Refresh")}
             </button>
           </header>
-
-          <section className="sales-hero">
+{/* =====================================================
+    CORI ACADEMY — VENTAS
+    MISMO VIDEO Y COMPONENTE QUE CLIENTES
+\===================================================== */}
+<section className="sales-academy-section">
+  <CoriAcademy
+    title={t("¡Hola! Soy Cori.", "Hi! I'm Cori.")}
+    description={t(
+      "Aprende a consultar tus ventas, analizar ingresos y generar reportes para tu cafetería.",
+      "Learn how to review sales, analyze revenue, and generate reports for your coffee shop."
+    )}
+    videoSrc={`${import.meta.env.BASE_URL}videos/cori_greeting_and_guiding_29857_Seedance_25.mp4`}
+  />
+</section>
+        <section className="sales-hero">
             <div>
               <p className="sales-eyebrow">
                 {t("RESUMEN FINANCIERO", "FINANCIAL OVERVIEW")}
               </p>
-
               <h2>
                 {t(
                   "El ritmo de tu cafetería.",
                   "The rhythm of your coffee shop."
                 )}
               </h2>
-
               <p>
                 {t(
                   "Consulta tus resultados, revisa tus órdenes y comparte reportes con tu equipo.",
@@ -565,12 +535,10 @@ export default function Sales({ goTo }) {
                 )}
               </p>
             </div>
-
             <div className="sales-hero-mark" aria-hidden="true">
               ✦
             </div>
           </section>
-
           <div className="sales-period-row">
             <div className="sales-period-buttons">
               {[
@@ -594,27 +562,43 @@ export default function Sales({ goTo }) {
                 </button>
               ))}
             </div>
-
             <span className="sales-period-label">
               {periodLabels[period]}
             </span>
           </div>
-
           <section className="sales-stats-grid">
-            {stats.map((stat) => (
-              <article className="sales-stat-card" key={stat.icon}>
+            {stats.map((stat, index) => (
+              <article className="sales-stat-card" key={`${stat.icon}-${index}`}>
                 <div className="sales-stat-icon">
                   <SalesIcon name={stat.icon} />
                 </div>
-
                 <span>{stat.label}</span>
                 <h2>{stat.value}</h2>
                 <small>{stat.caption}</small>
               </article>
             ))}
           </section>
-
-          <section className="sales-analytics-grid">
+          <section className="sales-cori-summary" aria-label="Cori Loyalty and Discounts">
+          <div className="sales-cori-heading">
+            <div><p className="sales-eyebrow">CORI LOYALTY + DISCOUNTS</p>
+              <h2>{t("Descuentos y recompensas", "Discounts and rewards")}</h2></div>
+            <span>{periodLabels[period]}</span>
+          </div>
+          <div className="sales-cori-metrics">
+            <div><span>{t("Ventas originales", "Original sales")}</span><strong>{currency(analytics.originalRevenue)}</strong></div>
+            <div><span>{t("Descuentos aplicados", "Discounts applied")}</span><strong>-{currency(analytics.discountsTotal)}</strong></div>
+            <div><span>{t("Total cobrado", "Collected total")}</span><strong>{currency(analytics.revenue)}</strong></div>
+            <div><span>{t("Puntos entregados", "Points awarded")}</span><strong>+{analytics.loyaltyPoints}</strong></div>
+          </div>
+          {analytics.discountBreakdown.length > 0 && (
+            <div className="sales-discount-breakdown">
+              {analytics.discountBreakdown.map((entry) => (
+                <div key={entry.label}><span>{entry.label} · {entry.count} {t("ventas", "orders")}</span><strong>-{currency(entry.amount)}</strong></div>
+              ))}
+            </div>
+          )}
+        </section>
+        <section className="sales-analytics-grid">
             <article className="sales-chart-panel">
               <div className="sales-panel-heading">
                 <div>
@@ -628,10 +612,8 @@ export default function Sales({ goTo }) {
                     )}
                   </h2>
                 </div>
-
                 <strong>{currency(analytics.revenue)}</strong>
               </div>
-
               <div className="sales-chart" role="img" aria-label={t(
                 "Gráfico de ventas recientes",
                 "Recent sales chart"
@@ -656,12 +638,10 @@ export default function Sales({ goTo }) {
                         )}`}
                       />
                     </div>
-
                     <span>{day.label}</span>
                   </div>
                 ))}
               </div>
-
               <p className="sales-chart-note">
                 {t(
                   "Gráfico de los últimos días con ventas registradas en tu sistema.",
@@ -669,14 +649,12 @@ export default function Sales({ goTo }) {
                 )}
               </p>
             </article>
-
             <article className="sales-top-products">
               <div className="sales-panel-heading">
                 <div>
                   <p className="sales-eyebrow">
                     {t("PREFERENCIAS", "CUSTOMER FAVORITES")}
                   </p>
-
                   <h2>
                     {t(
                       "Más vendidos",
@@ -685,7 +663,6 @@ export default function Sales({ goTo }) {
                   </h2>
                 </div>
               </div>
-
               {analytics.rankedProducts.length === 0 ? (
                 <p className="sales-no-products">
                   {t(
@@ -705,11 +682,9 @@ export default function Sales({ goTo }) {
                         <span className="sales-top-rank">
                           {String(index + 1).padStart(2, "0")}
                         </span>
-
                         <span className="sales-top-name">
                           {name}
                         </span>
-
                         <strong>
                           {quantity}{" "}
                           <small>
@@ -722,14 +697,12 @@ export default function Sales({ goTo }) {
               )}
             </article>
           </section>
-
           <section className="sales-report-section">
             <div className="sales-section-heading">
               <div>
                 <p className="sales-eyebrow">
                   {t("REPORTES", "REPORTS")}
                 </p>
-
                 <h2>
                   {t(
                     "Reporte de ventas",
@@ -737,12 +710,10 @@ export default function Sales({ goTo }) {
                   )}
                 </h2>
               </div>
-
               <span>
                 {periodLabels[period]}
               </span>
             </div>
-
             <div ref={reportRef}>
               <SalesReportCard
                 revenue={analytics.revenue}
@@ -755,10 +726,14 @@ export default function Sales({ goTo }) {
                 activeBranch={activeBranch}
                 periodLabel={periodLabels[period]}
                 otherPayments={analytics.otherPayments}
-                es={es}
-              />
+              es={es}
+            />
+            <div className="sales-report-cori">
+              <span>{t("Antes de descuentos", "Before discounts")}: {currency(analytics.originalRevenue)}</span>
+              <span>{t("Descuentos", "Discounts")}: -{currency(analytics.discountsTotal)}</span>
+              <span>{t("Puntos Cori", "Cori points")}: +{analytics.loyaltyPoints}</span>
             </div>
-
+            </div>
             <div className="report-actions">
               <button
                 type="button"
@@ -768,7 +743,6 @@ export default function Sales({ goTo }) {
                 <SalesIcon name="copy" size={17} />
                 {t("Copiar reporte", "Copy report")}
               </button>
-
               <button
                 type="button"
                 className="report-btn"
@@ -784,21 +758,18 @@ export default function Sales({ goTo }) {
                     )}
               </button>
             </div>
-
             {feedback && (
               <p className="sales-feedback" role="status">
                 {feedback}
               </p>
             )}
           </section>
-
           <section className="sales-history">
             <div className="sales-history-header">
               <div>
                 <p className="sales-eyebrow">
                   {t("ACTIVIDAD", "ACTIVITY")}
                 </p>
-
                 <h2>
                   {t(
                     "Historial de ventas",
@@ -806,17 +777,14 @@ export default function Sales({ goTo }) {
                   )}
                 </h2>
               </div>
-
               <span>
                 {history.length}{" "}
                 {t("resultados", "results")}
               </span>
             </div>
-
             <div className="sales-history-toolbar">
               <div className="sales-history-search">
                 <SalesIcon name="search" size={18} />
-
                 <input
                   type="search"
                   value={search}
@@ -829,7 +797,6 @@ export default function Sales({ goTo }) {
                   )}
                 />
               </div>
-
               <select
                 className="sales-payment-filter"
                 value={paymentFilter}
@@ -855,7 +822,6 @@ export default function Sales({ goTo }) {
                 </option>
               </select>
             </div>
-
             <div className="sales-history-list">
               {history.length === 0 ? (
                 <div className="sales-empty">
@@ -887,12 +853,10 @@ export default function Sales({ goTo }) {
                         {t("ORDEN", "ORDER")} #
                         {sale.orderNumber ?? "—"}
                       </h3>
-
                       <p>
                         {sale.customerName ||
                           t("Invitado", "Guest")}
                       </p>
-
                       <span>
                         {sale.date ||
                           getSaleDate(sale)?.toLocaleString(
@@ -901,7 +865,6 @@ export default function Sales({ goTo }) {
                           "—"}
                       </span>
                     </div>
-
                     <div className="history-center">
                       {(Array.isArray(sale.items)
                         ? sale.items
@@ -916,11 +879,21 @@ export default function Sales({ goTo }) {
                         </span>
                       ))}
                     </div>
-
-                    <div className="history-right">
+                    <div className="sales-history-extras">
+                    {saleDiscount(sale) > 0 && (
+                      <span className="sales-discount-tag">−{currency(saleDiscount(sale))} · {sale.discountLabel || t("Descuento", "Discount")}</span>
+                    )}
+                    {salePoints(sale) > 0 && (
+                      <span className="sales-loyalty-tag">✦ +{salePoints(sale)} {t("puntos", "points")}</span>
+                    )}
+                  </div>
+                  <div className="history-right">
                       <h2>{currency(sale.total)}</h2>
-
-                      <span className="payment-badge">
+                      <button type="button" className="sales-detail-toggle"
+                      onClick={() => setExpandedSale((current) => current === (sale.id ?? sale.orderNumber ?? index) ? null : (sale.id ?? sale.orderNumber ?? index))}>
+                      {t("Ver detalle", "View details")}
+                    </button>
+                    <span className="payment-badge">
                         {getPaymentType(
                           sale.paymentMethod
                         ) === "card"
@@ -933,18 +906,25 @@ export default function Sales({ goTo }) {
                             t("Otro", "Other")}
                       </span>
                     </div>
-                  </article>
-                ))
+                  {expandedSale === (sale.id ?? sale.orderNumber ?? index) && (
+                    <div className="sales-sale-detail">
+                      <div><span>{t("Importe original", "Original amount")}</span><strong>{currency(saleOriginalTotal(sale))}</strong></div>
+                      <div><span>{sale.discountLabel || t("Descuento", "Discount")}</span><strong>−{currency(saleDiscount(sale))}</strong></div>
+                      <div className="sales-sale-detail-total"><span>{t("Total cobrado", "Collected total")}</span><strong>{currency(sale.total)}</strong></div>
+                      <div><span>{t("Puntos ganados", "Points earned")}</span><strong>+{salePoints(sale)}</strong></div>
+                      {sale.loyaltyCustomerId && <div><span>{t("Cliente Loyalty", "Loyalty customer")}</span><strong>{customerById(sale.loyaltyCustomerId)?.name || sale.customerName || "—"}</strong></div>}
+                      {sale.discountCode && <div><span>{t("Cupón", "Coupon")}</span><strong>{sale.discountCode}</strong></div>}
+                    </div>
+                  )}
+                </article>
+              ))
               )}
             </div>
           </section>
-
           <section className="sales-insights">
             <div className="sales-insights-symbol">✦</div>
-
             <div>
               <p className="sales-eyebrow">CORI INSIGHTS</p>
-
               <h3>
                 {analytics.orders > 0
                   ? t(
@@ -956,7 +936,6 @@ export default function Sales({ goTo }) {
                       "Your sales story starts here."
                     )}
               </h3>
-
               <p>
                 {analytics.orders > 0
                   ? t(

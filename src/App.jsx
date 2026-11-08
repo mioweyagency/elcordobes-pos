@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 import "./styles/global.css";
@@ -5,6 +6,10 @@ import "./styles/app.css";
 
 import Intro from "./pages/Intro";
 import CreateStore from "./pages/CreateStore";
+
+// CORI CLOUD — AUTHENTICATION
+import SignIn from "./pages/SignIn";
+
 import BranchSelect from "./pages/BranchSelect";
 import EmployeeSelect from "./pages/EmployeeSelect";
 import Home from "./pages/Home";
@@ -15,12 +20,22 @@ import POS from "./pages/POS";
 import Sales from "./pages/Sales";
 import Inventory from "./pages/Inventory";
 
-/* Cargar el tema compartido al final. */
+// CORI LOYALTY
+import Clientes from "./pages/Clientes";
+
+// CORI CASH CONTROL
+import CashControl from "./pages/CashControl";
+
+/* Load the shared theme last. */
 import "./styles/coriTheme.css";
 
 const pages = {
   intro: Intro,
   createStore: CreateStore,
+
+  // CORI CLOUD — SIGN IN
+  signIn: SignIn,
+
   branchSelect: BranchSelect,
   employeeSelect: EmployeeSelect,
   home: Home,
@@ -30,6 +45,12 @@ const pages = {
   pos: POS,
   sales: Sales,
   inventory: Inventory,
+
+  // CORI LOYALTY
+  clientes: Clientes,
+
+  // CORI CASH CONTROL
+  cashControl: CashControl,
 };
 
 export default function App() {
