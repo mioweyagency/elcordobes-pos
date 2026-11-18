@@ -1,5 +1,4 @@
-
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase";
 
 import CoriBrand from "../components/CoriBrand";
@@ -10,6 +9,7 @@ export default function SignIn({ goTo }) {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [githubLoading, setGithubLoading] = useState(false);
   const [recovering, setRecovering] = useState(false);
   const [creatingBusiness, setCreatingBusiness] = useState(false);
 
@@ -36,6 +36,61 @@ export default function SignIn({ goTo }) {
 
     return data?.[0] || null;
   };
+
+  const finishOAuthSignIn = async (user) => {
+    if (!user?.id) return;
+
+    const business = await findExistingBusiness(user.id);
+
+    if (business) {
+      goTo?.("branchSelect");
+      return;
+    }
+
+    const { data: memberships, error: memberError } =
+      await supabase
+        .from("business_members")
+        .select("business_id, role")
+        .eq("user_id", user.id)
+        .limit(1);
+
+    if (memberError) throw memberError;
+
+    if (memberships?.length) {
+      goTo?.("branchSelect");
+      return;
+    }
+
+    setBusinessName(user.user_metadata?.shop_name || "");
+    setNeedsBusiness(true);
+  };
+
+  useEffect(() => {
+    let active = true;
+
+    const handleAuthState = async (_event, session) => {
+      if (!active || !session?.user) return;
+
+      try {
+        await finishOAuthSignIn(session.user);
+      } catch (authError) {
+        if (!active) return;
+        setError(authError?.message || "No se pudo completar el inicio de sesión.");
+      }
+    };
+
+    supabase.auth.getSession().then(({ data }) => {
+      handleAuthState("INITIAL_SESSION", data?.session);
+    });
+
+    const { data: listener } =
+      supabase.auth.onAuthStateChange(handleAuthState);
+
+    return () => {
+      active = false;
+      listener?.subscription?.unsubscribe();
+    };
+  }, []);
 
   /* ==========================================
      SIGN IN
@@ -351,6 +406,35 @@ export default function SignIn({ goTo }) {
                 : "Entrar a mi cafetería →"}
             </button>
           </form>
+
+          {/* GITHUB SIGN IN */}
+
+          <div className="cori-signin-social-divider">
+            <span>o continúa con</span>
+          </div>
+
+          <button
+            type="button"
+            className="cori-signin-github"
+            onClick={handleGithubSignIn}
+            disabled={
+              loading ||
+              githubLoading ||
+              recovering ||
+              creatingBusiness
+            }
+          >
+            <svg
+              className="cori-signin-github-icon"
+              viewBox="0 0 19 19"
+              aria-hidden="true"
+            >
+              <use href="/icons.svg#github-icon" />
+            </svg>
+            {githubLoading
+              ? "Conectando con GitHub..."
+              : "Continuar con GitHub"}
+          </button>
 
           {/* COMPLETE REGISTRATION */}
 
